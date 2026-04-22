@@ -37,6 +37,6 @@
     "weponboxName": "Semua Edisi Senjata",
     "standardName": "Headhunt Dasar",
     "beginnerName": "Headhunt Cakrawala Baru",
-    "importInstruction": "Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser."
+    "importInstruction": "Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser. Riwayat gacha dari maksimal 90 hari terakhir akan diimport."
   }
 }
