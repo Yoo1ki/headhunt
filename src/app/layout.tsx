@@ -10,20 +10,31 @@ const roboto = Roboto({
 });
 
 export const metadata = {
-  title:
-    "Headhunt - The Best Arknight: Endfield Tools for Tracking Gacha Records",
+  title: "Headhunt.cc — Arknights: Endfield Pity Tracker (For Real)",
   description:
-    "Free tool designed to help you track your Headhunting pity records in Arknights: Endfield.",
+    "Free Tool to Track your Headhunting or Gacha Pity in Arknights: Endfield",
   keywords: [
     "Arknights Endfield",
-    "Headhunting",
-    "Headhunt",
-    "issue records",
+    "Arknights Endfield pity",
+    "Arknights Endfield gacha",
+    "Arknights Endfield tracker",
+    "Endfield pity tracker",
+    "Endfield gacha tracker",
+    "headhunting",
+    "headhunt tracker",
+    "headhunting pity",
+    "headhunting records",
     "gacha tracker",
-    "pity records",
+    "pity tracker",
     "pity counter",
+    "pity checker",
     "check pity",
-    "tools",
+    "track pity",
+    "gacha history",
+    "pull history",
+    "summon tracker",
+    "free gacha tool",
+    "gacha tools",
   ],
 };
 
@@ -36,9 +47,6 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <head>
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
-      </head>
       <body className={`${roboto.variable} lg:flex lg:flex-col lg:h-screen`}>
         {children}
       </body>
