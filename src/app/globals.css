@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
-:root {
-	--background: #ffffff;
-	--foreground: #171717;
-}
-
-@theme inline {
-	--color-background: var(--background);
-	--color-foreground: var(--foreground);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-	:root {
-		--background: #0a0a0a;
-		--foreground: #ededed;
-	}
-}
-
 body {
-	background: var(--background);
-	color: var(--foreground);
-	font-family: Arial, Helvetica, sans-serif;
+  @apply bg-neutral-900 text-white;
+}
+
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-xl cursor-pointer;
+}
+
+.grid-container {
+  @apply grid gap-4;
+  grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
+}
+
+.grid-weapons {
+  @apply grid gap-4;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.table-records th,
+.table-records td {
+  @apply p-1;
+}
+
+.table-records th:first-child,
+.table-records td:first-child {
+  @apply pl-0;
+}
+
+.table-records th:last-child,
+.table-records td:last-child {
+  @apply pr-0;
+}
+
+.table-details th,
+.table-details td {
+  @apply px-1 py-0.5;
+}
+
+.table-details th:first-child,
+.table-details td:first-child {
+  @apply pl-0;
+}
+
+.table-details th:last-child,
+.table-details td:last-child {
+  @apply pr-0;
 }

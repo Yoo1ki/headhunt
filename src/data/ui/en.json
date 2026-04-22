@@ -1,0 +1,37 @@
+{
+  "App": {
+    "disclaimerP1": "is an independent platform and is not affiliated with Griphline.",
+    "disclaimerP2": "All trademarks, logos, and copyrights are the property of Griphline."
+  },
+  "Navbar": {
+    "home": "Home",
+    "operators": "Operators",
+    "tracker": "HH Tracker",
+    "weapons": "Weapons",
+    "gear": "Gear"
+  },
+  "HomePage": {
+    "title": "Home"
+  },
+  "OperatorsPage": {
+    "title": "Operators",
+    "searchLabel": "Search Operators",
+    "notfound": "No operators found.",
+    "count": "Showing {count} Operators"
+  },
+  "WeaponsPage": {
+    "title": "Weapons",
+    "searchLabel": "Search Weapons",
+    "notfound": "No weapons found.",
+    "count": "Showing {count} Weapons",
+    "baseATK": "Base ATK"
+  },
+  "TrackerPage": {
+    "title": "HH Tracker",
+    "loading": "Loading...",
+    "specialName": "Chartered Headhunting",
+    "weponboxName": "All Arsenal Issues",
+    "standardName": "Basic Headhunting",
+    "beginnerName": "New Horizons Headhunting"
+  }
+}

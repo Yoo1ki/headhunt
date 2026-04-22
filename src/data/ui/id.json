@@ -1,0 +1,37 @@
+{
+  "App": {
+    "disclaimerP1": "merupakan platform independen dan tidak berafiliasi dengan Griphline.",
+    "disclaimerP2": "Semua merek dagang, logo, dan hak cipta adalah milik Griphline."
+  },
+  "Navbar": {
+    "home": "Beranda",
+    "operators": "Operator",
+    "tracker": "HH Tracker",
+    "weapons": "Senjata",
+    "gear": "Gear"
+  },
+  "HomePage": {
+    "title": "Beranda"
+  },
+  "OperatorsPage": {
+    "title": "Operator",
+    "searchLabel": "Cari Operator",
+    "notfound": "Operator tidak ditemukan.",
+    "count": "Menampilkan {count} Operator"
+  },
+  "WeaponsPage": {
+    "title": "Senjata",
+    "searchLabel": "Cari Senjata",
+    "notfound": "Senjata tidak ditemukan.",
+    "count": "Menampilkan {count} Senjata",
+    "baseATK": "ATK Dasar"
+  },
+  "TrackerPage": {
+    "title": "HH Tracker",
+    "loading": "Memuat...",
+    "specialName": "Headhunt Khusus",
+    "weponboxName": "Semua Edisi Senjata",
+    "standardName": "Headhunt Dasar",
+    "beginnerName": "Headhunt Cakrawala Baru"
+  }
+}

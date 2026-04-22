@@ -1,0 +1,149 @@
+{
+  "code": 0,
+  "data": {
+    "pool": {
+      "pool_gacha_type": "char",
+      "pool_name": "ธิดา​แห่ง​สายน้ำ",
+      "pool_type": "special",
+      "up6_name": "ถัง​ถัง",
+      "up6_image": "https://web-static.hg-cdn.com/upload/image/20260312/7997adf31880bf3f8de78811f12261c9.png",
+      "up5_name": "",
+      "up5_image": "",
+      "up6_item_name": "โท​เคน​ของ​ถัง​ถัง",
+      "rotate_image": "",
+      "ticket_name": "ใบอนุญาต​ HH ไหล​อย่าง​อ่อนโยน​ชิง​ป๋อ",
+      "ticket_ten_name": "ใบอนุญาต​ไหล​อย่าง​อ่อนโยน​ชิง​ป๋อ​ x10",
+      "all": [
+        {
+          "id": "chr_0027_tangtang",
+          "name": "ถัง​ถัง",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0017_yvonne",
+          "name": "อี​วอน",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0013_aglina",
+          "name": "กิล​เบอร์​ตา",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0009_azrila",
+          "name": "เอ็ม​เบอร์",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0015_lifeng",
+          "name": "หลี​เ​ฟิง",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0025_ardelia",
+          "name": "อาร์​เด​เลีย",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0026_lastrite",
+          "name": "ลาส​ท์​ไรท์",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0029_pograni",
+          "name": "Pogranichnik",
+          "rarity": 6
+        },
+        {
+          "id": "chr_0004_pelica",
+          "name": "เพอ​ริ​กา",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0007_ikut",
+          "name": "อาร์ค​ไลท์",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0012_avywen",
+          "name": "เอ​วิ​เวน​นา",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0018_dapan",
+          "name": "ต้า​ปัน",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0005_chen",
+          "name": "เฉิน​ เชียน​ยู",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0006_wolfgd",
+          "name": "วู​ล์​ฟ​การ์ด",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0011_seraph",
+          "name": "ไซ​ฮี",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0014_aurora",
+          "name": "ส​โน​ว์​ไชน์",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0024_deepfin",
+          "name": "อา​เลช",
+          "rarity": 5
+        },
+        {
+          "id": "chr_0019_karin",
+          "name": "อา​เค​คู​ริ",
+          "rarity": 4
+        },
+        {
+          "id": "chr_0020_meurs",
+          "name": "แคท​เชอร์",
+          "rarity": 4
+        },
+        {
+          "id": "chr_0021_whiten",
+          "name": "เอส​เต​ญ่า",
+          "rarity": 4
+        },
+        {
+          "id": "chr_0022_bounda",
+          "name": "ฟลู​โอ​ไรต์",
+          "rarity": 4
+        },
+        {
+          "id": "chr_0023_antal",
+          "name": "แอน​ทาล",
+          "rarity": 4
+        }
+      ],
+      "rotate_list": [
+        {
+          "name": "ถัง​ถัง",
+          "times": 3,
+          "image": "https://web-static.hg-cdn.com/upload/image/20260312/68a49490bbb4997a8c57bb5f745c06d5.png"
+        },
+        {
+          "name": "อี​วอน",
+          "times": 2,
+          "image": "https://web-static.hg-cdn.com/upload/image/20260312/fa4853e8107217b54bce31d16c7d0064.png"
+        },
+        {
+          "name": "กิล​เบอร์​ตา",
+          "times": 1,
+          "image": "https://web-static.hg-cdn.com/upload/image/20260312/d75a95c66e90685c0fac1d3069f49003.png"
+        }
+      ]
+    },
+    "timezone": 8
+  },
+  "msg": ""
+}
