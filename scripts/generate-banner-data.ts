@@ -150,10 +150,13 @@ async function ticketify(
   </svg>
   `;
 
-  const outputBuffer = await resized
+  const ticketBuffer = await resized
     .composite([{ input: Buffer.from(ticketSvg), blend: "dest-out" }])
     .png()
     .toBuffer();
+
+  const ticket = sharp(ticketBuffer);
+  const outputBuffer = ticket.resize({ height: 80 }).png().toBuffer();
 
   return outputBuffer;
 }
