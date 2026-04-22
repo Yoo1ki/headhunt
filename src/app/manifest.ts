@@ -5,6 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "headhunt.cc",
     short_name: "Headhunt",
     start_url: "/",
+    scope: "/",
     icons: [
       {
         src: "/web-app-manifest-192x192.png",
