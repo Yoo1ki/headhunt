@@ -213,7 +213,9 @@ export const useImportStore = create<ImportState>((set) => ({
 
       while (hasMore) {
         try {
-          const response = await fetchWithRetry("/api/tracker/import", {
+          // Metode ini harus diganti jika trafik banyak
+          // karena ini multiple request
+          const response = await fetchWithRetry("/api/v1/tracker/import", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -278,7 +280,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
     if (missingBannerIds.size) {
       try {
-        const res = await fetchWithRetry("/api/tracker/banner", {
+        const res = await fetchWithRetry("/api/v1/tracker/banner", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

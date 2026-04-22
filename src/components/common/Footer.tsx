@@ -17,18 +17,18 @@ export const Footer = () => {
           <div className="lg:text-right text-center">
             <div className="flex gap-2 justify-end">
               <Link
-                href="https://github.com/yoo1ki"
-                className="hover:text-yellow-500 duration-300"
-                target="_blank"
-              >
-                Yoo1ki
-              </Link>{" "}
-              •
-              <Link
                 href="/privacy-policy"
                 className="hover:text-yellow-500 duration-300"
               >
                 Privacy Policy
+              </Link>
+              •
+              <Link
+                href="https://discord.gg/uJt4sHYvT"
+                className="hover:text-yellow-500 duration-300"
+                target="_blank"
+              >
+                Discord
               </Link>
             </div>
             <p className="font-semibold">

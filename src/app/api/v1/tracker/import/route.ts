@@ -46,6 +46,8 @@ export async function POST(req: Request) {
   let res: ResGameRecord | null = null;
   let success = false;
 
+  // Metode ini harus diganti jika trafik banyak
+  // karena ini multiple request
   while (attempts < maxRetries && !success) {
     try {
       const response = await fetch(recordUrl);

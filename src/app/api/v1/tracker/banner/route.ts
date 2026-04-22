@@ -1,8 +1,8 @@
 import { CONFIG } from "@/config";
 import { jsonError, jsonSuccess } from "@/lib/api-response";
 import { bannerPayloadSchema } from "@/lib/validators/banner-payload";
-import { GamePoolOperator } from "../../../../../scripts/interfaces/game-pool-operator";
-import { GamePoolWeapon } from "../../../../../scripts/interfaces/game-pool-weapon";
+import { GamePoolOperator } from "../../../../../../scripts/interfaces/game-pool-operator";
+import { GamePoolWeapon } from "../../../../../../scripts/interfaces/game-pool-weapon";
 
 type Banner = {
   id: string;
