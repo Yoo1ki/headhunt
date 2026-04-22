@@ -4,8 +4,6 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "headhunt.cc",
     short_name: "Headhunt",
-    // description: "A Tool for Tracking Your Headhunt Pity Records",
-    // start_url: "/",
     icons: [
       {
         src: "/web-app-manifest-192x192.png",

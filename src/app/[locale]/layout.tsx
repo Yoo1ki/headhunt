@@ -8,6 +8,7 @@ import { ImportStatus } from "@/components/common/ImportStatus";
 import { GoToTop } from "@/components/common/GoToTop";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import PWAUpdateToast from "@/components/common/PWAUpdateToast";
 
 type Props = {
   children: React.ReactNode;
@@ -75,6 +76,7 @@ export default async function HomeLayout({ children, params }: Props) {
               <Footer />
             </div>
             <ImportStatus />
+            <PWAUpdateToast />
             <GoToTop />
           </div>
         </div>
