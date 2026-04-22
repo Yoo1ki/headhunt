@@ -12,7 +12,7 @@ const roboto = Roboto({
 export const metadata = {
   title: "Headhunt.cc — Arknights: Endfield Pity Tracker (For Real)",
   description:
-    "Free Tool to Track your Headhunting or Gacha Pity in Arknights: Endfield",
+    "Free tool to track your gacha pity in Arknights: Endfield. Check pull history and pity count easily.",
   keywords: [
     "Arknights Endfield",
     "Arknights Endfield pity",
