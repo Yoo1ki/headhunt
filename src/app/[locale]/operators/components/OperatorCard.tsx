@@ -28,7 +28,7 @@ export const OperatorCard = ({
 }: OperatorCardProps) => {
   return (
     <div
-      className={`relative group rounded-xl overflow-hidden aspect-7/10 border-b-4 bg-neutral-800/80 cursor-pointer`}
+      className={`relative group rounded-xl overflow-hidden aspect-7/10 border-b-4 bg-neutral-800/80`}
       style={{ borderColor: rarityColor }}
     >
       <div className={`absolute inset-1 border border-white/10 rounded-xl`} />

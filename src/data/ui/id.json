@@ -11,27 +11,32 @@
     "gear": "Gear"
   },
   "HomePage": {
-    "title": "Beranda"
+    "title": "Tracker Pity Arknights: Endfield (Gratis)",
+    "description": "Alat gratis untuk melacak pity gacha di Arknights: Endfield."
   },
   "OperatorsPage": {
-    "title": "Operator",
+    "title": "List Operator - Arknights: Endfield",
+    "pageTitle": "Operator",
     "searchLabel": "Cari Operator",
     "notfound": "Operator tidak ditemukan.",
     "count": "Menampilkan {count} Operator"
   },
   "WeaponsPage": {
-    "title": "Senjata",
+    "title": "List Senjata - Arknights: Endfield",
+    "pageTitle": "Senjata",
     "searchLabel": "Cari Senjata",
     "notfound": "Senjata tidak ditemukan.",
     "count": "Menampilkan {count} Senjata",
     "baseATK": "ATK Dasar"
   },
   "TrackerPage": {
-    "title": "HH Tracker",
+    "title": "Headhunt Tracker - Arknights: Endfield",
+    "pageTitle": "Headhunt Tracker",
     "loading": "Memuat...",
     "specialName": "Headhunt Khusus",
     "weponboxName": "Semua Edisi Senjata",
     "standardName": "Headhunt Dasar",
-    "beginnerName": "Headhunt Cakrawala Baru"
+    "beginnerName": "Headhunt Cakrawala Baru",
+    "importInstruction": "Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser."
   }
 }

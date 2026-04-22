@@ -35,7 +35,7 @@ export const Header = ({ className }: HeaderProps) => {
           <div className="flex justify-between items-center">
             <Link
               href="/"
-              className="text-xl font-bold overflow-hidden text-yellow-400"
+              className="text-xl font-bold overflow-hidden text-white"
             >
               <h1>Headhunt.cc</h1>
             </Link>

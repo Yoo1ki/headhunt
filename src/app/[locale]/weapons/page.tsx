@@ -2,6 +2,18 @@ import { PageContent } from "./PageContent";
 import { getLocale } from "next-intl/server";
 import { Weapon } from "@/types/weapons";
 import { Enums } from "@/types/enums";
+import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+
+export async function generateMetadata() {
+  const t = await getTranslations("WeaponsPage");
+
+  const metadata: Metadata = {
+    title: t("title"),
+  };
+
+  return metadata;
+}
 
 export default async function WeaponsPage() {
   const locale = await getLocale();

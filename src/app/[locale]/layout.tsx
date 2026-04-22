@@ -6,18 +6,55 @@ import { Sidebar } from "@/components/common/Sidebar";
 import { Footer } from "@/components/common/Footer";
 import { ImportStatus } from "@/components/common/ImportStatus";
 import { GoToTop } from "@/components/common/GoToTop";
+import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
 
+export async function generateMetadata() {
+  const t = await getTranslations("HomePage");
+
+  const metadata: Metadata = {
+    title: {
+      default: `Headhunt.cc — ${t("title")}`,
+      template: "%s — Headhunt.cc",
+    },
+    description: t("description"),
+    keywords: [
+      "Arknights Endfield",
+      "Arknights Endfield pity",
+      "Arknights Endfield gacha",
+      "Arknights Endfield tracker",
+      "Endfield pity tracker",
+      "Endfield gacha tracker",
+      "headhunting",
+      "headhunt tracker",
+      "headhunting pity",
+      "headhunting records",
+      "gacha tracker",
+      "pity tracker",
+      "pity counter",
+      "pity checker",
+      "check pity",
+      "track pity",
+      "gacha history",
+      "pull history",
+      "summon tracker",
+      "free gacha tool",
+      "gacha tools",
+    ],
+  };
+
+  return metadata;
+}
+
 export default async function HomeLayout({ children, params }: Props) {
   const { locale } = await params;
 
-  if (!hasLocale(routing.locales, locale)) {
-    notFound();
-  }
+  if (!hasLocale(routing.locales, locale)) notFound();
 
   return (
     <NextIntlClientProvider>

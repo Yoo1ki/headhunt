@@ -173,7 +173,7 @@ export const PullHistory = ({
                           "--hover-bg": CONFIG.enumColors.rarities[rarityId],
                         } as React.CSSProperties
                       }
-                      className="hover:bg-(--hover-bg)/5 cursor-pointer"
+                      className="hover:bg-(--hover-bg)/5"
                     >
                       <td className="rounded-l-xl">{record.no}</td>
 

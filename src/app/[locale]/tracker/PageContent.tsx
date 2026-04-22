@@ -177,7 +177,7 @@ export const PageContent = ({
 
   return (
     <>
-      <PageTitle title={t("title")}>
+      <PageTitle title={t("pageTitle")}>
         <div className="flex gap-2">
           <Button
             onClick={handleSync}
@@ -200,7 +200,7 @@ export const PageContent = ({
           </Button>
           <Button
             onClick={() => setIsOpenImport(true)}
-            disabled={isImporting && processType === "sync"}
+            disabled={!hasHydrated || (isImporting && processType === "sync")}
           >
             <FaFileImport />
             {isImporting && processType === "import" ? (

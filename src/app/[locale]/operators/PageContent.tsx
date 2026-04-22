@@ -123,7 +123,7 @@ export const PageContent = ({
   return (
     <>
       <PageTitle
-        title={t("title")}
+        title={t("pageTitle")}
         search={{
           placeholder: `${t("searchLabel")}...`,
           onChange: handleSearch,

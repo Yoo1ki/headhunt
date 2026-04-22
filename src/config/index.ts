@@ -1,5 +1,6 @@
 export const CONFIG = {
   appName: "Headhunt.cc",
+  baseUrl: "https://headhunt.cc",
   since: 2026,
   endfieldBaseUrl: "https://ef-webview.gryphline.com",
   locales: [

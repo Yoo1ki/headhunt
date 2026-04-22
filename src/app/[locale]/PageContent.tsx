@@ -4,10 +4,10 @@ export const PageContent = () => {
   return (
     <div className="flex flex-col h-full gap-4">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-bold text-yellow-400">Headhunt.cc</h1>
+        <h1 className="text-5xl font-bold text-white">Headhunt.cc</h1>
         <div className="text-xl text-center">
-          Free tool designed to help you track your Headhunting pity records in
-          Arknights: Endfield.
+          Free tool to track your gacha pity in Arknights: Endfield. Check pull
+          history and pity count easily.
         </div>
       </div>
       <div className="flex flex-col grow justify-center items-center gap-4">

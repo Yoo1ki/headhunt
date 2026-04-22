@@ -5,6 +5,17 @@ import { Catalogs } from "@/types/catalog";
 import { Enums } from "@/types/enums";
 import { headhuntTypes } from "@/data/tracker/headhunt-types";
 import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+
+export async function generateMetadata() {
+  const t = await getTranslations("TrackerPage");
+
+  const metadata: Metadata = {
+    title: t("title"),
+  };
+
+  return metadata;
+}
 
 export default async function TrackerPage() {
   const locale = await getLocale();

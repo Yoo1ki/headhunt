@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "@/components/ui/Tabs";
-import { Link } from "@/i18n/navigation";
+// import { Link } from "@/i18n/navigation";
 import { importUrlSchema } from "@/lib/validators/import-url";
 import { useImportStore } from "@/store/useImportStore";
 import { useState } from "react";
 import { FaFileImport, FaLink, FaPaste } from "react-icons/fa6";
 import { MdError } from "react-icons/md";
+import { useTranslations } from "next-intl";
 
 type ImportRecordsProps = {
   isOpen: boolean;
@@ -14,6 +15,7 @@ type ImportRecordsProps = {
 };
 
 export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
+  const t = useTranslations("TrackerPage");
   const importRecords = useImportStore((s) => s.importRecords);
   const isImporting = useImportStore((s) => s.isImporting);
 
@@ -37,7 +39,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
     <Modal title="Import Headhunting Records" isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
         <Tabs tabs={["Windows", "Android", "IOS"]}>
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <div className="font-semibold">1.</div>
               <div>
@@ -101,14 +103,17 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
+          <div className="font-semibold">Coming soon!</div>
           <div className="font-semibold">Coming soon!</div>
           <div className="font-semibold">Coming soon!</div>
         </Tabs>
         <div className="border-l-2 border-yellow-500 rounded-md py-0.5 pl-4 pr-0.5 bg-yellow-500/20 font-light text-sm italic">
-          Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol{" "}
-          <span className="font-semibold">Sync</span> jika ingin memperbarui
-          data. Semua data akan disimpan di browser.
+          <p>
+            {t.rich("importInstruction", {
+              bold: (chunks) => <span className="font-semibold">{chunks}</span>,
+            })}
+          </p>
         </div>
         <form
           onSubmit={(e) => {

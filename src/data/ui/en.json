@@ -11,27 +11,32 @@
     "gear": "Gear"
   },
   "HomePage": {
-    "title": "Home"
+    "title": "Arknights: Endfield Pity Tracker (For Real)",
+    "description": "Free tool to track your gacha pity in Arknights: Endfield."
   },
   "OperatorsPage": {
-    "title": "Operators",
+    "title": "Operators - Arknights: Endfield",
+    "pageTitle": "Operators",
     "searchLabel": "Search Operators",
     "notfound": "No operators found.",
     "count": "Showing {count} Operators"
   },
   "WeaponsPage": {
-    "title": "Weapons",
+    "title": "Weapons - Arknights: Endfield",
+    "pageTitle": "Weapons",
     "searchLabel": "Search Weapons",
     "notfound": "No weapons found.",
     "count": "Showing {count} Weapons",
     "baseATK": "Base ATK"
   },
   "TrackerPage": {
-    "title": "HH Tracker",
+    "title": "Headhunt Tracker - Arknights: Endfield",
+    "pageTitle": "Headhunt Tracker",
     "loading": "Loading...",
     "specialName": "Chartered Headhunting",
     "weponboxName": "All Arsenal Issues",
     "standardName": "Basic Headhunting",
-    "beginnerName": "New Horizons Headhunting"
+    "beginnerName": "New Horizons Headhunting",
+    "importInstruction": "Perform the import process if needed. Then use the <bold>Sync</bold> button to update the data. All data will be stored locally in the browser."
   }
 }
