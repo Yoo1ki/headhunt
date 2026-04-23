@@ -291,8 +291,8 @@ export const PageContent = ({
           <div className="flex flex-col flex-1 justify-center items-center bg-neutral-800/80 rounded-xl gap-2 px-3 py-2">
             <div>
               {profile?.stores?.headhunt?.records
-                ? "No Headhunt records."
-                : "No Headhunt imported."}
+                ? t("noGachaRecords")
+                : t("noRecordImported")}
             </div>
             {profile?.stores?.headhunt ? (
               <Button

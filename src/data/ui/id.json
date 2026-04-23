@@ -41,6 +41,8 @@
     "headhuntRecords": "Riwayat Headhunt",
     "issueRecords": "Riwayat Edisi",
     "loading": "Memuat...",
+    "noGachaRecords": "Belum ada riwayat gacha.",
+    "noRecordImported": "Riwayat Gacha belum di-import.",
     "specialName": "Headhunt Khusus",
     "weponboxName": "Semua Edisi Senjata",
     "standardName": "Headhunt Dasar",
@@ -85,6 +87,6 @@
     "added": "{total} record ditambahan",
     "importing": "Mengimpor record...",
     "syncing": "Menyinkronkan record...",
-    "noNewRecords": "Tidak ditemukan record baru"
+    "noNewRecords": "Belum ada record baru"
   }
 }
