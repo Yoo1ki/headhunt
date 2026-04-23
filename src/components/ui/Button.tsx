@@ -15,7 +15,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   const baseClass =
-    "flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors";
+    "flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors duration-150";
 
   const sizeClass = {
     sm: "py-1 px-2",

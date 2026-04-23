@@ -1,9 +1,10 @@
+import { CONFIG } from "@/config";
 import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "headhunt.cc",
-    short_name: "Headhunt",
+    name: CONFIG.appName,
+    short_name: CONFIG.appShortName,
     start_url: "/",
     scope: "/",
     icons: [

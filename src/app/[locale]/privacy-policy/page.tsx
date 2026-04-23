@@ -1,7 +1,14 @@
 import { PageContent } from "./PageContent";
-// import { getLocale } from "next-intl/server";
-export default async function PrivacyPolicyPage() {
-  // const locale = await getLocale();
+import type { Metadata } from "next";
 
+export async function generateMetadata() {
+  const metadata: Metadata = {
+    title: "Privacy Policy",
+  };
+
+  return metadata;
+}
+
+export default async function PrivacyPolicyPage() {
   return <PageContent />;
 }

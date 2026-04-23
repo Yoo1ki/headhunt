@@ -35,6 +35,16 @@ export const Navbar = ({ onClick }: NavbarProps) => {
   const segment = "/" + (useSelectedLayoutSegment() ?? "");
   const t = useTranslations("Navbar");
 
+  const scrollToTop = () => {
+    const container = document.getElementById("scroll-container");
+
+    if (container && window.innerWidth >= 1024) {
+      container.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="overflow-y-auto max-h-full px-4">
       <div className="flex flex-col justify-start gap-2">
@@ -68,7 +78,14 @@ export const Navbar = ({ onClick }: NavbarProps) => {
             <Link
               key={item.key}
               href={item.href}
-              onClick={onClick}
+              onClick={
+                isActive
+                  ? (e) => {
+                      e.preventDefault();
+                      scrollToTop();
+                    }
+                  : onClick
+              }
               className={`${baseClass} ${activeClass}`}
             >
               {item.icon}

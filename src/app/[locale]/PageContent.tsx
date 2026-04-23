@@ -1,56 +1,154 @@
 "use client";
 
-export const PageContent = () => {
+import { CFImage } from "@/components/ui/CFImage";
+import { CONFIG } from "@/config";
+import { useTranslations } from "next-intl";
+import { useCountdown } from "@/hooks/useCountdown";
+import { JSX, useEffect, useState } from "react";
+import { PiClockCountdownBold } from "react-icons/pi";
+import { Link } from "@/i18n/navigation";
+import {
+  GiTwoShadows,
+  GiHypersonicBolt,
+  GiSaberAndPistol,
+} from "react-icons/gi";
+
+type Props = {
+  banners: BannerItemProps[];
+};
+
+type BannerItemProps = {
+  id: string;
+  name: string;
+  endTime?: number;
+  itemName: string;
+  icon: string;
+};
+
+type MenuItem = {
+  key: string;
+  href: string;
+  icon: JSX.Element;
+  disabled?: boolean;
+};
+
+const pages: MenuItem[] = [
+  { key: "operators", href: "/operators", icon: <GiTwoShadows /> },
+  { key: "tracker", href: "/tracker", icon: <GiHypersonicBolt /> },
+  { key: "weapons", href: "/weapons", icon: <GiSaberAndPistol /> },
+];
+
+export const PageContent = ({ banners }: Props) => {
+  const t = useTranslations("HomePage");
+  const tn = useTranslations("Navbar");
+
   return (
-    <div className="flex flex-col h-full gap-4">
+    <div className="flex flex-col h-full gap-8">
       <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-bold text-white">Headhunt.cc</h1>
-        <div className="text-xl text-center">
-          Free tool to track your gacha pity in Arknights: Endfield. Check pull
-          history and pity count easily.
+        <h1 className="text-5xl font-bold text-white">{CONFIG.appName}</h1>
+        <div className="text-xl text-center">{t("description")}</div>
+      </div>
+      <div className="flex flex-col items-center gap-4">
+        <h2 className="text-xl font-bold text-yellow-400">Shortcut</h2>
+        <div className="flex flex-wrap justify-center gap-2">
+          {pages.map((page) => {
+            return (
+              <Link
+                key={page.key}
+                href={page.href}
+                className="flex items-center rounded-xl p-2 duration-150 border-2 bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 border-yellow-400 hover:border-yellow-300 active:border-yellow-200 text-yellow-400 hover:text-yellow-300 active:text-yellow-200"
+              >
+                {page.icon}
+                <p className="ml-2 truncate">{tn(page.key)}</p>
+              </Link>
+            );
+          })}
         </div>
       </div>
       <div className="flex flex-col grow justify-center items-center gap-4">
-        <div className="px-3 py-2 border-2 border-yellow-400/80 text-yellow-400 rounded-xl text-center text-lg">
-          Website under development
+        <h2 className="text-xl font-bold text-yellow-400">Limited Banners</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
+          {banners.map((banner, i) => {
+            const isLast = i === banners.length - 1;
+            const isOdd = banners.length % 2 === 1;
+
+            return (
+              <div
+                key={banner.id}
+                className={`${isOdd && isLast ? "md:col-span-2 md:justify-self-center md:max-w-md w-full" : ""}`}
+              >
+                <BannerItem
+                  id={banner.id}
+                  name={banner.name}
+                  itemName={banner.itemName}
+                  icon={banner.icon}
+                  endTime={banner.endTime}
+                />
+              </div>
+            );
+          })}
         </div>
-        {/* <h2 className="text-lg font-bold">Limited Banners</h2>
-        <div className="flex justify-center items-center gap-4 w-full">
-          <div className="relative w-full h-auto rounded-xl ring-2 ring-neutral-700/80 bg-neutral-800 overflow-hidden">
-            <div className="bg-neutral-900 w-fit rounded-br-xl">
-              <Image
-                src="/assets/3e8cb366c87400f771b0d7612da686c7cd4c64a13a3de359ae939da8e79a9cf7.png"
-                alt="example"
-                width={100}
-                height={100}
-                draggable={false}
-                className="object-contain scale-110"
-              />
-            </div>
-            <div className="absolute right-0 top-0 bg-neutral-700/80 rounded-bl-xl px-2 py-0.5 flex justify-center items-center gap-1">
-              <span className="text-xs font-semibold">Rossi</span>
-            </div>
-          </div>
-          <div className="relative h-32 w-full rounded-xl ring-2 ring-neutral-700/80 bg-neutral-800 overflow-hidden">
-            <div className="absolute h-full w-32 top-10 left-0">
-              <Image
-                src="/assets/5cd693d996f90f160429daa2ff2b756163d6d86856444c85fefeabf6b4a1aeed.png"
-                alt="example"
-                fill
-                sizes="256px"
-                draggable={false}
-                className="object-cover scale-200"
-              />
-            </div>
-            <div className="absolute right-0 top-0 bg-neutral-700/80 rounded-bl-xl px-2 py-0.5 flex justify-center items-center gap-1">
-              <span className="text-xs font-semibold">Rossi</span>
-            </div>
-            <div className="absolute bottom-1 left-1 right-1 bg-neutral-900/80 rounded-xl px-2 py-0.5 flex justify-center items-center">
-              <span className="text-sm font-semibold">Nama Banner Ini</span>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
+  );
+};
+
+export const BannerItem = ({
+  id,
+  name,
+  endTime,
+  itemName,
+  icon,
+}: BannerItemProps) => {
+  const countdown = useCountdown(endTime);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const endTimeText =
+    mounted && endTime
+      ? countdown?.expired
+        ? "ended"
+        : countdown?.text
+      : undefined;
+
+  const hash = id.startsWith("weponbox") ? id : "special";
+  return (
+    <Link
+      href={`/tracker#${hash}`}
+      className="flex gap-4 group w-full rounded-xl ring-2 ring-neutral-700/80 bg-neutral-800 duration-300 hover:ring-yellow-500/80 hover:bg-neutral-700 overflow-hidden"
+    >
+      <div className="bg-neutral-900 group-hover:bg-neutral-800 duration-300 w-fit p-1 flex justify-center items-center">
+        <CFImage
+          src={icon}
+          alt={itemName}
+          width={100}
+          height={100}
+          draggable={false}
+          className="group-hover:transform group-hover:scale-110 transition duration-300"
+        />
+      </div>
+      <div className="flex-col flex-1 flex relative">
+        {endTimeText && (
+          <div className="absolute top-0 right-0 bg-neutral-700/80 group-hover:bg-neutral-600/80 duration-300 w-fit rounded-bl-xl px-2 py-0.5 flex justify-center items-center gap-1">
+            <div className="text-xs font-semibold text-green-500 flex items-center gap-1">
+              <PiClockCountdownBold />
+              {endTimeText}
+            </div>
+          </div>
+        )}
+        <div className="flex flex-col flex-1 justify-center">
+          <div className="text-xl font-bold">{name}</div>
+          <div
+            className="font-semibold"
+            style={{ color: CONFIG.enumColors.rarities.rarity_6 }}
+          >
+            {itemName}
+          </div>
+        </div>
+      </div>
+    </Link>
   );
 };
