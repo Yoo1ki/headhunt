@@ -48,45 +48,47 @@ export const PageContent = ({ banners }: Props) => {
         <h1 className="text-5xl font-bold text-white">{CONFIG.appName}</h1>
         <div className="text-xl text-center">{t("description")}</div>
       </div>
-      <div className="flex flex-col items-center gap-4">
-        <h2 className="text-xl font-bold text-yellow-400">Shortcut</h2>
-        <div className="flex flex-wrap justify-center gap-2">
-          {pages.map((page) => {
-            return (
-              <Link
-                key={page.key}
-                href={page.href}
-                className="flex items-center rounded-xl p-2 duration-150 border-2 bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 border-yellow-400 hover:border-yellow-300 active:border-yellow-200 text-yellow-400 hover:text-yellow-300 active:text-yellow-200"
-              >
-                {page.icon}
-                <p className="ml-2 truncate">{tn(page.key)}</p>
-              </Link>
-            );
-          })}
+      <div className="flex flex-col grow justify-center items-center gap-8">
+        <div className="flex flex-col items-center gap-4 w-full">
+          <h2 className="text-xl font-bold text-yellow-400">Shortcut Menu</h2>
+          <div className="flex flex-wrap justify-center gap-2">
+            {pages.map((page) => {
+              return (
+                <Link
+                  key={page.key}
+                  href={page.href}
+                  className="flex items-center rounded-xl p-2 duration-150 border-2 bg-neutral-800 hover:bg-neutral-700 active:bg-neutral-600 border-yellow-400 hover:border-yellow-300 active:border-yellow-200 text-yellow-400 hover:text-yellow-300 active:text-yellow-200"
+                >
+                  {page.icon}
+                  <p className="ml-2 truncate">{tn(page.key)}</p>
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col grow justify-center items-center gap-4">
-        <h2 className="text-xl font-bold text-yellow-400">Limited Banners</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
-          {banners.map((banner, i) => {
-            const isLast = i === banners.length - 1;
-            const isOdd = banners.length % 2 === 1;
+        <div className="flex flex-col items-center gap-4 w-full">
+          <h2 className="text-xl font-bold text-yellow-400">Limited Banners</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-4xl">
+            {banners.map((banner, i) => {
+              const isLast = i === banners.length - 1;
+              const isOdd = banners.length % 2 === 1;
 
-            return (
-              <div
-                key={banner.id}
-                className={`${isOdd && isLast ? "md:col-span-2 md:justify-self-center md:max-w-md w-full" : ""}`}
-              >
-                <BannerItem
-                  id={banner.id}
-                  name={banner.name}
-                  itemName={banner.itemName}
-                  icon={banner.icon}
-                  endTime={banner.endTime}
-                />
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={banner.id}
+                  className={`${isOdd && isLast ? "md:col-span-2 md:justify-self-center md:max-w-md w-full" : ""}`}
+                >
+                  <BannerItem
+                    id={banner.id}
+                    name={banner.name}
+                    itemName={banner.itemName}
+                    icon={banner.icon}
+                    endTime={banner.endTime}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -140,9 +142,9 @@ export const BannerItem = ({
           </div>
         )}
         <div className="flex flex-col flex-1 justify-center">
-          <div className="text-xl font-bold">{name}</div>
+          <div className="font-bold">{name}</div>
           <div
-            className="font-semibold"
+            className="text-sm font-semibold"
             style={{ color: CONFIG.enumColors.rarities.rarity_6 }}
           >
             {itemName}
