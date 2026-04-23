@@ -13,10 +13,10 @@
   "HomePage": {
     "title": "Tracker Pity Arknights: Endfield (Rill Coy)",
     "description": "Alat gratis untuk melacak pity gacha kamu di Arknights: Endfield. Cek riwayat pull dan jumlah pity dengan mudah.",
-    "shortcutMenu": "Menu Pintasan",
+    "shortcutMenu": "Pintasan Menu",
     "limitedBanners": "Banner Terbatas",
     "loading": "Memuat...",
-    "longTime": "Masih lama"
+    "longTime": "Masih lama kok"
   },
   "OperatorsPage": {
     "title": "List Operator - Arknights: Endfield",
