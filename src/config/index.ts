@@ -1,7 +1,10 @@
 export const CONFIG = {
   appName: "Headhunt.cc",
   appShortName: "Headhunt",
-  baseUrl: "https://headhunt.cc",
+  baseUrl:
+    process.env.NODE_ENV === "production"
+      ? "https://headhunt.cc"
+      : "http://localhost:3000",
   since: 2026,
   endfieldBaseUrl: "https://ef-webview.gryphline.com",
   locales: [

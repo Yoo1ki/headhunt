@@ -1,6 +1,7 @@
 import { getLocale } from "next-intl/server";
 import { Roboto } from "next/font/google";
 import "@/app/globals.css";
+import { CONFIG } from "@/config";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -8,6 +9,13 @@ const roboto = Roboto({
   style: ["normal", "italic"],
   variable: "--font-roboto",
 });
+
+export const metadata = {
+  metadataBase: new URL(CONFIG.baseUrl),
+  openGraph: {
+    images: ["/opengraph-image"],
+  },
+};
 
 export default async function RootLayout({
   children,
