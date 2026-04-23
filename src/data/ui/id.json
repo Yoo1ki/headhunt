@@ -12,7 +12,11 @@
   },
   "HomePage": {
     "title": "Tracker Pity Arknights: Endfield (Rill Coy)",
-    "description": "Alat gratis untuk melacak pity gacha kamu di Arknights: Endfield. Cek riwayat pull dan jumlah pity dengan mudah."
+    "description": "Alat gratis untuk melacak pity gacha kamu di Arknights: Endfield. Cek riwayat pull dan jumlah pity dengan mudah.",
+    "shortcutMenu": "Menu Pintasan",
+    "limitedBanners": "Banner Terbatas",
+    "loading": "Memuat...",
+    "longTime": "Masih lama"
   },
   "OperatorsPage": {
     "title": "List Operator - Arknights: Endfield",
@@ -32,11 +36,55 @@
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
     "pageTitle": "Headhunt Tracker",
+    "recentHeadhunts": "Headhunt Terbaru",
+    "recentIssues": "Edisi Terbaru",
+    "headhuntRecords": "Riwayat Headhunt",
+    "issueRecords": "Riwayat Edisi",
     "loading": "Memuat...",
     "specialName": "Headhunt Khusus",
     "weponboxName": "Semua Edisi Senjata",
     "standardName": "Headhunt Dasar",
     "beginnerName": "Headhunt Cakrawala Baru",
-    "importInstruction": "Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser. Riwayat gacha dari maksimal 90 hari terakhir akan diimport."
+    "importInstruction": "Lakukan proses import jika dibutuhkan. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser. Riwayat gacha dari maksimal 90 hari terakhir akan diimport.",
+    "pasteUrl": "Paste URL disini",
+    "import": "Import",
+    "importing": "Mengimpor...",
+    "sync": "Sync",
+    "syncing": "Menyinkronkan...",
+    "all": "Semua",
+    "more": "Lagi...",
+    "guaranteedDesc": "Jaminan Rate-Up pada pull ke-{limit} pertama",
+    "noRecordFound": "Record tidak ditemukan.",
+    "pull": "Pull",
+    "operator": "Operator",
+    "weapon": "Senjata",
+    "pity": "Pity",
+    "banner": "Banner",
+    "time": "Waktu",
+    "DetailRecords": {
+      "totalIssue": "Total Edisi",
+      "totalHeadhunt": "Total Headhunt",
+      "totalArsenalTicket": "Total Tiket Senjata",
+      "totalOroberyl": "Total Oroberyl",
+      "r4Issue": "Edisi ★4",
+      "r4Headhunt": "Headhunt ★4",
+      "r5Issue": "Edisi ★5",
+      "r5Headhunt": "Headhunt ★5",
+      "r6Issue": "Edisi ★6",
+      "r6Headhunt": "Headhunt ★6",
+      "r6AvgPity": "Rata-rata Pity ★6",
+      "rotateWinRate": "Rotate Win Rate",
+      "rateupWinRate": "Rateup Win Rate"
+    }
+  },
+  "ImportStatus": {
+    "urlExpired": "URL expired, tolong import ulang dengan URL baru",
+    "networkError": "Kesalahan Jaringan, coba lagi",
+    "unknownError": "Terjadi Kesalahan, coba lagi nanti",
+    "found": "{total} record ditemukan",
+    "added": "{total} record ditambahan",
+    "importing": "Mengimpor record...",
+    "syncing": "Menyinkronkan record...",
+    "noNewRecords": "Tidak ditemukan record baru"
   }
 }

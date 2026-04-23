@@ -2,6 +2,7 @@ import { Banners } from "@/types/banner";
 import { useMemo, useState } from "react";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { CFImage } from "@/components/ui/CFImage";
+import { useTranslations } from "next-intl";
 
 type RecentBannersProps = {
   banners: Partial<Banners>;
@@ -18,6 +19,7 @@ export const RecentBanners = ({
   selectedId,
   onSelected,
 }: RecentBannersProps) => {
+  const t = useTranslations("TrackerPage");
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   const bannerIdsArray = useMemo(() => [...bannerIds], [bannerIds]);
@@ -48,7 +50,7 @@ export const RecentBanners = ({
         className={`${getColor(selectedId === null)} px-3 py-1 h-8 w-24 rounded-md flex justify-center items-center cursor-pointer`}
         onClick={() => onSelected(null)}
       >
-        <span className="text-xs font-semibold line-clamp-1">All Banner</span>
+        <span className="text-xs font-semibold line-clamp-1">{t("all")}</span>
       </div>
       {fBannerIds.map((bannerId) => {
         const banner = banners[bannerId];
@@ -87,7 +89,7 @@ export const RecentBanners = ({
             className="rounded-xl text-xs px-3 py-1 self-center cursor-pointer bg-neutral-700/80 text-white/80 hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60 transition"
             onClick={handleLoadMore}
           >
-            More...
+            {t("more")}
           </button>
         </Tooltip>
       )}

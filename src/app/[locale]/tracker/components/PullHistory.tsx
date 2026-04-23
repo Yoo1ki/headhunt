@@ -8,7 +8,7 @@ import { CONFIG } from "@/config";
 import { RecordItem } from "@/types/profile";
 import { Banners } from "@/types/banner";
 import { Catalogs } from "@/types/catalog";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { PiImageBroken } from "react-icons/pi";
 import { CFImage } from "@/components/ui/CFImage";
 
@@ -53,6 +53,7 @@ export const PullHistory = ({
   disabled,
   onSync,
 }: PullHistoryProps) => {
+  const t = useTranslations("TrackerPage");
   const locale = useLocale();
 
   const [visible, setVisible] = useState(PAGE_SIZE);
@@ -112,7 +113,7 @@ export const PullHistory = ({
       <div className="bg-neutral-800/80 rounded-xl px-3 py-2 flex flex-col gap-4">
         <div className="flex justify-between items-center gap-2">
           <h2 className="font-bold text-xl">
-            {isWeapon ? "Issue" : "Headhunt"} Records
+            {isWeapon ? t("issueRecords") : t("headhuntRecords")}
           </h2>
 
           <div>
@@ -138,13 +139,13 @@ export const PullHistory = ({
             <table className="table-auto w-max min-w-full whitespace-nowrap text-center table-records">
               <thead>
                 <tr>
-                  <th className="w-10">Pull</th>
+                  <th className="w-10">{t("pull")}</th>
                   <th className="text-left">
-                    {isWeapon ? "Weapon" : "Operator"}
+                    {isWeapon ? t("weapon") : t("operator")}
                   </th>
-                  <th className="w-15">Pity</th>
-                  {!hideBanner && <th className="w-30">Banner</th>}
-                  <th className="w-40">Time</th>
+                  <th className="w-15">{t("pity")}</th>
+                  {!hideBanner && <th className="w-30">{t("banner")}</th>}
+                  <th className="w-40">{t("time")}</th>
                 </tr>
               </thead>
 
@@ -230,17 +231,17 @@ export const PullHistory = ({
             </table>
           ) : (
             <div className="flex flex-col items-center gap-2 py-10">
-              <p>No Record found.</p>
+              <p>{t("noRecordFound")}</p>
               <Button onClick={onSync} variant="secondary" disabled={disabled}>
                 {isSyncing ? (
                   <>
                     <FaSyncAlt className="animate-spin" />
-                    <span>Syncing...</span>
+                    <span> {t("syncing")}</span>
                   </>
                 ) : (
                   <>
                     <FaSyncAlt />
-                    <span>Sync</span>
+                    <span>{t("sync")}</span>
                   </>
                 )}
               </Button>
@@ -255,7 +256,7 @@ export const PullHistory = ({
           className="bg-neutral-800 rounded-xl px-3 py-2 flex justify-center items-center gap-2"
         >
           <AiOutlineLoading3Quarters size={24} className="animate-spin" />
-          <p>Loading...</p>
+          <p>{t("loading")}</p>
         </div>
       )}
     </>

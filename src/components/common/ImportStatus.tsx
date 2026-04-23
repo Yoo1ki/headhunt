@@ -5,8 +5,10 @@ import { FaCheck, FaSyncAlt } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useImportStore } from "@/store/useImportStore";
 import { FaX } from "react-icons/fa6";
+import { useTranslations } from "next-intl";
 
 export const ImportStatus = () => {
+  const t = useTranslations("ImportStatus");
   const processType = useImportStore((s) => s.processType);
   const isImporting = useImportStore((s) => s.isImporting);
   const totalRecord = useImportStore((s) => s.totalRecord);
@@ -26,26 +28,24 @@ export const ImportStatus = () => {
     return () => clearTimeout(timeout);
   }, [isImporting]);
 
-  const recordText = (n: number) => `${n} record${n > 1 ? "s" : ""}`;
-
   const errorMsg =
     errorType === "expired"
-      ? "URL expired, please re-import using a new URL"
+      ? t("urlExpired")
       : errorType === "network"
-        ? "Network Error, please try again"
-        : "Unknown Error, please try again later";
+        ? t("networkError")
+        : t("unknownError");
 
   const message = isImporting
     ? totalRecord
-      ? `Found ${recordText(totalRecord)}`
+      ? t("found", { total: totalRecord })
       : processType === "import"
-        ? "Importing records..."
-        : "Syncing records..."
+        ? t("importing")
+        : t("syncing")
     : totalRecord
-      ? `Added ${recordText(totalRecord)}`
+      ? t("added", { total: totalRecord })
       : errorType
         ? errorMsg
-        : "No new records found";
+        : t("noNewRecords");
 
   const displayClass = show
     ? "translate-y-0 opacity-100 pointer-events-auto"

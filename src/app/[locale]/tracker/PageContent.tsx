@@ -11,7 +11,7 @@ import { Banners } from "@/types/banner";
 import { Button } from "@/components/ui/Button";
 import { useStorageStore } from "@/store/useStorageStore";
 import { useImportStore } from "@/store/useImportStore";
-import { CategoryCard } from "./components/CategoryCard";
+import { TypeCard } from "./components/TypeCard";
 import { ImportRecords } from "./components/ImportRecords";
 import { PullHistory } from "./components/PullHistory";
 import { RecentPulls } from "./components/RecentPulls";
@@ -42,19 +42,6 @@ type TypeItem = {
   r6PityLimit: number;
   guaranteeAt?: number;
 };
-
-// function exportJSON(data: unknown, filename = "backup-records.json") {
-//   const json = JSON.stringify(data, null, 2);
-//   const blob = new Blob([json], { type: "application/json" });
-
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = filename;
-
-//   a.click();
-//   URL.revokeObjectURL(url);
-// }
 
 export const PageContent = ({
   types,
@@ -146,14 +133,6 @@ export const PageContent = ({
     return limit;
   }, [combinedHeadhuntTypes, hash]);
 
-  // const bannerIds = useMemo(() => {
-  //   return new Set<string>(
-  //     types.bannerTypes.slice(0, 2).some((c) => c.id === hash)
-  //       ? records.map((r) => r.bannerId)
-  //       : [],
-  //   );
-  // }, [records, hash, types.bannerTypes]);
-
   useEffect(() => {
     const timer = setTimeout(() => setSelectedBannerId(null), 0);
     return () => clearTimeout(timer);
@@ -167,11 +146,6 @@ export const PageContent = ({
     if (!profile?.stores?.headhunt?.url || isImporting) return;
     importRecords(profile?.stores?.headhunt?.url, "sync");
   };
-
-  // const handleBackup = () => {
-  //   if (!profile) return;
-  //   exportJSON(profile);
-  // };
 
   const resetKey = `${hash}-${selectedBannerId ?? "all"}`;
 
@@ -189,12 +163,12 @@ export const PageContent = ({
             {isImporting && processType === "sync" ? (
               <>
                 <FaSyncAlt className="animate-spin" />
-                <span>Syncing...</span>
+                <span>{t("syncing")}</span>
               </>
             ) : (
               <>
                 <FaSyncAlt />
-                <span>Sync</span>
+                <span>{t("sync")}</span>
               </>
             )}
           </Button>
@@ -204,20 +178,11 @@ export const PageContent = ({
           >
             <FaFileImport />
             {isImporting && processType === "import" ? (
-              <span>Importing...</span>
+              <span>{t("importing")}</span>
             ) : (
-              <span>Import</span>
+              <span>{t("import")}</span>
             )}
           </Button>
-          {/* <Button
-            onClick={handleBackup}
-            disabled={
-              !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
-            }
-          >
-            <FaFileImport />
-            <span>Export</span>
-          </Button> */}
         </div>
       </PageTitle>
 
@@ -229,7 +194,7 @@ export const PageContent = ({
               : undefined;
 
             return (
-              <CategoryCard
+              <TypeCard
                 key={type.id}
                 hash={type.id}
                 name={type.name}
@@ -257,7 +222,7 @@ export const PageContent = ({
                   const banners = profile.stores?.headhunt?.banners[type.id];
 
                   return (
-                    <CategoryCard
+                    <TypeCard
                       key={type.id}
                       hash={type.id}
                       name={type.name}
@@ -338,12 +303,12 @@ export const PageContent = ({
                 {isImporting && processType === "sync" ? (
                   <>
                     <FaSyncAlt className="animate-spin" />
-                    <span>Syncing...</span>
+                    <span>{t("syncing")}</span>
                   </>
                 ) : (
                   <>
                     <FaSyncAlt />
-                    <span>Sync</span>
+                    <span>{t("sync")}</span>
                   </>
                 )}
               </Button>
@@ -354,9 +319,9 @@ export const PageContent = ({
               >
                 <FaFileImport />
                 {isImporting && processType === "import" ? (
-                  <span>Importing...</span>
+                  <span>{t("importing")}</span>
                 ) : (
-                  <span>Import</span>
+                  <span>{t("import")}</span>
                 )}
               </Button>
             )}

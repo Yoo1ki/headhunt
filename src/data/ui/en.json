@@ -12,7 +12,11 @@
   },
   "HomePage": {
     "title": "Arknights: Endfield Pity Tracker (For Real)",
-    "description": "A free tool to track your gacha pity in Arknights: Endfield. Easily check pull history and pity count."
+    "description": "A free tool to track your gacha pity in Arknights: Endfield. Easily check pull history and pity count.",
+    "shortcutMenu": "Shortcut Menu",
+    "limitedBanners": "Limited Banners",
+    "loading": "Loading...",
+    "longTime": "Still a long time"
   },
   "OperatorsPage": {
     "title": "Operators - Arknights: Endfield",
@@ -32,11 +36,55 @@
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
     "pageTitle": "Headhunt Tracker",
+    "recentHeadhunts": "Recent Headhunts",
+    "recentIssues": "Recent Issues",
+    "headhuntRecords": "Headhunt Records",
+    "issueRecords": "Issue Records",
     "loading": "Loading...",
     "specialName": "Chartered Headhunting",
     "weponboxName": "All Arsenal Issues",
     "standardName": "Basic Headhunting",
     "beginnerName": "New Horizons Headhunting",
-    "importInstruction": "Perform the import process if needed. Then use the <bold>Sync</bold> button to update the data. All data will be stored locally in the browser. Gacha history from the past 90 days will be imported."
+    "importInstruction": "Perform the import process if needed. Then use the <bold>Sync</bold> button to update the data. All data will be stored locally in the browser. Gacha history from the past 90 days will be imported.",
+    "pasteUrl": "Paste URL here",
+    "import": "Import",
+    "importing": "Importing...",
+    "sync": "Sync",
+    "syncing": "Syncing...",
+    "all": "All",
+    "more": "More...",
+    "guaranteedDesc": "Rate-Up Guaranteed at the first {limit} pulls",
+    "noRecordFound": "No Record found.",
+    "pull": "Pull",
+    "operator": "Operator",
+    "weapon": "Weapon",
+    "pity": "Pity",
+    "banner": "Banner",
+    "time": "Time",
+    "DetailRecords": {
+      "totalIssue": "Total Issue",
+      "totalHeadhunt": "Total Headhunt",
+      "totalArsenalTicket": "Total Arsenal Ticket",
+      "totalOroberyl": "Total Oroberyl",
+      "r4Issue": "4★ Issue",
+      "r4Headhunt": "4★ Headhunt",
+      "r5Issue": "5★ Issue",
+      "r5Headhunt": "5★ Headhunt",
+      "r6Issue": "6★ Issue",
+      "r6Headhunt": "6★ Headhunt",
+      "r6AvgPity": "6★ AVG Pity",
+      "rotateWinRate": "Rotate Win Rate",
+      "rateupWinRate": "Rateup Win Rate"
+    }
+  },
+  "ImportStatus": {
+    "urlExpired": "URL expired, please re-import using a new URL",
+    "networkError": "Network Error, please try again",
+    "unknownError": "Unknown Error, please try again later",
+    "found": "{total, plural, one {Found # record} other {Found # records}}",
+    "added": "{total, plural, one {Added # record} other {Added # records}}",
+    "importing": "Importing records...",
+    "syncing": "Syncing records...",
+    "noNewRecords": "No new records found"
   }
 }

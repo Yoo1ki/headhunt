@@ -1,6 +1,6 @@
 import { CONFIG } from "@/config";
 import { BannerItem, TypeItem } from "@/types/profile";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 type DetailRecordsProps = {
@@ -14,6 +14,7 @@ export const DetailRecords = ({
   stats,
   hash,
 }: DetailRecordsProps) => {
+  const t = useTranslations("TrackerPage.DetailRecords");
   const locale = useLocale();
 
   const details = useMemo(() => {
@@ -33,27 +34,27 @@ export const DetailRecords = ({
 
     const base = [
       {
-        label: isWeapon ? "Total Issue" : "Total Headhunt",
+        label: isWeapon ? t("totalIssue") : t("totalHeadhunt"),
         value: totalPulls,
       },
       {
-        label: isWeapon ? "Total Arsenal Ticket" : "Total Oroberyl",
+        label: isWeapon ? t("totalArsenalTicket") : t("totalOroberyl"),
         value: (totalPulls * currencyMultiplier).toLocaleString(localeValue),
       },
       {
-        label: isWeapon ? "4★ Issue" : "4★ Headhunt",
+        label: isWeapon ? t("r4Issue") : t("r4Headhunt"),
         value: r4,
       },
       {
-        label: isWeapon ? "5★ Issue" : "5★ Headhunt",
+        label: isWeapon ? t("r5Issue") : t("r5Headhunt"),
         value: r5,
       },
       {
-        label: isWeapon ? "6★ Issue" : "6★ Headhunt",
+        label: isWeapon ? t("r6Issue") : t("r6Headhunt"),
         value: r6,
       },
       {
-        label: "6★ AVG Pity",
+        label: t("r6AvgPity"),
         value: hasR6 ? Math.round(stats?.r6AvgPity ?? 0) : "-",
       },
     ];
@@ -66,7 +67,7 @@ export const DetailRecords = ({
       ...(!isWeapon
         ? [
             {
-              label: "Rotate Win Rate",
+              label: t("rotateWinRate"),
               value: hasR6
                 ? `${Math.round((stats?.rotateWin ?? 0) * 100)}%`
                 : "-",
@@ -74,13 +75,13 @@ export const DetailRecords = ({
           ]
         : []),
       {
-        label: "Rateup Win Rate",
+        label: t("rateupWinRate"),
         value: hasR6 ? `${Math.round((stats?.rateupWin ?? 0) * 100)}%` : "-",
       },
     ];
 
     return [...base, ...extra];
-  }, [stats, hash, locale]);
+  }, [stats, hash, locale, t]);
 
   return (
     <div className="flex flex-col gap-4 bg-neutral-800/80 rounded-xl px-3 py-2">

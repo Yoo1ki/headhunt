@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { CFImage } from "@/components/ui/CFImage";
 
-type CategoryCardProps = {
+type TypeCardProps = {
   hash: string;
   name: string;
   icon: string;
@@ -13,7 +13,7 @@ type CategoryCardProps = {
   isSelected: boolean;
 };
 
-export const CategoryCard = ({
+export const TypeCard = ({
   hash,
   name,
   icon,
@@ -23,7 +23,7 @@ export const CategoryCard = ({
   pity5Limit,
   pity6Limit,
   isSelected,
-}: CategoryCardProps) => {
+}: TypeCardProps) => {
   const borderColor = isSelected
     ? "border-yellow-500 bg-neutral-700/80"
     : "border-transparent bg-neutral-800/80";

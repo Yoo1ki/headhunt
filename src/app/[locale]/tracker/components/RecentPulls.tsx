@@ -7,6 +7,7 @@ import { GachaResult, RecordItem } from "@/types/profile";
 import { Catalogs } from "@/types/catalog";
 import { PiImageBroken } from "react-icons/pi";
 import { CFImage } from "@/components/ui/CFImage";
+import { useTranslations } from "next-intl";
 
 type RecentPullsProps = {
   hash: string;
@@ -58,6 +59,7 @@ export const RecentPulls = ({
   rarities,
   guaranteedLimit,
 }: RecentPullsProps) => {
+  const t = useTranslations("TrackerPage");
   const isWeapon = hash.startsWith("weponbox");
 
   const [visible, setVisible] = useState(PAGE_SIZE);
@@ -94,7 +96,7 @@ export const RecentPulls = ({
       <div className="bg-neutral-800/80 rounded-xl px-3 py-2 flex flex-col gap-4">
         <div className="flex justify-between items-center gap-2">
           <h2 className="font-bold text-xl">
-            Recent {isWeapon ? "Issues" : "Headhunts"}
+            {isWeapon ? t("recentIssues") : t("recentHeadhunts")}
           </h2>
 
           <div>
@@ -119,8 +121,8 @@ export const RecentPulls = ({
           (record) => record.result === GachaResult.Guarantee,
         ) && (
           <div className="border-l-2 border-violet-500 rounded-md py-0.5 px-2 bg-violet-500/20 font-light text-sm italic w-fit">
-            <span className="font-semibold">G</span> = Rate-Up Guarantee at the
-            first {guaranteedLimit} pulls
+            <span className="font-semibold">G</span> ={" "}
+            {t("guaranteedDesc", { limit: guaranteedLimit })}
           </div>
         )}
 
@@ -199,7 +201,7 @@ export const RecentPulls = ({
                 className="rounded-xl text-xs px-3 py-1 self-center cursor-pointer bg-neutral-700/80 text-white/80 hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60 transition"
                 onClick={handleLoadMore}
               >
-                More...
+                {t("more")}
               </button>
             </Tooltip>
           )}

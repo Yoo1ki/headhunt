@@ -122,7 +122,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
           }}
           className="flex flex-col gap-2"
         >
-          <div className="font-semibold">Paste URL here</div>
+          <div className="font-semibold">{t("pasteUrl")}</div>
 
           <div className="relative">
             <FaLink className="absolute left-3 top-1/2 -translate-y-1/2 text-white" />
@@ -167,7 +167,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               </Button>
               <Button type="submit" disabled={isImporting || !url || !!error}>
                 <FaFileImport />
-                <span>{isImporting ? "Importing..." : "Import"}</span>
+                <span>{isImporting ? t("importing") : t("import")}</span>
               </Button>
             </div>
           </div>
