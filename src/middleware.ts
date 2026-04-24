@@ -4,6 +4,7 @@ import { routing } from "./i18n/routing";
 export default createMiddleware({
   ...routing,
   localeCookie: {
+    name: "locale",
     maxAge: 60 * 60 * 24 * 365,
     sameSite: "lax",
     path: "/",
