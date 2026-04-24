@@ -34,7 +34,7 @@ function Show-Result($Url){
 }
 
 try{
-    Write-Host "Reading cache file..." -ForegroundColor Yellow
+    Write-Host "Reading Arkninght:Endfield cache file..." -ForegroundColor Yellow
     $tmp=Copy-CacheFile
     $url=Get-LastUrlFromCache $tmp
 
