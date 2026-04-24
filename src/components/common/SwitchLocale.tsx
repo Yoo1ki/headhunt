@@ -1,32 +1,23 @@
 "use client";
 
 import { CONFIG } from "@/config";
-import { usePathname } from "@/i18n/navigation";
+import { useRouter, usePathname } from "@/i18n/navigation";
 import { useLocale } from "next-intl";
 import { useState, useRef, useEffect } from "react";
 import { FaGlobeAsia } from "react-icons/fa";
 import { TiArrowSortedDown } from "react-icons/ti";
-import { useImportStore } from "@/store/useImportStore";
-import clsx from "clsx";
 
 export const SwitchLocale = () => {
+  const router = useRouter();
   const pathname = usePathname();
   const locale = useLocale();
-  const isImporting = useImportStore((s) => s.isImporting);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (newLocale: string) => {
     const hash = window.location.hash;
-
-    const segments = pathname.split("/");
-    if (CONFIG.locales.some((l) => l.id === segments[1])) {
-      segments[1] = newLocale;
-    } else {
-      segments.splice(1, 0, newLocale);
-    }
-
-    window.location.href = segments.join("/") + hash;
+    router.replace(pathname + hash, { locale: newLocale });
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -45,19 +36,11 @@ export const SwitchLocale = () => {
     };
   }, []);
 
-  const stateClass = isImporting
-    ? "bg-neutral-600 text-white/60"
-    : "hover:bg-white/10 cursor-pointer";
-
   return (
     <div className="relative" ref={dropdownRef}>
       <button
-        disabled={isImporting}
         onClick={() => setOpen(!open)}
-        className={clsx(
-          "w-36 px-3 py-1.5 rounded-xl bg-white/5 flex justify-between items-center gap-2 duration-300",
-          stateClass,
-        )}
+        className="w-36 px-3 py-1.5 rounded-xl bg-white/5 flex justify-between items-center gap-2 hover:bg-white/10 cursor-pointer duration-300"
       >
         <div className="flex items-center gap-2">
           <FaGlobeAsia />
