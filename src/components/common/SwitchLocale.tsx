@@ -47,7 +47,7 @@ export const SwitchLocale = () => {
 
   const stateClass = isImporting
     ? "bg-neutral-600 text-white/60"
-    : "cursor-pointer";
+    : "hover:bg-white/10 cursor-pointer";
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -55,7 +55,7 @@ export const SwitchLocale = () => {
         disabled={isImporting}
         onClick={() => setOpen(!open)}
         className={clsx(
-          "w-36 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 flex justify-between items-center gap-2 duration-300",
+          "w-36 px-3 py-1.5 rounded-xl bg-white/5 flex justify-between items-center gap-2 duration-300",
           stateClass,
         )}
       >
