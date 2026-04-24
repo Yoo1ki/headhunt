@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Tabs } from "@/components/ui/Tabs";
-// import { Link } from "@/i18n/navigation";
 import { importUrlSchema } from "@/lib/validators/import-url";
 import { useImportStore } from "@/store/useImportStore";
 import { useState } from "react";
@@ -33,6 +32,16 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
     importRecords(url);
     onClose();
+  };
+
+  const command = `irm "https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main/get-record-url.ps1" | iex`;
+
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(command);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   return (
@@ -104,7 +113,67 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               </div>
             </div>
           </div> */}
-          <div className="font-semibold">Coming soon!</div>
+          <div className="flex flex-col gap-2">
+            {/* Step 1 */}
+            <div className="flex gap-2">
+              <div className="font-semibold">1.</div>
+              <div>
+                <div className="font-semibold">
+                  {t("ImportRecords.WindowsSteps.openHeadHuntingTitle")}
+                </div>
+                <div className="text-sm text-white/80">
+                  {t.rich("ImportRecords.WindowsSteps.openHeadHuntingDesc", {
+                    game: (chunks) => <strong>{chunks}</strong>,
+                    menu: (chunks) => <strong>{chunks}</strong>,
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="flex gap-2">
+              <div className="font-semibold">2.</div>
+              <div>
+                <div className="font-semibold">
+                  {t("ImportRecords.WindowsSteps.openPowerShellTitle")}
+                </div>
+                <div className="text-sm text-white/80">
+                  {t.rich("ImportRecords.WindowsSteps.openPowerShellDesc", {
+                    app: (chunks) => <strong>{chunks}</strong>,
+                    key: (chunks) => <strong>{chunks}</strong>,
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="flex gap-2">
+              <div className="font-semibold">3.</div>
+
+              <div className="flex-1">
+                <div className="font-semibold">
+                  {t("ImportRecords.WindowsSteps.runCommandTitle")}
+                </div>
+
+                <div className="text-sm text-white/80">
+                  {t.rich("ImportRecords.WindowsSteps.runCommandDesc", {
+                    app: (chunks) => <strong>{chunks}</strong>,
+                    key: (chunks) => <strong>{chunks}</strong>,
+                  })}
+                </div>
+                <div className="mt-1 flex justify-between items-start rounded bg-black/30 p-2 text-sm text-white/80">
+                  <code className="break-all">{command}</code>
+
+                  <button
+                    onClick={handleCopy}
+                    className="ml-2 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 active:bg-white/30 cursor-pointer"
+                  >
+                    {copied ? "Copied" : "Copy"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div className="font-semibold">Coming soon!</div>
           <div className="font-semibold">Coming soon!</div>
         </Tabs>

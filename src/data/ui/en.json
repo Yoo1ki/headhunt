@@ -77,6 +77,16 @@
       "r6AvgPity": "6★ AVG Pity",
       "rotateWinRate": "Rotate Win Rate",
       "rateupWinRate": "Rateup Win Rate"
+    },
+    "ImportRecords": {
+      "WindowsSteps": {
+        "openHeadHuntingTitle": "Open Headhunting Details",
+        "openHeadHuntingDesc": "Launch <game>Arknights: Endfield</game> and open <menu>Headhunting Details</menu>.",
+        "openPowerShellTitle": "Open Windows PowerShell",
+        "openPowerShellDesc": "Open <app>Windows PowerShell</app> by clicking the <key>Start</key> menu or pressing the <key>Windows key</key> on your keyboard, then typing “PowerShell” and selecting <app>Windows PowerShell</app>.",
+        "runCommandTitle": "Paste and Run the Command",
+        "runCommandDesc": "Copy and paste the command into <app>Windows PowerShell</app>, then press <key>Enter</key>."
+      }
     }
   },
   "ImportStatus": {

@@ -77,6 +77,16 @@
       "r6AvgPity": "Rata-rata Pity ★6",
       "rotateWinRate": "Rotate Win Rate",
       "rateupWinRate": "Rateup Win Rate"
+    },
+    "ImportRecords": {
+      "WindowsSteps": {
+        "openHeadHuntingTitle": "Buka Detail Headhunt",
+        "openHeadHuntingDesc": "Jalankan <game>Arknights: Endfield</game> dan buka <menu>Detail Headhunt</menu>.",
+        "openPowerShellTitle": "Buka Windows PowerShell",
+        "openPowerShellDesc": "Buka <app>Windows PowerShell</app> dengan menekan <key>Start</key> atau tombol <key>Windows</key> di keyboard, lalu ketik “PowerShell” dan pilih <app>Windows PowerShell</app>.",
+        "runCommandTitle": "Tempel dan Jalankan Command",
+        "runCommandDesc": "Copy dan paste command ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>."
+      }
     }
   },
   "ImportStatus": {
