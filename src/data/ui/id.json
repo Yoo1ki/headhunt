@@ -16,7 +16,8 @@
     "shortcutMenu": "Pintasan Menu",
     "limitedBanners": "Banner Terbatas",
     "loading": "Memuat...",
-    "longTime": "Masih lama kok"
+    "longTime": "Masih lama kok",
+    "countdown": "{days, plural, =0 {} other {{days}h }}{hours, plural, =0 {} other {{hours}j }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}d}}"
   },
   "OperatorsPage": {
     "title": "List Operator - Arknights: Endfield",
@@ -84,7 +85,7 @@
         "openHeadHuntingDesc": "Jalankan <game>Arknights: Endfield</game> dan buka <menu>Detail Headhunt</menu>.",
         "openPowerShellTitle": "Buka Windows PowerShell",
         "openPowerShellDesc": "Buka <app>Windows PowerShell</app> dengan menekan <key>Start</key> atau tombol <key>Windows</key> di keyboard, lalu ketik “PowerShell” dan pilih <app>Windows PowerShell</app>.",
-        "runCommandTitle": "Tempel dan Jalankan Command",
+        "runCommandTitle": "Paste dan Jalankan Command",
         "runCommandDesc": "Copy dan paste command ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>."
       }
     }

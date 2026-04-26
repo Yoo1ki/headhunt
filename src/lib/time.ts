@@ -25,18 +25,16 @@ export function getRemainingTime(endTime: number | string | Date) {
   const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-  const text = [
-    days > 0 ? `${days}d` : null,
-    hours > 0 ? `${hours}h` : null,
-    minutes > 0 ? `${minutes}m` : null,
-    `${seconds}s`,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const time = {
+    days,
+    hours,
+    minutes,
+    seconds,
+  };
 
   return {
     expired: false,
-    text,
+    time,
     totalMs: diff,
   };
 }

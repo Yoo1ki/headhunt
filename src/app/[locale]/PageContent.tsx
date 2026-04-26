@@ -118,7 +118,12 @@ export const BannerItem = ({
     mounted && endTime
       ? countdown?.expired
         ? "Ended"
-        : countdown?.text
+        : t("countdown", {
+            days: countdown?.time?.days || 0,
+            hours: countdown?.time?.hours || 0,
+            minutes: countdown?.time?.minutes || 0,
+            seconds: countdown?.time?.seconds || 0,
+          })
       : undefined;
 
   const hash = id.startsWith("weponbox") ? id : "special";

@@ -11,7 +11,8 @@ export const CFImage = ({ src, alt, ...props }: CFImageProps) => {
       {...props}
       src={finalSrc}
       alt={alt}
-      loader={isDev ? undefined : cloudflareLoader}
+      loader={cloudflareLoader}
+      unoptimized={props.unoptimized || isDev}
     />
   );
 };

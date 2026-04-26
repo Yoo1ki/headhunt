@@ -16,7 +16,8 @@
     "shortcutMenu": "Shortcut Menu",
     "limitedBanners": "Limited Banners",
     "loading": "Loading...",
-    "longTime": "Still a long time"
+    "longTime": "Still a long time",
+    "countdown": "{days, plural, =0 {} other {{days}d }}{hours, plural, =0 {} other {{hours}h }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}s}}"
   },
   "OperatorsPage": {
     "title": "Operators - Arknights: Endfield",
