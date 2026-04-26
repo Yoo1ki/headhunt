@@ -86,7 +86,7 @@ const OperatorCardIcon = ({ icon, name, color }: IconProps) => (
       width={24}
       height={24}
       draggable={false}
-      unoptimized
+      isIcon={true}
       className="w-6 h-6 rounded-lg ring-1 ring-black/50"
       style={{ backgroundColor: color }}
     />

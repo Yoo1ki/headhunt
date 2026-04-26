@@ -1,11 +1,16 @@
 import Image, { ImageProps } from "next/image";
 import cloudflareLoader from "@/lib/cloudflare-loader";
 
-type CFImageProps = Omit<ImageProps, "loader">;
+type CFImageProps = { isIcon?: boolean } & Omit<ImageProps, "loader">;
 
-export const CFImage = ({ src, alt, ...props }: CFImageProps) => {
+export const CFImage = ({
+  src,
+  alt,
+  isIcon = false,
+  ...props
+}: CFImageProps) => {
   const isDev = process.env.NODE_ENV === "development";
-  const finalSrc = props.unoptimized ? `/${src}.png` : `/assets/${src}.png`;
+  const finalSrc = isIcon ? `/${src}.png` : `/assets/${src}.png`;
   return (
     <Image
       {...props}

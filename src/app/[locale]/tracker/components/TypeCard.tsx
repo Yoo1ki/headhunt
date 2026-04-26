@@ -71,7 +71,7 @@ export const TypeCard = ({
                   height={29}
                   draggable={false}
                   className="w-8"
-                  unoptimized
+                  isIcon={true}
                 />
                 <div>
                   {pity6}/{pity6Limit}
@@ -85,7 +85,7 @@ export const TypeCard = ({
                   height={29}
                   draggable={false}
                   className="w-8"
-                  unoptimized
+                  isIcon={true}
                 />
                 <div>
                   {pity5}/{pity5Limit}

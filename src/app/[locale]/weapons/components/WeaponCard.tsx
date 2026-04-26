@@ -81,7 +81,7 @@ export const WeaponCard = ({
                     height={37}
                     src={"rarity"}
                     className="object-contain w-fit"
-                    unoptimized
+                    isIcon={true}
                   />
                 ),
               )}
@@ -93,7 +93,7 @@ export const WeaponCard = ({
                 height={24}
                 src={type.id}
                 className="object-contain w-fit h-3.5"
-                unoptimized
+                isIcon={true}
               />{" "}
               <span className="font-semibold">{type.name}</span>
             </div>

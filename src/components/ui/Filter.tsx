@@ -84,7 +84,7 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
           width={isRarity || isWpnType ? 24 : 32}
           height={isRarity || isWpnType ? 24 : 32}
           draggable={false}
-          unoptimized
+          isIcon={true}
           className="aspect-square"
         />
 
