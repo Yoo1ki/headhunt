@@ -173,7 +173,7 @@ export const PageContent = ({
       {filteredOperators.length === 0 ? (
         <div className="text-center my-40">{t("notfound")}</div>
       ) : (
-        <div className="grid-container">
+        <div className="grid-operators">
           {filteredOperators.map((op) => {
             const _element = elementsMap[op.elementId];
             const _opClass = opClassMap[op.opClassId];

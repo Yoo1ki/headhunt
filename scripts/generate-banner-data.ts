@@ -4,10 +4,9 @@ import sharp from "sharp";
 import { GamePoolOperator } from "./interfaces/game-pool-operator";
 import { GamePoolWeapon } from "./interfaces/game-pool-weapon";
 import { writeJsonFiles } from "./lib/writeJsonFiles";
-import { downloadImage } from "./lib/downloadImage";
-import { hashBuffer } from "./lib/hashBuffer.";
 import { scriptConfig } from "./config";
 import { Banner } from "@/types/banner";
+import { downloadImage, resizeImage, saveAsPng } from "./lib/image";
 
 const dir = process.cwd();
 
@@ -76,19 +75,15 @@ export async function readAllPools(): Promise<IPoolResult[]> {
   return results;
 }
 
-async function ticketify(
-  inputBuffer: Buffer,
-  {
-    isWeapon = false,
-  }: {
-    isWeapon: boolean;
-  },
-): Promise<Buffer> {
-  const image = sharp(inputBuffer);
+async function ticketifyImage({
+  buffer,
+  isWeapon = false,
+}: {
+  isWeapon: boolean;
+  buffer: Buffer;
+}): Promise<Buffer> {
+  const image = sharp(buffer);
   const metadata = await image.metadata();
-
-  if (!metadata.width || !metadata.height)
-    throw new Error("Gambar tidak valid");
 
   const width = metadata.width;
   const height = metadata.height;
@@ -155,40 +150,32 @@ async function ticketify(
     .png()
     .toBuffer();
 
-  const ticket = sharp(ticketBuffer);
-  const outputBuffer = ticket.resize({ height: 80 }).png().toBuffer();
-
-  return outputBuffer;
+  return ticketBuffer;
 }
 
-async function downloadAndCropImages(
+async function bannerImages(
   assets: Map<string, string>,
   outputDir: string,
 ): Promise<Map<string, string>> {
   const map = new Map<string, string>();
 
   await Promise.all(
-    Array.from(assets).map(async ([id, image]) => {
-      try {
-        const buffer = await downloadImage(image);
-        const croppedBuffer = await ticketify(buffer, {
-          isWeapon: id.startsWith("weponbox") || id.startsWith("weaponbox"),
-        });
-        const hash = hashBuffer(croppedBuffer);
-        const filename = `${hash}.png`;
-        const outputPath = path.join(outputDir, filename);
+    Array.from(assets).map(async ([id, img]) => {
+      const buffer = await downloadImage(img);
+      const ticketBuffer = await ticketifyImage({
+        buffer,
+        isWeapon: id.startsWith("weponbox") || id.startsWith("weaponbox"),
+      });
+      const resizedBuffer = await resizeImage({
+        buffer: ticketBuffer,
+        width: 256,
+      });
+      const banner = await saveAsPng({
+        buffer: resizedBuffer,
+        outputDir,
+      });
 
-        try {
-          await fs.access(outputPath);
-        } catch {
-          await fs.writeFile(outputPath, croppedBuffer);
-          console.log(`✔ saved ${filename}`);
-        }
-
-        map.set(id, hash);
-      } catch (err) {
-        console.error(`❌ error downloading ${image}`, err);
-      }
+      map.set(id, banner);
     }),
   );
 
@@ -227,7 +214,7 @@ async function main() {
 
   console.log(`Total unique assets: ${assets.size}`);
 
-  const assetsMap = await downloadAndCropImages(assets, paths.assets);
+  const assetsMap = await bannerImages(assets, paths.assets);
 
   const bannerMap: Record<string, Record<string, Banner>> = {};
 

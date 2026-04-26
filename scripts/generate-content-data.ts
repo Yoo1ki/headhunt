@@ -4,8 +4,6 @@ import { SKPortGuideOperators } from "./interfaces/skport-guide-operators";
 import { SKPortGuideWeapons } from "./interfaces/skport-guide-weapons";
 import { writeJsonFiles } from "./lib/writeJsonFiles";
 import { ensureDirs } from "./lib/ensureDirs";
-import { downloadImage } from "./lib/downloadImage";
-import { hashBuffer } from "./lib/hashBuffer.";
 import { Catalog } from "@/types/catalog";
 import { SKPortGuideEnums } from "./interfaces/skport-guide-enums";
 import { Weapon, WeaponDetail } from "@/types/weapons";
@@ -16,10 +14,22 @@ import {
   Document,
   InlineElement,
 } from "./interfaces/skport-wiki-detail-weapon";
+import { resizeImage, saveAsPng, downloadImage } from "./lib/image";
+
+type OperatorExtra = {
+  slug: string;
+  avatarRt: string;
+  avatarSq: string;
+};
+
+type WeaponExtra = {
+  slug: string;
+  icon: string;
+};
 
 const dir = process.cwd();
-
 const BASE_LANG = "en.json" as const;
+
 const paths = {
   rawSKPortWikiDetail: path.join(dir, "raw/skport/wiki/detail"),
   rawSKPortGuideEnums: path.join(dir, "raw/skport/guide/enums"),
@@ -31,6 +41,7 @@ const paths = {
   generatedTrackerCatalogs: path.join(dir, "src/data/tracker/catalogs"),
   assets: path.join(dir, "public/assets"),
 } as const;
+
 const enumPicks = {
   rarities: "rarities",
   charProperties: "elements",
@@ -50,37 +61,6 @@ async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
   );
 
   return data;
-}
-
-async function downloadImages(
-  urls: Set<string>,
-  outputDir: string,
-): Promise<Map<string, string>> {
-  const map = new Map<string, string>();
-
-  await Promise.all(
-    Array.from(urls).map(async (url) => {
-      try {
-        const buffer = await downloadImage(url);
-        const hash = hashBuffer(buffer);
-        const filename = `${hash}.png`;
-        const outputPath = path.join(outputDir, filename);
-
-        try {
-          await fs.access(outputPath);
-        } catch {
-          await fs.writeFile(outputPath, buffer);
-          console.log(`✔ saved ${filename}`);
-        }
-
-        map.set(url, hash);
-      } catch (err) {
-        console.error(`❌ error downloading ${url}`, err);
-      }
-    }),
-  );
-
-  return map;
 }
 
 function generateSlug(title: string) {
@@ -107,32 +87,6 @@ function getSKPortGuideWeaponId(
   const skill = wp.skills.find((skill) => skill.key.startsWith("sk_wpn_"));
   if (!skill) throw new Error(`[Weapon -> ${wp.name}]: Skill not found`);
   return skill.key.slice(3);
-}
-
-function buildSKPortGuideOperatorsSlugMap(
-  json: SKPortGuideOperators,
-): Map<string, string> {
-  const map = new Map<string, string>();
-
-  for (const op of json.data.chars) {
-    const id = getSKPortGuideOperatorId(op);
-    map.set(id, generateSlug(op.name));
-  }
-
-  return map;
-}
-
-function buildSKPortGuideWeaponsSlugMap(
-  json: SKPortGuideWeapons,
-): Map<string, string> {
-  const map = new Map<string, string>();
-
-  for (const wp of json.data.weapons) {
-    const id = getSKPortGuideWeaponId(wp);
-    map.set(id, generateSlug(wp.name));
-  }
-
-  return map;
 }
 
 function transformEnum<T extends Record<string, string>>({
@@ -163,17 +117,17 @@ function transformEnum<T extends Record<string, string>>({
 
 function transformOperator({
   json,
-  assetsMap,
-  slugMap,
+  extraMap,
 }: {
   json: SKPortGuideOperators;
-  assetsMap: Map<string, string>;
-  slugMap: Map<string, string>;
+  extraMap: Map<string, OperatorExtra>;
 }) {
   return json.data.chars.map((op) => {
     const id = getSKPortGuideOperatorId(op);
+    const extra = extraMap.get(id);
+
     const slug =
-      (slugMap.get(id) ?? "") +
+      (extra?.slug ?? "") +
       (id === "chr_0002_endminm"
         ? "-m"
         : id === "chr_0003_endminf"
@@ -184,7 +138,7 @@ function transformOperator({
       id,
       slug,
       name: op.name,
-      avatar: assetsMap.get(op.avatarRtUrl) || "",
+      avatar: extra?.avatarRt || "",
       rarityId: op.rarity.key,
       elementId: op.property.key,
       opClassId: op.profession.key,
@@ -198,25 +152,25 @@ function transformOperator({
 function transformWeapon({
   file,
   json,
-  assetsMap,
-  slugMap,
+  extraMap,
   detailMap,
 }: {
   file: string;
   json: SKPortGuideWeapons;
-  assetsMap: Map<string, string>;
-  slugMap: Map<string, string>;
+  extraMap: Map<string, WeaponExtra>;
   detailMap: Map<string, Map<string, Map<string, WeaponDetail>>>;
 }) {
   return json.data.weapons.map((wp) => {
     const id = getSKPortGuideWeaponId(wp);
-    const slug = slugMap.get(id) ?? "";
+    const extra = extraMap.get(id);
+
+    const slug = extra?.slug ?? "";
     const weaponDetail = detailMap.get("weapons")?.get(slug)?.get(file);
 
     const data: Weapon = {
       id: id,
       name: wp.name,
-      icon: assetsMap.get(wp.iconUrl) || "",
+      icon: extra?.icon || "",
       rarityId: wp.rarity.key,
       HeadhuntTypeId: wp.type.key,
       detail: weaponDetail,
@@ -231,11 +185,13 @@ function transformWeapon({
 function transformCatalog({
   operatorsDataMap,
   weaponsDataMap,
-  assetsMap,
+  operatorsExtraMap,
+  weaponsExtraMap,
 }: {
   operatorsDataMap: Record<string, SKPortGuideOperators>;
   weaponsDataMap: Record<string, SKPortGuideWeapons>;
-  assetsMap: Map<string, string>;
+  operatorsExtraMap: Map<string, OperatorExtra>;
+  weaponsExtraMap: Map<string, WeaponExtra>;
 }): Record<string, Catalog> {
   const catalogs: Record<string, Catalog> = {};
 
@@ -253,7 +209,7 @@ function transformCatalog({
           id,
           {
             name: op.name,
-            icon: assetsMap.get(op.avatarSqUrl)!,
+            icon: operatorsExtraMap.get(id)?.avatarSq,
             rarityId: op.rarity.key as RarityId,
           },
         ];
@@ -265,7 +221,7 @@ function transformCatalog({
           id,
           {
             name: wp.name,
-            icon: assetsMap.get(wp.iconUrl)!,
+            icon: weaponsExtraMap.get(id)?.icon,
             rarityId: wp.rarity.key as RarityId,
           },
         ];
@@ -442,34 +398,44 @@ async function main() {
     readJsonFiles<SKPortGuideWeapons>(paths.rawSKPortGuideWeapons),
   ]);
 
+  const operatorsExtraMap = new Map<string, OperatorExtra>();
+  const weaponsExtraMap = new Map<string, WeaponExtra>();
   const detailMap = await getDetailMap();
 
-  const operatorsSlugMap = buildSKPortGuideOperatorsSlugMap(
-    operatorsDataMap[BASE_LANG],
-  );
+  for (const operator of operatorsDataMap[BASE_LANG].data.chars) {
+    const id = getSKPortGuideOperatorId(operator);
+    const slug = generateSlug(operator.name);
 
-  const weaponsSlugMap = buildSKPortGuideWeaponsSlugMap(
-    weaponsDataMap[BASE_LANG],
-  );
+    const bufferRt = await downloadImage(operator.avatarRtUrl);
+    const resizedBufferRt = await resizeImage({ buffer: bufferRt, width: 256 });
+    const avatarRt = await saveAsPng({
+      buffer: resizedBufferRt,
+      outputDir: paths.assets,
+    });
 
-  // collect assets
-  const assets = new Set<string>();
+    const bufferSq = await downloadImage(operator.avatarSqUrl);
+    const resizedBufferSq = await resizeImage({ buffer: bufferSq, width: 128 });
+    const avatarSq = await saveAsPng({
+      buffer: resizedBufferSq,
+      outputDir: paths.assets,
+    });
 
-  Object.values(operatorsDataMap).forEach((json) =>
-    json.data.chars.forEach((c) => {
-      assets.add(c.avatarRtUrl);
-      assets.add(c.avatarSqUrl);
-      // assets.add(c.illustrationUrl);
-    }),
-  );
+    operatorsExtraMap.set(id, { slug, avatarRt, avatarSq });
+  }
 
-  Object.values(weaponsDataMap).forEach((json) =>
-    json.data.weapons.forEach((w) => assets.add(w.iconUrl)),
-  );
+  for (const weapon of weaponsDataMap[BASE_LANG].data.weapons) {
+    const id = getSKPortGuideWeaponId(weapon);
+    const slug = generateSlug(weapon.name);
 
-  console.log(`Total unique assets: ${assets.size}`);
+    const buffer = await downloadImage(weapon.iconUrl);
+    const resizedBuffer = await resizeImage({ buffer, width: 256 });
+    const icon = await saveAsPng({
+      buffer: resizedBuffer,
+      outputDir: paths.assets,
+    });
 
-  const assetsMap = await downloadImages(assets, paths.assets);
+    weaponsExtraMap.set(id, { slug, icon });
+  }
 
   // Proccess & Generate Output
   await writeJsonFiles(
@@ -491,8 +457,7 @@ async function main() {
         file,
         transformOperator({
           json,
-          assetsMap,
-          slugMap: operatorsSlugMap,
+          extraMap: operatorsExtraMap,
         }),
       ]),
     ),
@@ -506,8 +471,7 @@ async function main() {
         transformWeapon({
           file,
           json,
-          assetsMap,
-          slugMap: weaponsSlugMap,
+          extraMap: weaponsExtraMap,
           detailMap,
         }),
       ]),
@@ -519,7 +483,8 @@ async function main() {
     transformCatalog({
       operatorsDataMap,
       weaponsDataMap,
-      assetsMap,
+      operatorsExtraMap,
+      weaponsExtraMap,
     }),
     paths.generatedTrackerCatalogs,
   );

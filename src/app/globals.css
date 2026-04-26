@@ -16,7 +16,7 @@ body {
   @apply bg-white/10 rounded-xl cursor-pointer;
 }
 
-.grid-container {
+.grid-operators {
   @apply grid gap-4;
   grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
 }
