@@ -1,4 +1,5 @@
 import { PageTitle } from "@/components/ui/PageTitle";
+import { CONFIG } from "@/config";
 
 export const PageContent = () => {
   return (
@@ -14,7 +15,7 @@ export const PageContent = () => {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">1. Introduction</h2>
           <p>
-            Welcome to Headhunt.cc. Your privacy is important to us. This
+            Welcome to {CONFIG.appName}. Your privacy is important to us. This
             Privacy Policy explains how we handle your data when you use our
             website.
           </p>
@@ -24,7 +25,7 @@ export const PageContent = () => {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">2. Data Collection</h2>
           <p>
-            Headhunt.cc does{" "}
+            {CONFIG.appName} does{" "}
             <strong>
               not collect, store, or process personal data on our servers
             </strong>
@@ -63,7 +64,7 @@ export const PageContent = () => {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">5. Cookies</h2>
           <p>
-            Headhunt.cc may use minimal cookies or browser storage for
+            {CONFIG.appName} may use minimal cookies or browser storage for
             functionality, but not for tracking personal identity.
           </p>
         </div>

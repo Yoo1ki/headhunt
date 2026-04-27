@@ -9,6 +9,7 @@ import { GoToTop } from "@/components/common/GoToTop";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import PWAUpdateToast from "@/components/common/PWAUpdateToast";
+import { CONFIG } from "@/config";
 
 type Props = {
   children: React.ReactNode;
@@ -20,8 +21,8 @@ export async function generateMetadata() {
 
   const metadata: Metadata = {
     title: {
-      default: `Headhunt.cc — ${t("title")}`,
-      template: "%s — Headhunt.cc",
+      default: `${CONFIG.appName} — ${t("title")}`,
+      template: `%s — ${CONFIG.appName}`,
     },
     description: t("description"),
     keywords: [

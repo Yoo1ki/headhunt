@@ -47,7 +47,7 @@ export const TypeCard = ({
       </div>
       <div className="flex flex-1 pl-1 pr-3 py-2">
         <div className="flex flex-col flex-1 gap-1 justify-between">
-          <h1 className="font-bold">{name}</h1>
+          <p className="font-bold">{name}</p>
           {subIcons ? (
             <div className="flex gap-1">
               {subIcons.map((icon, index) => (

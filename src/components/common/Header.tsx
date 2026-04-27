@@ -5,6 +5,7 @@ import { SlMenu, SlClose } from "react-icons/sl";
 import { MobileNavbar } from "./MobileNavbar";
 import { Link } from "@/i18n/navigation";
 import { SwitchLocale } from "./SwitchLocale";
+import { CONFIG } from "@/config";
 
 type HeaderProps = {
   className?: string;
@@ -37,7 +38,7 @@ export const Header = ({ className }: HeaderProps) => {
               href="/"
               className="text-xl font-bold overflow-hidden text-white"
             >
-              <h1>Headhunt.cc</h1>
+              {CONFIG.appName}
             </Link>
             <div className="flex gap-4 items-center">
               <SwitchLocale />
