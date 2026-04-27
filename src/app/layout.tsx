@@ -12,9 +12,6 @@ const roboto = Roboto({
 
 export const metadata = {
   metadataBase: new URL(CONFIG.baseUrl),
-  openGraph: {
-    images: ["/opengraph-image"],
-  },
 };
 
 export default async function RootLayout({

@@ -4,7 +4,6 @@ export function getRemainingTime(endTime: number | string | Date) {
   let end: number;
 
   if (typeof endTime === "number") {
-    // UNIX timestamp (detik → ms)
     end = endTime * 1000;
   } else {
     end = new Date(endTime).getTime();

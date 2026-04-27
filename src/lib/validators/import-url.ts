@@ -30,13 +30,13 @@ export const importUrlSchema = z.url().transform((value, ctx) => {
     const result = extractImportUrl(value);
 
     if (!result) {
-      ctx.addIssue({ code: "custom", message: "URL tidak valid" });
+      ctx.addIssue({ code: "custom", message: "Invalid URL" });
       return z.NEVER;
     }
 
     return result;
   } catch {
-    ctx.addIssue({ code: "custom", message: "URL tidak valid" });
+    ctx.addIssue({ code: "custom", message: "Invalid URL" });
     return z.NEVER;
   }
 });

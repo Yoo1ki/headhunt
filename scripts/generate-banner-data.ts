@@ -3,7 +3,7 @@ import path from "path";
 import sharp from "sharp";
 import { GamePoolOperator } from "./interfaces/game-pool-operator";
 import { GamePoolWeapon } from "./interfaces/game-pool-weapon";
-import { writeJsonFiles } from "./lib/writeJsonFiles";
+import { writeJsonFiles } from "./lib/write-json-files";
 import { scriptConfig } from "./config";
 import { Banner } from "@/types/banner";
 import { downloadImage, resizeImage, saveAsPng } from "./lib/image";

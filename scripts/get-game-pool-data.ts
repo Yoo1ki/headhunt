@@ -3,8 +3,8 @@ import path from "path";
 import { GamePoolOperator } from "./interfaces/game-pool-operator";
 import { GamePoolWeapon } from "./interfaces/game-pool-weapon";
 import { CONFIG } from "@/config";
-import { ensureDirs } from "./lib/ensureDirs";
-import { writeJsonFiles } from "./lib/writeJsonFiles";
+import { ensureDirs } from "./lib/ensure-dirs";
+import { writeJsonFiles } from "./lib/write-json-files";
 import { scriptConfig } from "./config";
 
 const dir = process.cwd();
