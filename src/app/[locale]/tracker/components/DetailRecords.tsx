@@ -98,7 +98,7 @@ export const DetailRecords = ({
             <span className="text-sm font-semibold text-center text-white line-clamp-1">
               {detail.label}
             </span>
-            <span className="text-md font-semibold text-white/80 line-clamp-1">
+            <span className="font-semibold text-white/80 line-clamp-1">
               {detail.value}
             </span>
           </div>

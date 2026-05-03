@@ -92,6 +92,46 @@ export const TypeCard = ({
                 </div>
               </div>
             </div>
+            // <div className="flex gap-2">
+            //   <div className="flex flex-1 flex-col items-center rounded-xl bg-neutral-900/80 px-2 py-1">
+            //     <div className="flex gap-1 justify-center items-center">
+            //       <div className="text-sm font-semibold text-center text-white line-clamp-1">
+            //         5
+            //       </div>
+            //       <CFImage
+            //         src="rarity"
+            //         alt={"5★"}
+            //         width={24}
+            //         height={24}
+            //         draggable={false}
+            //         className="w-4"
+            //         isIcon={true}
+            //       />
+            //     </div>
+            //     <div className="text-[#FFC000]">
+            //       {pity5}/{pity5Limit}
+            //     </div>
+            //   </div>
+            //   <div className="flex flex-1 flex-col items-center rounded-xl bg-neutral-900/80 px-2 py-1">
+            //     <div className="flex gap-1 justify-center items-center">
+            //       <div className="text-sm font-semibold text-center text-white line-clamp-1">
+            //         6
+            //       </div>
+            //       <CFImage
+            //         src="rarity"
+            //         alt={"5★"}
+            //         width={24}
+            //         height={24}
+            //         draggable={false}
+            //         className="w-4"
+            //         isIcon={true}
+            //       />
+            //     </div>
+            //     <div className="text-[#FF7100]">
+            //       {pity6}/{pity6Limit}
+            //     </div>
+            //   </div>
+            // </div>
           )}
         </div>
       </div>
