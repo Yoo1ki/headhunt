@@ -4,8 +4,7 @@ import { CFImage } from "@/components/ui/CFImage";
 type TypeCardProps = {
   hash: string;
   name: string;
-  icon: string;
-  subIcons?: string[];
+  icons: IconItem[];
   pity5: number;
   pity6: number;
   pity5Limit: number;
@@ -13,11 +12,15 @@ type TypeCardProps = {
   isSelected: boolean;
 };
 
+type IconItem = {
+  name: string;
+  url: string;
+};
+
 export const TypeCard = ({
   hash,
   name,
-  icon,
-  subIcons,
+  icons,
   pity5,
   pity6,
   pity5Limit,
@@ -28,39 +31,57 @@ export const TypeCard = ({
     ? "border-yellow-500 bg-neutral-700/80"
     : "border-transparent bg-neutral-800/80";
 
-  return (
-    <a
-      className={clsx(
-        "border-2 flex hover:bg-neutral-700/80 rounded-xl overflow-hidden transition duration-300",
-        borderColor,
-      )}
-      href={`#${hash}`}
-    >
+  const content = (
+    <>
       <div className="flex items-end">
-        <CFImage
-          src={icon}
-          alt={name}
-          width={100}
-          height={100}
-          draggable={false}
-        />
+        {hash !== "weponbox" && (
+          <div className="relative w-25 h-25">
+            <CFImage
+              src={icons[0].url}
+              alt={icons[0].name}
+              width={100}
+              height={100}
+              draggable={false}
+              className="absolute inset-0"
+            />
+            {icons.length > 1 && (
+              <div className="absolute bottom-0 right-0 left-0 flex justify-center">
+                {icons.slice(1).map((icon, index) => (
+                  <CFImage
+                    key={index}
+                    src={icon.url}
+                    alt={icon.name}
+                    width={32}
+                    height={32}
+                    draggable={false}
+                    className="rounded-full"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <div className="flex flex-1 pl-1 pr-3 py-2">
-        <div className="flex flex-col flex-1 gap-1 justify-between">
+        <div
+          className={`flex flex-col flex-1 gap-1 justify-between ${hash === "weponbox" ? "items-center" : ""}`}
+        >
           <p className="font-bold">{name}</p>
-          {subIcons ? (
+          {hash === "weponbox" ? (
             <div className="flex gap-1">
-              {subIcons.map((icon, index) => (
+              {icons.map((icon, index) => (
                 <CFImage
                   key={index}
-                  src={icon}
-                  alt={`Weapon ${index + 1}`}
-                  width={50}
-                  height={50}
+                  src={icon.url}
+                  alt={icon.name}
+                  width={48}
+                  height={48}
                   draggable={false}
                 />
               ))}
             </div>
+          ) : hash === "rerun" ? (
+            <div className="text-lg">Coming soon</div>
           ) : (
             <div className="flex flex-col">
               <div className="flex justify-between items-center rounded-lg text-[#FF7100]">
@@ -92,49 +113,29 @@ export const TypeCard = ({
                 </div>
               </div>
             </div>
-            // <div className="flex gap-2">
-            //   <div className="flex flex-1 flex-col items-center rounded-xl bg-neutral-900/80 px-2 py-1">
-            //     <div className="flex gap-1 justify-center items-center">
-            //       <div className="text-sm font-semibold text-center text-white line-clamp-1">
-            //         5
-            //       </div>
-            //       <CFImage
-            //         src="rarity"
-            //         alt={"5★"}
-            //         width={24}
-            //         height={24}
-            //         draggable={false}
-            //         className="w-4"
-            //         isIcon={true}
-            //       />
-            //     </div>
-            //     <div className="text-[#FFC000]">
-            //       {pity5}/{pity5Limit}
-            //     </div>
-            //   </div>
-            //   <div className="flex flex-1 flex-col items-center rounded-xl bg-neutral-900/80 px-2 py-1">
-            //     <div className="flex gap-1 justify-center items-center">
-            //       <div className="text-sm font-semibold text-center text-white line-clamp-1">
-            //         6
-            //       </div>
-            //       <CFImage
-            //         src="rarity"
-            //         alt={"5★"}
-            //         width={24}
-            //         height={24}
-            //         draggable={false}
-            //         className="w-4"
-            //         isIcon={true}
-            //       />
-            //     </div>
-            //     <div className="text-[#FF7100]">
-            //       {pity6}/{pity6Limit}
-            //     </div>
-            //   </div>
-            // </div>
           )}
         </div>
       </div>
+    </>
+  );
+
+  if (hash === "rerun") {
+    return (
+      <div className="flex bg-neutral-800/80 rounded-xl overflow-hidden">
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <a
+      className={clsx(
+        "border-2 flex hover:bg-neutral-700/80 rounded-xl overflow-hidden transition duration-300",
+        borderColor,
+      )}
+      href={`#${hash}`}
+    >
+      {content}
     </a>
   );
 };

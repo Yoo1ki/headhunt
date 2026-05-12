@@ -29,18 +29,22 @@ type PageContentProps = {
 };
 
 type Types = {
-  bannerTypes: TypeItem[];
-  weaponTypes: TypeItem[];
+  opTypes: TypeItem[];
+  wpTypes: TypeItem[];
 };
 
 type TypeItem = {
   id: string;
   name: string;
-  icon: string;
-  subIcons?: string[];
+  icons: IconItem[];
   r5PityLimit: number;
   r6PityLimit: number;
   guaranteeAt?: number;
+};
+
+type IconItem = {
+  name: string;
+  url: string;
 };
 
 export const PageContent = ({
@@ -62,7 +66,7 @@ export const PageContent = ({
   const [isOpenImport, setIsOpenImport] = useState(false);
 
   const combinedHeadhuntTypes = useMemo(
-    () => [...types.bannerTypes, ...types.weaponTypes],
+    () => [...types.opTypes, ...types.wpTypes],
     [types],
   );
 
@@ -71,11 +75,11 @@ export const PageContent = ({
     [combinedHeadhuntTypes],
   );
 
-  const hash = useHash(hasHydrated ? types.bannerTypes[0]?.id : "", hashList);
+  const hash = useHash(hasHydrated ? types.opTypes[0]?.id : "", hashList);
 
   const isBannerType = useMemo(
-    () => types.bannerTypes.some((t) => t.id === hash),
-    [types.bannerTypes, hash],
+    () => types.opTypes.some((t) => t.id === hash),
+    [types.opTypes, hash],
   );
 
   const { records, bannerIds } = useMemo(() => {
@@ -86,7 +90,7 @@ export const PageContent = ({
     const allRecords = profile?.stores?.headhunt?.records;
     const bannerIds = new Set<string>();
 
-    const isMainType = types.bannerTypes.slice(0, 2).some((t) => t.id === hash);
+    const isMainType = types.opTypes.slice(0, 2).some((t) => t.id === hash);
 
     let result: RecordItem[] = [];
 
@@ -113,7 +117,7 @@ export const PageContent = ({
   }, [
     hasHydrated,
     profile?.stores?.headhunt?.records,
-    types.bannerTypes,
+    types.opTypes,
     isBannerType,
     hash,
     selectedBannerId,
@@ -188,26 +192,27 @@ export const PageContent = ({
 
       <div className="flex flex-col flex-1 gap-2 xl:gap-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-2">
-          {types.bannerTypes.map((type) => {
-            const types = hasHydrated
-              ? profile?.stores?.headhunt?.types[type.id]
-              : undefined;
+          {types.opTypes
+            .filter((type) => type.id !== "weponbox")
+            .map((type) => {
+              const types = hasHydrated
+                ? profile?.stores?.headhunt?.types[type.id]
+                : undefined;
 
-            return (
-              <TypeCard
-                key={type.id}
-                hash={type.id}
-                name={type.name}
-                icon={type.icon}
-                subIcons={type.subIcons}
-                pity5={types?.r5Pity ?? 0}
-                pity6={types?.r6Pity ?? 0}
-                pity5Limit={type.r5PityLimit}
-                pity6Limit={type.r6PityLimit}
-                isSelected={type.id === hash}
-              />
-            );
-          })}
+              return (
+                <TypeCard
+                  key={type.id}
+                  hash={type.id}
+                  name={type.name}
+                  icons={type.icons}
+                  pity5={types?.r5Pity ?? 0}
+                  pity6={types?.r6Pity ?? 0}
+                  pity5Limit={type.r5PityLimit}
+                  pity6Limit={type.r6PityLimit}
+                  isSelected={type.id === hash}
+                />
+              );
+            })}
         </div>
 
         {!hasHydrated ? (
@@ -218,7 +223,24 @@ export const PageContent = ({
           <div className="flex flex-col xl:flex-row gap-4 w-full">
             <div className="flex flex-col flex-1 gap-4">
               <div className="flex flex-col gap-2">
-                {types.weaponTypes.map((type) => {
+                {types.opTypes
+                  .filter((type) => type.id === "weponbox")
+                  .map((type) => {
+                    return (
+                      <TypeCard
+                        key={type.id}
+                        hash={type.id}
+                        name={type.name}
+                        icons={type.icons}
+                        pity5={0}
+                        pity6={0}
+                        pity5Limit={type.r5PityLimit}
+                        pity6Limit={type.r6PityLimit}
+                        isSelected={type.id === hash}
+                      />
+                    );
+                  })}
+                {types.wpTypes.map((type) => {
                   const banners = profile.stores?.headhunt?.banners[type.id];
 
                   return (
@@ -226,7 +248,7 @@ export const PageContent = ({
                       key={type.id}
                       hash={type.id}
                       name={type.name}
-                      icon={type.icon}
+                      icons={type.icons}
                       pity5={banners?.r5Pity ?? 0}
                       pity6={banners?.r6Pity ?? 0}
                       pity5Limit={type.r5PityLimit}

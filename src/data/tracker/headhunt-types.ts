@@ -15,7 +15,7 @@ export const headhuntTypes: HeadhuntType[] = [
     id: "special",
     endpoint: "/api/record/char",
     poolType: "E_CharacterGachaPoolType_Special",
-    icon: "220616c3cdbfaf99ee3d6c38f0a892fe78a23a3dfaedd611e448d968c92806e2",
+    icon: "b1631fda37aa7e67abae26081bc23a332641b53542d4aa9a57f38cfdffee885e",
     r6PityLimit: 80,
     r5PityLimit: 10,
     guaranteeAt: 120,
@@ -23,7 +23,7 @@ export const headhuntTypes: HeadhuntType[] = [
   {
     id: "weponbox",
     endpoint: "/api/record/weapon",
-    icon: "fc6abe0e6e4a4a6b468fa4dacef40669de8790c04e64ebc28615c2a03cdb5229",
+    icon: "6d4a9b6980535dab1d10bf647363fe94eaf2bf11838a5beafffecc63a9e68760",
     r6PityLimit: 40,
     r5PityLimit: 10,
     guaranteeAt: 80,
