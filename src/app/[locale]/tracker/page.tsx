@@ -137,7 +137,7 @@ export default async function TrackerPage() {
     guaranteeAt: 0,
   };
 
-  opTypes.splice(1, 0, opTypeTemp);
+  opTypes.splice(2, 0, opTypeTemp);
 
   const types = {
     opTypes,
