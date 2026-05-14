@@ -126,7 +126,7 @@ export const BannerItem = ({
           })
       : undefined;
 
-  const hash = id.startsWith("weponbox") ? id : "special";
+  const hash = id.startsWith("weponbox") ? id : id.split("_")[0];
   return (
     <Link
       href={`/tracker#${hash}`}

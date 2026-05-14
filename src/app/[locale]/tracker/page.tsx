@@ -3,7 +3,7 @@ import { PageContent } from "./PageContent";
 import { Banners } from "@/types/banner";
 import { Catalogs } from "@/types/catalog";
 import { Enums } from "@/types/enums";
-import { HeadhuntTypeId, headhuntTypes } from "@/data/tracker/headhunt-types";
+import { headhuntTypes } from "@/data/tracker/headhunt-types";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -70,7 +70,7 @@ export default async function TrackerPage() {
       activeBanners.find((banner) => banner.id.startsWith(type.id)) ??
       sortedBanners.find((banner) => banner.id.startsWith(type.id));
 
-    const icons = banner?.rateup
+    let icons = banner?.rateup
       ? [
           {
             name: catalogs[banner.rateup].name,
@@ -101,6 +101,20 @@ export default async function TrackerPage() {
       icons.push(...subIcons);
     }
 
+    if (type.id === "joint") {
+      icons = banner?.rotate?.map((id) => {
+        return {
+          name: catalogs[id].name,
+          url: catalogs[id].icon,
+        };
+      }) ?? [
+        {
+          name: t(`${type.id}Name`),
+          url: type.icon,
+        },
+      ];
+    }
+
     return {
       id: type.id,
       name: t(`${type.id}Name`),
@@ -110,34 +124,6 @@ export default async function TrackerPage() {
       guaranteeAt: type.guaranteeAt,
     };
   });
-
-  const opTypeTemp = {
-    id: "rerun" as HeadhuntTypeId,
-    name: "Special Headhunting",
-    icons: [
-      {
-        name: "Laevatain",
-        url: "b1631fda37aa7e67abae26081bc23a332641b53542d4aa9a57f38cfdffee885e",
-      },
-      {
-        name: "Gilberta",
-        url: "69c0b9842f5e59f873ca892191ae18d595350cdd30e93b00219d362a4e0d5909",
-      },
-      {
-        name: "Ardelia",
-        url: "eff495276cc8c3d4c70865fe2dc11ec1f1f54a12c6a161e4a89a3e386ec7ada7",
-      },
-      {
-        name: "Pogranichnik",
-        url: "181886b4c063ae3d3ddd377496d7b81166e5ec43a60604750254d021eecd2487",
-      },
-    ],
-    r5PityLimit: 10,
-    r6PityLimit: 80,
-    guaranteeAt: 0,
-  };
-
-  opTypes.splice(2, 0, opTypeTemp);
 
   const types = {
     opTypes,

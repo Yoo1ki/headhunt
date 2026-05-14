@@ -324,6 +324,9 @@ export const useImportStore = create<ImportState>((set) => ({
       if (!records?.length) continue;
 
       const isWeapon = type.id === "weponbox";
+      const isJoint = type.id === "joint";
+      const isWpOrJo = isWeapon || isJoint;
+
       const oldType = oldHeadhunt?.types[type.id];
 
       // Pity Map
@@ -355,8 +358,8 @@ export const useImportStore = create<ImportState>((set) => ({
               : GachaResult.Lose;
 
         // Hitung Pity
-        const key = isWeapon ? record.bannerId : type.id;
-        const old = isWeapon ? oldBanner : oldHeadhunt?.types[type.id];
+        const key = isWpOrJo ? record.bannerId : type.id;
+        const old = isWpOrJo ? oldBanner : oldHeadhunt?.types[type.id];
         const _pity = pityMap.get(key) ?? {
           pity5: old?.r5Pity ?? 0,
           pity6: old?.r6Pity ?? 0,
@@ -438,7 +441,7 @@ export const useImportStore = create<ImportState>((set) => ({
         newHeadhunt.banners[id] = {
           id,
           typeId: type.id,
-          ...(isWeapon
+          ...(isWpOrJo
             ? {
                 r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
                 r6Pity: pity?.pity6 ?? 0,
@@ -466,7 +469,7 @@ export const useImportStore = create<ImportState>((set) => ({
       newHeadhunt.types[type.id] = {
         id: type.id,
         lastRecordId,
-        ...(!isWeapon
+        ...(!isWpOrJo
           ? {
               r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
               r6Pity: pity?.pity6 ?? 0,

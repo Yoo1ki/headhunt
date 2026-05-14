@@ -1,1 +1,160 @@
-{"weaponbox_constant_1":{"id":"weaponbox_constant_1","name":"Solid Ice Issue","image":"3857b3a586959197c04b07fee8e906dd51590db5c45ad0c6f2c4bd072fc59a13","rateup":"wpn_claym_0013"},"weaponbox_constant_2":{"id":"weaponbox_constant_2","name":"Cosmic Voice Issue","image":"e9ccbf2ab8c0b3c12f161aa50bfd5ccda4ac1317b2b7d6b86b4866ca0fe235fc","rateup":"wpn_funnel_0013"},"weaponbox_constant_3":{"id":"weaponbox_constant_3","name":"Far Expedition Issue","image":"edcfb9d077a4ae7791039ef2dbd0553b9c278069bb7570a8e266cda8e4dc6621","rateup":"wpn_sword_0016"},"weaponbox_constant_4":{"id":"weaponbox_constant_4","name":"Rising Mount Issue","image":"aa1d2c6044eeb65f29769e7d803aa3d418dab7cbbffcefc1a5ad33db506804da","rateup":"wpn_lance_0012"},"weaponbox_constant_5":{"id":"weaponbox_constant_5","name":"Thunderous Peal Issue","image":"364816fbff7d7ae257813f1020114a6d13986ecf0d68258b9926be9258ce3281","rateup":"wpn_claym_0007"},"special_1_0_1":{"id":"special_1_0_1","name":"Scars of the Forge","image":"850417ab5cec28ffc2b9d05ae6088a8cc4937feb271024a0e0bb0284eb0454d5","rateup":"chr_0016_laevat","rotate":["chr_0016_laevat","chr_0013_aglina","chr_0017_yvonne"],"endTime":1770436799},"weponbox_1_0_1":{"id":"weponbox_1_0_1","name":"Smelting Forge Issue","image":"5cb08d69f6920de1a921019765bc2b773349ee3d61cb7937a79d437f65e05a0b","rateup":"wpn_sword_0006","endTime":1773266399},"special_1_0_3":{"id":"special_1_0_3","name":"The Floaty Messenger","image":"590dd987f72d74cee198aa9cd5e3bf8e5019916e25beab088ce30b8180ffce1a","rateup":"chr_0013_aglina","rotate":["chr_0013_aglina","chr_0017_yvonne","chr_0016_laevat"],"startTime":1770436800,"endTime":1771905599},"weponbox_1_0_3":{"id":"weponbox_1_0_3","name":"Express Delivery Issue","image":"970f0d6c0a7091fe8ce1625a54e559de3d5ff115e6b8dc6c15f2a3f09f99275d","rateup":"wpn_funnel_0011","startTime":1770436800,"endTime":1774756799},"special_1_0_2":{"id":"special_1_0_2","name":"Hues of Passion","image":"ab67ce14fbaa9c048f863a8eb61a75d9f06fb84f491587e26c129afa902cf47b","rateup":"chr_0017_yvonne","rotate":["chr_0017_yvonne","chr_0013_aglina","chr_0016_laevat"],"startTime":1771905600,"endTime":1773266399},"weponbox_1_0_2":{"id":"weponbox_1_0_2","name":"Graffiti Issue","image":"3bba8139759bf59e40f54d430b76043f036f0294301cc128bf3a5cdb900291dd","rateup":"wpn_pistol_0010","startTime":1771905600,"endTime":1776376799},"special_1_1_1":{"id":"special_1_1_1","name":"River's Daughter","image":"d16ee97c4a6806ab5766ebc752e39da69c3b2f4694564dd4010c722808a933ca","rateup":"chr_0027_tangtang","rotate":["chr_0027_tangtang","chr_0017_yvonne","chr_0013_aglina"],"startTime":1773266400,"endTime":1774756799},"weponbox_1_1_1":{"id":"weponbox_1_1_1","name":"Budding Anew Issue","image":"28efe0ec495de4f0f0fd31d9136a60e7ce90aec7867f4f9a95370a25eedc6267","rateup":"wpn_pistol_0011","startTime":1773266400,"endTime":1779422399},"special_1_1_2":{"id":"special_1_1_2","name":"Wolf Pearl","image":"ae7f81dd606b3bb75fb62f912dd551ec4d42dfdfaac28f4bdb2197ac74d1b589","rateup":"chr_0028_wulfa","rotate":["chr_0028_wulfa","chr_0027_tangtang","chr_0017_yvonne"],"startTime":1774756800,"endTime":1776376799},"weponbox_1_1_2":{"id":"weponbox_1_1_2","name":"Scarlet Pearl Issue","image":"31f83af09de9e974baf093ab42fc8699277e539639f73ff3f8cf9b46595da450","rateup":"wpn_sword_0022","startTime":1774756800},"special_1_2_1":{"id":"special_1_2_1","name":"Thunder of Renewal","image":"b6ab53234e104a13cd373057c221b76731c5ce35dda2652e9526f4abcdef38dc","rateup":"chr_0030_zhuangfy","rotate":["chr_0030_zhuangfy","chr_0028_wulfa","chr_0027_tangtang"],"startTime":1776376800,"endTime":1779422399},"weponbox_1_2_1":{"id":"weponbox_1_2_1","name":"Drifting Raft Issue","image":"0f69583fd820db891fda595fd06d365caa5388ed7b4357861a3697c180720093","rateup":"wpn_funnel_0015","startTime":1776376800}}
+{
+  "weaponbox_constant_1": {
+    "id": "weaponbox_constant_1",
+    "name": "Solid Ice Issue",
+    "image": "3857b3a586959197c04b07fee8e906dd51590db5c45ad0c6f2c4bd072fc59a13",
+    "rateup": "wpn_claym_0013"
+  },
+  "weaponbox_constant_2": {
+    "id": "weaponbox_constant_2",
+    "name": "Cosmic Voice Issue",
+    "image": "e9ccbf2ab8c0b3c12f161aa50bfd5ccda4ac1317b2b7d6b86b4866ca0fe235fc",
+    "rateup": "wpn_funnel_0013"
+  },
+  "weaponbox_constant_3": {
+    "id": "weaponbox_constant_3",
+    "name": "Far Expedition Issue",
+    "image": "edcfb9d077a4ae7791039ef2dbd0553b9c278069bb7570a8e266cda8e4dc6621",
+    "rateup": "wpn_sword_0016"
+  },
+  "weaponbox_constant_4": {
+    "id": "weaponbox_constant_4",
+    "name": "Rising Mount Issue",
+    "image": "aa1d2c6044eeb65f29769e7d803aa3d418dab7cbbffcefc1a5ad33db506804da",
+    "rateup": "wpn_lance_0012"
+  },
+  "weaponbox_constant_5": {
+    "id": "weaponbox_constant_5",
+    "name": "Thunderous Peal Issue",
+    "image": "364816fbff7d7ae257813f1020114a6d13986ecf0d68258b9926be9258ce3281",
+    "rateup": "wpn_claym_0007"
+  },
+  "special_1_0_1": {
+    "id": "special_1_0_1",
+    "name": "Scars of the Forge",
+    "image": "850417ab5cec28ffc2b9d05ae6088a8cc4937feb271024a0e0bb0284eb0454d5",
+    "rateup": "chr_0016_laevat",
+    "rotate": ["chr_0016_laevat", "chr_0013_aglina", "chr_0017_yvonne"],
+    "endTime": 1770436799
+  },
+  "weponbox_1_0_1": {
+    "id": "weponbox_1_0_1",
+    "name": "Smelting Forge Issue",
+    "image": "5cb08d69f6920de1a921019765bc2b773349ee3d61cb7937a79d437f65e05a0b",
+    "rateup": "wpn_sword_0006",
+    "endTime": 1773266399
+  },
+  "special_1_0_3": {
+    "id": "special_1_0_3",
+    "name": "The Floaty Messenger",
+    "image": "590dd987f72d74cee198aa9cd5e3bf8e5019916e25beab088ce30b8180ffce1a",
+    "rateup": "chr_0013_aglina",
+    "rotate": ["chr_0013_aglina", "chr_0017_yvonne", "chr_0016_laevat"],
+    "startTime": 1770436800,
+    "endTime": 1771905599
+  },
+  "weponbox_1_0_3": {
+    "id": "weponbox_1_0_3",
+    "name": "Express Delivery Issue",
+    "image": "970f0d6c0a7091fe8ce1625a54e559de3d5ff115e6b8dc6c15f2a3f09f99275d",
+    "rateup": "wpn_funnel_0011",
+    "startTime": 1770436800,
+    "endTime": 1774756799
+  },
+  "special_1_0_2": {
+    "id": "special_1_0_2",
+    "name": "Hues of Passion",
+    "image": "ab67ce14fbaa9c048f863a8eb61a75d9f06fb84f491587e26c129afa902cf47b",
+    "rateup": "chr_0017_yvonne",
+    "rotate": ["chr_0017_yvonne", "chr_0013_aglina", "chr_0016_laevat"],
+    "startTime": 1771905600,
+    "endTime": 1773266399
+  },
+  "weponbox_1_0_2": {
+    "id": "weponbox_1_0_2",
+    "name": "Graffiti Issue",
+    "image": "3bba8139759bf59e40f54d430b76043f036f0294301cc128bf3a5cdb900291dd",
+    "rateup": "wpn_pistol_0010",
+    "startTime": 1771905600,
+    "endTime": 1776376799
+  },
+  "special_1_1_1": {
+    "id": "special_1_1_1",
+    "name": "River's Daughter",
+    "image": "d16ee97c4a6806ab5766ebc752e39da69c3b2f4694564dd4010c722808a933ca",
+    "rateup": "chr_0027_tangtang",
+    "rotate": ["chr_0027_tangtang", "chr_0017_yvonne", "chr_0013_aglina"],
+    "startTime": 1773266400,
+    "endTime": 1774756799
+  },
+  "weponbox_1_1_1": {
+    "id": "weponbox_1_1_1",
+    "name": "Budding Anew Issue",
+    "image": "28efe0ec495de4f0f0fd31d9136a60e7ce90aec7867f4f9a95370a25eedc6267",
+    "rateup": "wpn_pistol_0011",
+    "startTime": 1773266400,
+    "endTime": 1779422399
+  },
+  "special_1_1_2": {
+    "id": "special_1_1_2",
+    "name": "Wolf Pearl",
+    "image": "ae7f81dd606b3bb75fb62f912dd551ec4d42dfdfaac28f4bdb2197ac74d1b589",
+    "rateup": "chr_0028_wulfa",
+    "rotate": ["chr_0028_wulfa", "chr_0027_tangtang", "chr_0017_yvonne"],
+    "startTime": 1774756800,
+    "endTime": 1776376799
+  },
+  "weponbox_1_1_2": {
+    "id": "weponbox_1_1_2",
+    "name": "Scarlet Pearl Issue",
+    "image": "31f83af09de9e974baf093ab42fc8699277e539639f73ff3f8cf9b46595da450",
+    "rateup": "wpn_sword_0022",
+    "startTime": 1774756800
+  },
+  "special_1_2_1": {
+    "id": "special_1_2_1",
+    "name": "Thunder of Renewal",
+    "image": "b6ab53234e104a13cd373057c221b76731c5ce35dda2652e9526f4abcdef38dc",
+    "rateup": "chr_0030_zhuangfy",
+    "rotate": ["chr_0030_zhuangfy", "chr_0028_wulfa", "chr_0027_tangtang"],
+    "startTime": 1776376800,
+    "endTime": 1779422399
+  },
+  "weponbox_1_2_1": {
+    "id": "weponbox_1_2_1",
+    "name": "Drifting Raft Issue",
+    "image": "0f69583fd820db891fda595fd06d365caa5388ed7b4357861a3697c180720093",
+    "rateup": "wpn_funnel_0015",
+    "startTime": 1776376800
+  },
+  "joint_1_2_2": {
+    "id": "joint_1_2_2",
+    "name": "Fest of Brilliance",
+    "image": "3d30c2fffd08c6839da055426fefa1cd8d205a4ce2b81482502f47171bbbf555",
+    "rateup": "chr_0016_laevat",
+    "rotate": [
+      "chr_0016_laevat",
+      "chr_0013_aglina",
+      "chr_0025_ardelia",
+      "chr_0029_pograni"
+    ],
+    "startTime": 1778731200,
+    "endTime": 1780610399
+  },
+  "weponbox_1_2_2": {
+    "id": "weponbox_1_2_2",
+    "name": "Smelting Fire Issue",
+    "image": "4f7c1e9ea0f0e3e8bd6ac7a244244106dbac27f51ae9fed94e4e59a3a42f4317",
+    "rateup": "wpn_sword_0006",
+    "startTime": 1778731200,
+    "endTime": 1780610399
+  },
+  "weponbox_1_2_3": {
+    "id": "weponbox_1_2_3",
+    "name": "Swift Walker Issue",
+    "image": "6667f5905eaa7915e01626b934977d841949b1c6c876329460373026c6ea8bb1",
+    "rateup": "wpn_funnel_0011",
+    "startTime": 1778731200,
+    "endTime": 1780610399
+  }
+}

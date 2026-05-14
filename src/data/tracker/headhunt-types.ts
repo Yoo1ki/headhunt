@@ -1,4 +1,9 @@
-export type HeadhuntTypeId = "special" | "weponbox" | "standard" | "beginner";
+export type HeadhuntTypeId =
+  | "special"
+  | "weponbox"
+  | "joint"
+  | "standard"
+  | "beginner";
 
 export type HeadhuntType = {
   id: HeadhuntTypeId;
@@ -27,6 +32,14 @@ export const headhuntTypes: HeadhuntType[] = [
     r6PityLimit: 40,
     r5PityLimit: 10,
     guaranteeAt: 80,
+  },
+  {
+    id: "joint",
+    endpoint: "/api/record/char",
+    poolType: "E_CharacterGachaPoolType_Joint",
+    icon: "69c0b9842f5e59f873ca892191ae18d595350cdd30e93b00219d362a4e0d5909",
+    r6PityLimit: 80,
+    r5PityLimit: 10,
   },
   {
     id: "standard",

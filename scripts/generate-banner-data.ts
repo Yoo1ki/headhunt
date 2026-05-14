@@ -77,9 +77,9 @@ export async function readAllPools(): Promise<IPoolResult[]> {
 
 async function ticketifyImage({
   buffer,
-  isWeapon = false,
+  isRight = false,
 }: {
-  isWeapon: boolean;
+  isRight: boolean;
   buffer: Buffer;
 }): Promise<Buffer> {
   const image = sharp(buffer);
@@ -93,7 +93,7 @@ async function ticketifyImage({
   const cropWidth = Math.min(targetWidth, width);
 
   const cropped = image.extract({
-    left: isWeapon ? width - cropWidth : 0,
+    left: isRight ? width - cropWidth : 0,
     top: 0,
     width: cropWidth,
     height: height,
@@ -103,7 +103,7 @@ async function ticketifyImage({
   const resizedHeight = 145;
   const resized = cropped.resize({ height: resizedHeight });
   const resizedWidth = Math.floor(resizedHeight * (cropWidth / height));
-  const x = isWeapon ? resizedWidth / 5 : resizedWidth - resizedWidth / 5;
+  const x = isRight ? resizedWidth / 5 : resizedWidth - resizedWidth / 5;
 
   // Bikin seperti tiket
   const ticketSvg = `
@@ -164,7 +164,10 @@ async function bannerImages(
       const buffer = await downloadImage(img);
       const ticketBuffer = await ticketifyImage({
         buffer,
-        isWeapon: id.startsWith("weponbox") || id.startsWith("weaponbox"),
+        isRight:
+          id.startsWith("weponbox") ||
+          id.startsWith("weaponbox") ||
+          id.startsWith("joint"),
       });
       const resizedBuffer = await resizeImage({
         buffer: ticketBuffer,
@@ -226,11 +229,19 @@ async function main() {
       const pool = scriptConfig.pools.find((e) => e.id === result.poolId);
       const isOperator = data.pool_gacha_type === "char";
 
-      const rotate = isOperator
-        ? (json as GamePoolOperator).data.pool.rotate_list
-            .map((e) => data.all.find((f) => f.name === e.name)?.id)
-            .filter((id): id is string => Boolean(id))
-        : [];
+      let rotate: string[] = [];
+
+      if (isOperator) {
+        const pool = (json as GamePoolOperator).data.pool;
+        if (pool.pool_type === "special") {
+          rotate = pool.rotate_list
+            .map((e) => pool.all.find((f) => f.name === e.name)?.id)
+            .filter((id): id is string => Boolean(id));
+        }
+        if (pool.pool_type === "extra") {
+          rotate = pool.all.filter((e) => e.rarity === 6).map((e) => e.id);
+        }
+      }
 
       if (!bannerMap[locale]) bannerMap[locale] = {};
 

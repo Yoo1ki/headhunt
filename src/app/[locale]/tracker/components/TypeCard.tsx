@@ -80,8 +80,6 @@ export const TypeCard = ({
                 />
               ))}
             </div>
-          ) : hash === "rerun" ? (
-            <div className="text-lg">Coming soon</div>
           ) : (
             <div className="flex flex-col">
               <div className="flex justify-between items-center rounded-lg text-[#FF7100]">

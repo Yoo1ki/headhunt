@@ -199,14 +199,24 @@ export const PageContent = ({
                 ? profile?.stores?.headhunt?.types[type.id]
                 : undefined;
 
+              let pity5 = types?.r5Pity ?? 0;
+              let pity6 = types?.r6Pity ?? 0;
+
+              if (type.id === "joint" && hasHydrated) {
+                const banners =
+                  profile?.stores?.headhunt?.banners["joint_1_2_2"];
+                pity5 = banners?.r5Pity ?? 0;
+                pity6 = banners?.r6Pity ?? 0;
+              }
+
               return (
                 <TypeCard
                   key={type.id}
                   hash={type.id}
                   name={type.name}
                   icons={type.icons}
-                  pity5={types?.r5Pity ?? 0}
-                  pity6={types?.r6Pity ?? 0}
+                  pity5={pity5}
+                  pity6={pity6}
                   pity5Limit={type.r5PityLimit}
                   pity6Limit={type.r6PityLimit}
                   isSelected={type.id === hash}

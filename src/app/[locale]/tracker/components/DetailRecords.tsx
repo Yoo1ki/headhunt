@@ -59,7 +59,7 @@ export const DetailRecords = ({
       },
     ];
 
-    if (hash === "standard" || hash === "beginner") {
+    if (hash === "joint" || hash === "standard" || hash === "beginner") {
       return base;
     }
 

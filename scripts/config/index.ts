@@ -96,5 +96,27 @@ export const scriptConfig = {
       img: "https://web-static.hg-cdn.com/upload/image/20260414/8a3cf8d087ed968c012e074e57bfa0cb.jpg",
       startAt: "2026-04-17T06:00:00+08:00",
     },
+
+    // Laevatain, Gilberta, Ardelia, Pogranichnik
+    {
+      id: "joint_1_2_2",
+      img: "https://web-static.hg-cdn.com/upload/image/20260507/5a8135bcb23b1cb335ac2843e8922eaa.jpg",
+      startAt: "2026-05-14T12:00:00+08:00",
+      endAt: "2026-06-05T05:59:59+08:00",
+    },
+    {
+      // Weapon - Laevatain
+      id: "weponbox_1_2_2",
+      img: "https://web-static.hg-cdn.com/upload/image/20260508/29a85140f6908ab05f9381e06fa0b5c2.jpg",
+      startAt: "2026-05-14T12:00:00+08:00",
+      endAt: "2026-06-05T05:59:59+08:00",
+    },
+    {
+      // Weapon - Gilberta
+      id: "weponbox_1_2_3",
+      img: "https://web-static.hg-cdn.com/upload/image/20260509/35ffc65d5f194ed1a286b0afe74d2b5f.jpg",
+      startAt: "2026-05-14T12:00:00+08:00",
+      endAt: "2026-06-05T05:59:59+08:00",
+    },
   ],
 } as const;
