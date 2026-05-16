@@ -2,7 +2,7 @@
 
 import { create } from "zustand";
 import { useStorageStore } from "./useStorageStore";
-import { headhuntTypes } from "@/data/tracker/headhunt-types";
+import { HeadhuntTypeId, headhuntTypes } from "@/data/tracker/headhunt-types";
 import {
   BannerItem,
   GachaResult,
@@ -266,7 +266,12 @@ export const useImportStore = create<ImportState>((set) => ({
     const missingBannerIds = new Set<string>();
 
     for (const type of headhuntTypes) {
-      if (type.id === "beginner" || type.id === "standard") continue;
+      if (
+        type.id === HeadhuntTypeId.Beginner ||
+        type.id === HeadhuntTypeId.Standard
+      ) {
+        continue;
+      }
 
       const records = newRawRecords.get(type.id);
       if (!records?.length) continue;
@@ -323,8 +328,8 @@ export const useImportStore = create<ImportState>((set) => ({
       const records = newRawRecords.get(type.id);
       if (!records?.length) continue;
 
-      const isWeapon = type.id === "weponbox";
-      const isJoint = type.id === "joint";
+      const isWeapon = type.id === HeadhuntTypeId.Weponbox;
+      const isJoint = type.id === HeadhuntTypeId.Joint;
       const isWpOrJo = isWeapon || isJoint;
 
       const oldType = oldHeadhunt?.types[type.id];

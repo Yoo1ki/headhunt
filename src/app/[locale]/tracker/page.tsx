@@ -3,7 +3,7 @@ import { PageContent } from "./PageContent";
 import { Banners } from "@/types/banner";
 import { Catalogs } from "@/types/catalog";
 import { Enums } from "@/types/enums";
-import { headhuntTypes } from "@/data/tracker/headhunt-types";
+import { HeadhuntTypeId, headhuntTypes } from "@/data/tracker/headhunt-types";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 
@@ -33,7 +33,7 @@ export default async function TrackerPage() {
 
   const now = Date.now() / 1000;
 
-  const weponbox = headhuntTypes.find((e) => e.id === "weponbox");
+  const weponbox = headhuntTypes.find((e) => e.id === HeadhuntTypeId.Weponbox);
 
   const sortedBanners = Object.values(banners).sort((a, b) => {
     const aStart = a.startTime ?? 0;
@@ -48,7 +48,7 @@ export default async function TrackerPage() {
   });
 
   const wpTypes = activeBanners
-    .filter((banner) => banner.id.startsWith("weponbox"))
+    .filter((banner) => banner.id.startsWith(HeadhuntTypeId.Weponbox))
     .map((banner) => {
       return {
         id: banner.id,
@@ -84,13 +84,13 @@ export default async function TrackerPage() {
           },
         ];
 
-    if (type.id === "weponbox") {
+    if (type.id === HeadhuntTypeId.Weponbox) {
       const primary = wpTypes.slice(1, 3).flatMap((wp) => wp.icons);
       const subIcons =
         primary.length >= 2
           ? primary
           : sortedBanners
-              .filter((b) => b.id.startsWith("weponbox"))
+              .filter((b) => b.id.startsWith(HeadhuntTypeId.Weponbox))
               .slice(1, 3)
               .map((b) => {
                 return {
@@ -101,7 +101,7 @@ export default async function TrackerPage() {
       icons.push(...subIcons);
     }
 
-    if (type.id === "joint") {
+    if (type.id === HeadhuntTypeId.Joint) {
       icons = banner?.rotate?.map((id) => {
         return {
           name: catalogs[id].name,

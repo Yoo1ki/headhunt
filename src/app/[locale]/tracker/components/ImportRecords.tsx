@@ -34,7 +34,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
     onClose();
   };
 
-  const command = `irm "https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main/get-record-url.ps1" | iex`;
+  const command = `iwr "https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main/get-record-url.ps1" -UseB | iex`;
 
   const [copied, setCopied] = useState(false);
 
