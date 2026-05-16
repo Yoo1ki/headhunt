@@ -24,7 +24,7 @@ export const Footer = () => {
               </Link>
               •
               <Link
-                href="https://discord.gg/uJt4sHYvT"
+                href={CONFIG.discordUrl}
                 className="hover:text-yellow-500 duration-300"
                 target="_blank"
               >

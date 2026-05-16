@@ -7,6 +7,7 @@ export const CONFIG = {
       : "http://localhost:3000",
   since: 2026,
   endfieldBaseUrl: "https://ef-webview.gryphline.com",
+  discordUrl: "https://discord.gg/jBNxtSstEa",
   locales: [
     {
       id: "cn",
