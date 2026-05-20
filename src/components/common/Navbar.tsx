@@ -11,6 +11,8 @@ import {
 } from "react-icons/gi";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { FaDiscord } from "react-icons/fa6";
+import { CONFIG } from "@/config";
 
 type NavbarProps = {
   onClick?: () => void;
@@ -46,54 +48,64 @@ export const Navbar = ({ onClick }: NavbarProps) => {
   };
 
   return (
-    <div className="overflow-y-auto max-h-full px-4">
-      <div className="flex flex-col justify-start gap-2">
-        {menu.map((item) => {
-          const isActive = segment === item.href;
+    <div className="flex flex-col justify-between h-full">
+      <div className="overflow-y-auto max-h-full px-4 my-4">
+        <div className="flex flex-col justify-start gap-2">
+          {menu.map((item) => {
+            const isActive = segment === item.href;
 
-          const baseClass =
-            "flex items-center rounded-xl p-2 duration-300 w-full";
+            const baseClass =
+              "flex gap-2 items-center rounded-xl p-2 duration-300 w-full";
 
-          const activeClass = isActive
-            ? "bg-white/5 text-yellow-400"
-            : "hover:bg-white/10";
+            const activeClass = isActive
+              ? "bg-white/5 text-yellow-400"
+              : "hover:bg-white/10";
 
-          const disabledClass = item.disabled
-            ? "opacity-40 cursor-not-allowed pointer-events-none"
-            : "";
+            const disabledClass = item.disabled
+              ? "opacity-40 cursor-not-allowed pointer-events-none"
+              : "";
 
-          if (item.disabled) {
+            if (item.disabled) {
+              return (
+                <div key={item.key} className={`${baseClass} ${disabledClass}`}>
+                  {item.icon}
+                  <span className="truncate">{t(item.key)}</span>
+                  <span className="text-xs bg-neutral-900 rounded-sm py-0.5 px-1">
+                    Coming soon
+                  </span>
+                </div>
+              );
+            }
+
             return (
-              <div key={item.key} className={`${baseClass} ${disabledClass}`}>
+              <Link
+                key={item.key}
+                href={item.href}
+                onClick={
+                  isActive
+                    ? (e) => {
+                        e.preventDefault();
+                        scrollToTop();
+                      }
+                    : onClick
+                }
+                className={`${baseClass} ${activeClass}`}
+              >
                 {item.icon}
-                <p className="ml-2 truncate">{t(item.key)}</p>
-                <span className="text-xs bg-neutral-900 rounded-sm ml-2 py-0.5 px-1">
-                  Coming soon
-                </span>
-              </div>
+                <span className="truncate">{t(item.key)}</span>
+              </Link>
             );
-          }
-
-          return (
-            <Link
-              key={item.key}
-              href={item.href}
-              onClick={
-                isActive
-                  ? (e) => {
-                      e.preventDefault();
-                      scrollToTop();
-                    }
-                  : onClick
-              }
-              className={`${baseClass} ${activeClass}`}
-            >
-              {item.icon}
-              <p className="ml-2 truncate">{t(item.key)}</p>
-            </Link>
-          );
-        })}
+          })}
+        </div>
       </div>
+      <Link
+        href={CONFIG.discordUrl}
+        target="_blank"
+        className="bg-[#5865F2] hover:bg-[#5865F2]/90 rounded-xl flex gap-2 px-4 py-3 justify-center items-center cursor-pointer"
+      >
+        <FaDiscord size={24} />
+        <span className="truncate">Join Discord</span>
+      </Link>
     </div>
   );
 };

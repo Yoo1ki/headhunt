@@ -15,21 +15,21 @@ export const Footer = () => {
             <p>{t("disclaimerP2")}</p>
           </div>
           <div className="lg:text-right text-center">
-            <div className="flex gap-2 justify-end">
+            <div className="flex gap-2 justify-center lg:justify-end">
               <Link
                 href="/privacy-policy"
                 className="hover:text-yellow-500 duration-300"
               >
                 Privacy Policy
               </Link>
-              •
+              {/* •
               <Link
                 href={CONFIG.discordUrl}
-                className="hover:text-yellow-500 duration-300"
                 target="_blank"
+                className="hover:text-yellow-500 duration-300"
               >
                 Discord
-              </Link>
+              </Link> */}
             </div>
             <p className="font-semibold">
               &copy; {CONFIG.since}

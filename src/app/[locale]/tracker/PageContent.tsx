@@ -225,7 +225,7 @@ export const PageContent = ({
             })}
         </div>
 
-        <div className="flex flex-col xl:flex-row gap-4 w-full">
+        <div className="flex flex-col xl:flex-row gap-4 w-full flex-1">
           <div className="flex flex-col flex-1 gap-4">
             <div className="flex flex-col gap-2">
               {types.opTypes
