@@ -75,7 +75,85 @@ export async function readAllPools(): Promise<IPoolResult[]> {
   return results;
 }
 
-async function ticketifyImage({
+// async function ticketifyImage({
+//   buffer,
+//   isRight = false,
+// }: {
+//   isRight: boolean;
+//   buffer: Buffer;
+// }): Promise<Buffer> {
+//   const image = sharp(buffer);
+//   const metadata = await image.metadata();
+
+//   const width = metadata.width;
+//   const height = metadata.height;
+
+//   // Crop rasio 3.2:1
+//   const targetWidth = Math.floor(height * 3.2);
+//   const cropWidth = Math.min(targetWidth, width);
+
+//   const cropped = image.extract({
+//     left: isRight ? width - cropWidth : 0,
+//     top: 0,
+//     width: cropWidth,
+//     height: height,
+//   });
+
+//   // Resize
+//   const resizedHeight = 145;
+//   const resized = cropped.resize({ height: resizedHeight });
+//   const resizedWidth = Math.floor(resizedHeight * (cropWidth / height));
+//   const x = isRight ? resizedWidth / 5 : resizedWidth - resizedWidth / 5;
+
+//   // Bikin seperti tiket
+//   const ticketSvg = `
+//   <svg width="${resizedWidth}" height="${resizedHeight}">
+//     <polygon
+//       points="${x},${resizedHeight / 20} ${x - 10},0 ${x + 10},0"
+//       fill="white"
+//     />
+
+//     <line
+//       x1="${x}"
+//       y1="0"
+//       x2="${x}"
+//       y2="${resizedHeight}"
+//       stroke="white"
+//       stroke-width="3"
+//       stroke-dasharray="5,5"
+//       stroke-linecap="round"
+//     />
+
+//     <polygon
+//       points="${x},${resizedHeight - resizedHeight / 20} ${x - 10},${resizedHeight} ${x + 10},${resizedHeight}"
+//       fill="white"
+//     />
+
+//     <text
+//       x="${resizedWidth - 10}"
+//       y="${resizedHeight / 2}"
+//       text-anchor="middle"
+//       dominant-baseline="middle"
+//       fill="white"
+//       font-weight="bold"
+//       font-family="Arial, Helvetica, sans-serif"
+//       font-size="${Math.floor(resizedHeight * 0.1)}"
+//       transform="rotate(-90 ${resizedWidth - 10} ${resizedHeight / 2})"
+//     >
+//       Headhunt.cc
+//     </text>
+//   </svg>
+//   `;
+
+//   const ticketBuffer = await resized
+//     .composite([{ input: Buffer.from(ticketSvg), blend: "dest-out" }])
+//     .png()
+//     .toBuffer();
+
+//   return ticketBuffer;
+// }
+
+async function cropImage({
   buffer,
   isRight = false,
 }: {
@@ -99,58 +177,7 @@ async function ticketifyImage({
     height: height,
   });
 
-  // Resize
-  const resizedHeight = 145;
-  const resized = cropped.resize({ height: resizedHeight });
-  const resizedWidth = Math.floor(resizedHeight * (cropWidth / height));
-  const x = isRight ? resizedWidth / 5 : resizedWidth - resizedWidth / 5;
-
-  // Bikin seperti tiket
-  const ticketSvg = `
-  <svg width="${resizedWidth}" height="${resizedHeight}">
-    <polygon 
-      points="${x},${resizedHeight / 20} ${x - 10},0 ${x + 10},0"
-      fill="white"
-    />
-
-    <line 
-      x1="${x}" 
-      y1="0" 
-      x2="${x}" 
-      y2="${resizedHeight}" 
-      stroke="white"
-      stroke-width="3"
-      stroke-dasharray="5,5"
-      stroke-linecap="round"
-    />
-
-    <polygon 
-      points="${x},${resizedHeight - resizedHeight / 20} ${x - 10},${resizedHeight} ${x + 10},${resizedHeight}"
-      fill="white"
-    />
-
-    <text
-      x="${resizedWidth - 10}"
-      y="${resizedHeight / 2}"
-      text-anchor="middle"
-      dominant-baseline="middle"
-      fill="white"
-      font-weight="bold"
-      font-family="Arial, Helvetica, sans-serif"
-      font-size="${Math.floor(resizedHeight * 0.1)}"
-      transform="rotate(-90 ${resizedWidth - 10} ${resizedHeight / 2})"
-    >
-      Headhunt.cc
-    </text>
-  </svg>
-  `;
-
-  const ticketBuffer = await resized
-    .composite([{ input: Buffer.from(ticketSvg), blend: "dest-out" }])
-    .png()
-    .toBuffer();
-
-  return ticketBuffer;
+  return cropped.toBuffer();
 }
 
 async function bannerImages(
@@ -162,7 +189,7 @@ async function bannerImages(
   await Promise.all(
     Array.from(assets).map(async ([id, img]) => {
       const buffer = await downloadImage(img);
-      const ticketBuffer = await ticketifyImage({
+      const croppedBuffer = await cropImage({
         buffer,
         isRight:
           id.startsWith("weponbox") ||
@@ -170,7 +197,7 @@ async function bannerImages(
           id.startsWith("joint"),
       });
       const resizedBuffer = await resizeImage({
-        buffer: ticketBuffer,
+        buffer: croppedBuffer,
         width: 256,
       });
       const banner = await saveAsPng({
