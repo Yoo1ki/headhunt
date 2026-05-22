@@ -101,7 +101,7 @@ export const Navbar = ({ onClick }: NavbarProps) => {
       <Link
         href={CONFIG.discordUrl}
         target="_blank"
-        className="hover:bg-[#5865F2] active:bg-[#5865F2]/90 rounded-xl flex gap-2 px-4 py-3 justify-center items-center cursor-pointer"
+        className="hover:bg-[#5865F2] active:bg-[#5865F2]/90 rounded-xl flex gap-2 px-4 py-3 transition duration-300 justify-center items-center cursor-pointer"
       >
         <FaDiscord size={24} />
         <span className="truncate">Join Discord</span>

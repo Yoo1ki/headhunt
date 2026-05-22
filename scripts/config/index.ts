@@ -82,6 +82,7 @@ export const scriptConfig = {
       id: "weponbox_1_1_2",
       img: "https://web-static.hg-cdn.com/upload/image/20260321/70570900667114c586b69aee95295880.jpg",
       startAt: "2026-03-29T12:00:00+08:00",
+      endAt: "2026-06-26T11:59:59+08:00",
     },
 
     // Zhuang Fangyi
