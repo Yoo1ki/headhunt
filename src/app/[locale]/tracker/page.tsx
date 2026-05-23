@@ -101,7 +101,10 @@ export default async function TrackerPage() {
       icons.push(...subIcons);
     }
 
-    if (type.id === HeadhuntTypeId.Joint) {
+    if (
+      type.id === HeadhuntTypeId.Special ||
+      type.id === HeadhuntTypeId.Joint
+    ) {
       icons = banner?.rotate?.map((id) => {
         return {
           name: catalogs[id].name,

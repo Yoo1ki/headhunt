@@ -34,32 +34,49 @@ export const TypeCard = ({
   const content = (
     <>
       <div className="flex items-end">
-        {hash !== "weponbox" && (
-          <div className="relative w-25 h-25">
-            <CFImage
-              src={icons[0].url}
-              alt={icons[0].name}
-              width={100}
-              height={100}
-              draggable={false}
-              className="absolute inset-0"
-            />
-            {icons.length > 1 && (
-              <div className="absolute bottom-0 right-0 left-0 flex justify-center">
-                {icons.slice(1).map((icon, index) => (
-                  <CFImage
-                    key={index}
-                    src={icon.url}
-                    alt={icon.name}
-                    width={32}
-                    height={32}
-                    draggable={false}
-                    className="rounded-full"
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+        {hash !== "weponbox" ? (
+          hash === "joint" ? (
+            <div className="relative w-25 h-25 grid grid-cols-2">
+              {icons.map((icon, index) => (
+                <CFImage
+                  key={index}
+                  src={icon.url}
+                  alt={icon.name}
+                  width={50}
+                  height={50}
+                  draggable={false}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="relative w-25 h-25">
+              <CFImage
+                src={icons[0].url}
+                alt={icons[0].name}
+                width={100}
+                height={100}
+                draggable={false}
+                className="absolute inset-0"
+              />
+              {icons.length > 1 && (
+                <div className="absolute bottom-0 right-0 left-0 flex justify-center gap-2">
+                  {icons.slice(1).map((icon, index) => (
+                    <CFImage
+                      key={index}
+                      src={icon.url}
+                      alt={icon.name}
+                      width={32}
+                      height={32}
+                      draggable={false}
+                      className="rounded-full"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )
+        ) : (
+          <></>
         )}
       </div>
       <div className="flex flex-1 pl-1 pr-3 py-2">
