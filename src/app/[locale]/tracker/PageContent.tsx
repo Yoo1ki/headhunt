@@ -90,7 +90,7 @@ export const PageContent = ({
     const allRecords = profile?.stores?.headhunt?.records;
     const bannerIds = new Set<string>();
 
-    const isMainType = types.opTypes.slice(0, 2).some((t) => t.id === hash);
+    const isMainType = types.opTypes.slice(0, 3).some((t) => t.id === hash);
 
     let result: RecordItem[] = [];
 
