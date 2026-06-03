@@ -119,5 +119,18 @@ export const scriptConfig = {
       startAt: "2026-05-14T12:00:00+08:00",
       endAt: "2026-06-05T05:59:59+08:00",
     },
+
+    // Mi Fu
+    {
+      id: "special_1_3_1",
+      img: "https://web-static.hg-cdn.com/upload/image/20260602/a9e99e3ed17caa72f0b601f0c6756ada.jpg",
+      startAt: "2026-06-05T06:00:00+08:00",
+      endAt: "2026-06-26T11:59:59+08:00",
+    },
+    {
+      id: "weponbox_1_3_1",
+      img: "https://web-static.hg-cdn.com/upload/image/20260602/9dc2914038ca1320902160c03f7d02cc.jpg",
+      startAt: "2026-06-05T06:00:00+08:00",
+    },
   ],
 } as const;

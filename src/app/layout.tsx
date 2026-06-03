@@ -1,6 +1,7 @@
 import { getLocale } from "next-intl/server";
 import { Roboto } from "next/font/google";
 import { CONFIG } from "@/config";
+import { Metadata } from "next";
 import "@/app/globals.css";
 
 const roboto = Roboto({
@@ -10,7 +11,7 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(CONFIG.baseUrl),
 };
 

@@ -16,6 +16,15 @@ body {
   @apply bg-white/10 rounded-xl cursor-pointer;
 }
 
+.scrollbar-hide::-webkit-scrollbar {
+  @apply hidden;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .grid-operators {
   @apply grid gap-4;
   grid-template-columns: repeat(auto-fill, minmax(128px, 1fr));
@@ -24,15 +33,6 @@ body {
 .grid-weapons {
   @apply grid gap-4;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  @apply hidden;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 .table-records th,

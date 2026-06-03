@@ -33,8 +33,8 @@ async function main() {
   await ensureDirs(paths.rawBanners);
 
   await Promise.all(
-    scriptConfig.pools.map(async (e) => {
-      const outputDir = path.join(paths.rawBanners, e.id);
+    scriptConfig.pools.map(async (pool) => {
+      const outputDir = path.join(paths.rawBanners, pool.id);
 
       const logs: string[] = [];
 
@@ -48,7 +48,7 @@ async function main() {
             return null;
           } catch {}
 
-          const data = (await getContent(locale.value, e.id)) as
+          const data = (await getContent(locale.value, pool.id)) as
             | GamePoolOperator
             | GamePoolWeapon;
 
@@ -67,7 +67,7 @@ async function main() {
       >[];
 
       if (filtered.length === 0) {
-        console.log(`\n📦 ${e.id}`);
+        console.log(`\n📦 ${pool.id}`);
         logs.forEach((l) => console.log("  " + l));
         console.warn(`🚫 no new data`);
         return;
@@ -78,7 +78,7 @@ async function main() {
       await fs.mkdir(outputDir, { recursive: true });
       await writeJsonFiles(dataMap, outputDir);
 
-      console.log(`\n📦 ${e.id}`);
+      console.log(`\n📦 ${pool.id}`);
       logs.forEach((l) => console.log("  " + l));
     }),
   );
