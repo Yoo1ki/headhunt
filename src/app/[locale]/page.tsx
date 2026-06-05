@@ -32,7 +32,7 @@ export default async function HomePage() {
   const limitedBanners = activeBanners
     .filter((banner) => !banner.id.startsWith("weaponbox"))
     .map((banner) => {
-      let itemName = catalogs[banner.rateup].name;
+      let itemName = catalogs[banner.rateup]?.name ?? banner.rateup;
       if (banner.id.startsWith("joint")) {
         itemName =
           banner.rotate?.map((id) => catalogs[id].name).join(", ") ?? itemName;
@@ -42,7 +42,7 @@ export default async function HomePage() {
         name: banner.name,
         endTime: banner.endTime,
         itemName,
-        icon: catalogs[banner.rateup].icon,
+        icon: catalogs[banner.rateup]?.icon ?? "",
       };
     });
 

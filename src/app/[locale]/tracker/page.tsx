@@ -55,8 +55,8 @@ export default async function TrackerPage() {
         name: banner.name,
         icons: [
           {
-            name: catalogs[banner.rateup].name,
-            url: catalogs[banner.rateup].icon,
+            name: catalogs[banner.rateup]?.name ?? banner.rateup,
+            url: catalogs[banner.rateup]?.icon ?? "",
           },
         ],
         r5PityLimit: weponbox!.r5PityLimit,
@@ -73,8 +73,8 @@ export default async function TrackerPage() {
     let icons = banner?.rateup
       ? [
           {
-            name: catalogs[banner.rateup].name,
-            url: catalogs[banner.rateup].icon,
+            name: catalogs[banner.rateup]?.name ?? banner.rateup,
+            url: catalogs[banner.rateup]?.icon ?? "",
           },
         ]
       : [
@@ -107,8 +107,8 @@ export default async function TrackerPage() {
     ) {
       icons = banner?.rotate?.map((id) => {
         return {
-          name: catalogs[id].name,
-          url: catalogs[id].icon,
+          name: catalogs[id]?.name ?? id,
+          url: catalogs[id]?.icon ?? "",
         };
       }) ?? [
         {
