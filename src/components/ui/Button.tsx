@@ -4,18 +4,20 @@ import clsx from "clsx";
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary";
   size?: "sm" | "md";
+  isNew?: boolean;
 };
 
 export const Button = ({
   children,
   variant = "primary",
   size = "md",
+  isNew = false,
   className,
   disabled,
   ...props
 }: ButtonProps) => {
   const baseClass =
-    "flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors duration-150";
+    "relative flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors duration-150";
 
   const sizeClass = {
     sm: "py-1 px-2",
@@ -39,6 +41,12 @@ export const Button = ({
       disabled={disabled}
       {...props}
     >
+      {isNew && (
+        <span className="absolute -top-2 -right-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+          SOON
+        </span>
+      )}
+
       {children}
     </button>
   );

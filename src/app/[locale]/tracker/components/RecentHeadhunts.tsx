@@ -174,17 +174,10 @@ export const RecentHeadhunts = ({
                       <PiImageBroken size={24} />
                     </div>
                   )}
-                  {isGuarantee && (
-                    <div
-                      className={`absolute bg-violet-500 top-0 left-0 flex justify-center items-center py-0.5 px-1 rounded-br-xl text-sm font-semibold`}
-                    >
-                      G
-                    </div>
-                  )}
                   <div
-                    className={`${pityColor} absolute bottom-0 right-0 flex justify-center items-center py-0.5 px-1 rounded-tl-xl text-sm font-semibold`}
+                    className={`${isGuarantee ? "bg-violet-500" : pityColor} absolute bottom-0 right-0 flex justify-center items-center py-0.5 px-1 rounded-tl-xl text-sm font-semibold`}
                   >
-                    {record.pity || "Free"}
+                    {isGuarantee ? "G" : record.pity || "Free"}
                   </div>
                 </div>
               </Tooltip>

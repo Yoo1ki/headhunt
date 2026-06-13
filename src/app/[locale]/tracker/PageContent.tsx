@@ -5,7 +5,7 @@ import { PageTitle } from "@/components/ui/PageTitle";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useState } from "react";
 import { useHash } from "@/hooks/useHash";
-import { FaFileImport } from "react-icons/fa6";
+import { FaFileImport, FaGear } from "react-icons/fa6";
 import { FaSyncAlt } from "react-icons/fa";
 import { Banners } from "@/types/banner";
 import { Button } from "@/components/ui/Button";
@@ -20,6 +20,7 @@ import { DetailRecords } from "./components/DetailRecords";
 import { Catalogs } from "@/types/catalog";
 import { Enums } from "@/types/enums";
 import { RecordItem } from "@/types/profile";
+import { SettingsMenu } from "./components/SettingsMenu";
 
 type PageContentProps = {
   types: Types;
@@ -64,6 +65,7 @@ export const PageContent = ({
   const [selectedBannerId, setSelectedBannerId] = useState<string | null>(null);
 
   const [isOpenImport, setIsOpenImport] = useState(false);
+  const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   const combinedHeadhuntTypes = useMemo(
     () => [...types.opTypes, ...types.wpTypes],
@@ -151,12 +153,20 @@ export const PageContent = ({
     importRecords(profile?.stores?.headhunt?.url, "sync");
   };
 
+  const handleOpenImport = () => {
+    setIsOpenImport(true);
+  };
+
+  const handleOpenSettings = () => {
+    setIsOpenSettings(true);
+  };
+
   const resetKey = `${hash}-${selectedBannerId ?? "all"}`;
 
   return (
     <>
       <PageTitle title={t("pageTitle")}>
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end items-stretch">
           <Button
             onClick={handleSync}
             variant="secondary"
@@ -177,7 +187,7 @@ export const PageContent = ({
             )}
           </Button>
           <Button
-            onClick={() => setIsOpenImport(true)}
+            onClick={handleOpenImport}
             disabled={!hasHydrated || (isImporting && processType === "sync")}
           >
             <FaFileImport />
@@ -186,6 +196,17 @@ export const PageContent = ({
             ) : (
               <span>{t("import")}</span>
             )}
+          </Button>
+          <Button
+            onClick={handleOpenSettings}
+            variant="secondary"
+            isNew={true}
+            disabled={
+              // !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
+              true
+            }
+          >
+            <FaGear />
           </Button>
         </div>
       </PageTitle>
@@ -372,6 +393,10 @@ export const PageContent = ({
       <ImportRecords
         isOpen={isOpenImport}
         onClose={() => setIsOpenImport(false)}
+      />
+      <SettingsMenu
+        isOpen={isOpenSettings}
+        onClose={() => setIsOpenSettings(false)}
       />
     </>
   );
