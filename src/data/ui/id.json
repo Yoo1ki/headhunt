@@ -58,7 +58,7 @@
     "syncing": "Menyinkronkan...",
     "all": "Semua",
     "more": "Lagi...",
-    "guaranteedDesc": "Jaminan Rate-Up pada pull ke-{limit} pertama",
+    "guaranteedDesc": "Rate-Up Guaranteed pada pull ke-{limit} pertama di setiap banner",
     "noRecordFound": "Record tidak ditemukan.",
     "pull": "Pull",
     "operator": "Operator",
