@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { usePWAUpdate } from "@/hooks/usePWAUpdate";
-import { useSWReload } from "@/hooks/useSWReload";
+import { usePWAUpdate } from '@/hooks/usePWAUpdate';
+import { useSWReload } from '@/hooks/useSWReload';
 
 export default function PWAUpdateToast() {
   const { updateAvailable, updateApp } = usePWAUpdate();
@@ -12,12 +12,12 @@ export default function PWAUpdateToast() {
   return (
     <div
       style={{
-        position: "fixed",
+        position: 'fixed',
         bottom: 20,
         left: 20,
-        background: "#111",
-        color: "#fff",
-        padding: "12px 16px",
+        background: '#111',
+        color: '#fff',
+        padding: '12px 16px',
         borderRadius: 10,
         zIndex: 9999,
       }}

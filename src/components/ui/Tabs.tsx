@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useRef, useLayoutEffect, ReactNode } from "react";
+import { useState, useRef, useLayoutEffect, ReactNode } from 'react';
 
 type TabsProps = {
   tabs: string[];
@@ -43,19 +43,19 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
         prev.height !== newStyle.height ||
         prev.left !== newStyle.left
           ? newStyle
-          : prev,
+          : prev
       );
     };
 
     calculate();
 
-    window.addEventListener("resize", calculate);
-    return () => window.removeEventListener("resize", calculate);
+    window.addEventListener('resize', calculate);
+    return () => window.removeEventListener('resize', calculate);
   }, [active]);
 
   return (
     <div className="w-full">
-      <div className="relative flex overflow-auto scrollbar-hide my-2">
+      <div className="scrollbar-hide relative my-2 flex overflow-auto">
         {tabs.map((tab, i) => (
           <button
             key={tab}
@@ -63,8 +63,8 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
               refs.current[i] = el;
             }}
             onClick={() => setActive(i)}
-            className={`px-4 py-2 transition-colors font-semibold cursor-pointer ${
-              active === i ? "text-yellow-500" : "text-white/80"
+            className={`cursor-pointer px-4 py-2 font-semibold transition-colors ${
+              active === i ? 'text-yellow-500' : 'text-white/80'
             }`}
           >
             {tab}
@@ -72,12 +72,12 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
         ))}
 
         <span
-          className="absolute bottom-0 h-0.5 bg-white/50 rounded-xl"
+          className="absolute bottom-0 h-0.5 rounded-xl bg-white/50"
           style={{ width }}
         />
 
         <span
-          className="absolute bottom-0 bg-white/10 rounded-t-xl border-b-2 border-yellow-500 transition-all duration-300"
+          className="absolute bottom-0 rounded-t-xl border-b-2 border-yellow-500 bg-white/10 transition-all duration-300"
           style={{
             width: style.width,
             height: style.height,

@@ -1,23 +1,23 @@
-import fs from "fs/promises";
-import path from "path";
-import { GamePoolOperator } from "./interfaces/game-pool-operator";
-import { GamePoolWeapon } from "./interfaces/game-pool-weapon";
-import { CONFIG } from "@/config";
-import { ensureDirs } from "./lib/ensure-dirs";
-import { writeJsonFiles } from "./lib/write-json-files";
-import { scriptConfig } from "./config";
+import fs from 'fs/promises';
+import path from 'path';
+import { GamePoolOperator } from './interfaces/game-pool-operator';
+import { GamePoolWeapon } from './interfaces/game-pool-weapon';
+import { CONFIG } from '@/config';
+import { ensureDirs } from './lib/ensure-dirs';
+import { writeJsonFiles } from './lib/write-json-files';
+import { scriptConfig } from './config';
 
 const dir = process.cwd();
 
 const paths = {
-  rawBanners: path.join(dir, "raw/game/pool"),
+  rawBanners: path.join(dir, 'raw/game/pool'),
 };
 
 async function getContent(lang: string, poolId: string) {
   const params = new URLSearchParams({
     lang,
     pool_id: poolId,
-    server_id: "2",
+    server_id: '2',
   });
 
   const res = await fetch(`${CONFIG.endfieldBaseUrl}/api/content?${params}`);
@@ -59,7 +59,7 @@ async function main() {
 
           logs.push(`✅ fetched ${locale.id}`);
           return [`${locale.id}.json`, data] as const;
-        }),
+        })
       );
 
       const filtered = results.filter(Boolean) as NonNullable<
@@ -68,7 +68,7 @@ async function main() {
 
       if (filtered.length === 0) {
         console.log(`\n📦 ${pool.id}`);
-        logs.forEach((l) => console.log("  " + l));
+        logs.forEach((l) => console.log('  ' + l));
         console.warn(`🚫 no new data`);
         return;
       }
@@ -79,8 +79,8 @@ async function main() {
       await writeJsonFiles(dataMap, outputDir);
 
       console.log(`\n📦 ${pool.id}`);
-      logs.forEach((l) => console.log("  " + l));
-    }),
+      logs.forEach((l) => console.log('  ' + l));
+    })
   );
 }
 

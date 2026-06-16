@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import LZString from "lz-string";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { Profile } from "@/types/profile";
+import LZString from 'lz-string';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { Profile } from '@/types/profile';
 
 type StorageState = {
   profiles: Record<string, Profile>;
@@ -11,7 +11,7 @@ type StorageState = {
   hasHydrated: boolean;
 
   getCurrentProfile: () => Profile | null;
-  setProfile: (profile: Omit<Profile, "id"> & { id?: string }) => void;
+  setProfile: (profile: Omit<Profile, 'id'> & { id?: string }) => void;
   setCurrentProfileId: (id: string) => void;
   removeProfile: (id: string) => void;
 };
@@ -38,7 +38,7 @@ export const useStorageStore = create<StorageState>()(
   persist(
     (set, get) => ({
       profiles: {},
-      currentProfileId: "",
+      currentProfileId: '',
       hasHydrated: false,
 
       getCurrentProfile: () => {
@@ -77,7 +77,7 @@ export const useStorageStore = create<StorageState>()(
           // jika profile yang dihapus adalah current, set ke id terkecil yang ada
           if (state.currentProfileId === id) {
             const remainingIds = Object.keys(rest).sort((a, b) => +a - +b);
-            newCurrentId = remainingIds[0] || "";
+            newCurrentId = remainingIds[0] || '';
           }
 
           return {
@@ -88,7 +88,7 @@ export const useStorageStore = create<StorageState>()(
       },
     }),
     {
-      name: "storage",
+      name: 'storage',
       storage: createJSONStorage(() => storage),
 
       partialize: (state) => ({
@@ -105,10 +105,10 @@ export const useStorageStore = create<StorageState>()(
           !state.currentProfileId ||
           Object.keys(state.profiles).length === 0
         ) {
-          state.setProfile({ id: "1", name: "Endministrator", stores: {} });
-          state.setCurrentProfileId("1");
+          state.setProfile({ id: '1', name: 'Endministrator', stores: {} });
+          state.setCurrentProfileId('1');
         }
       },
-    },
-  ),
+    }
+  )
 );

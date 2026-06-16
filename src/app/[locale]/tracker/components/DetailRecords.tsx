@@ -1,7 +1,7 @@
-import { CONFIG } from "@/config";
-import { BannerItem, TypeItem } from "@/types/profile";
-import { useLocale, useTranslations } from "next-intl";
-import { useMemo } from "react";
+import { CONFIG } from '@/config';
+import { BannerItem, TypeItem } from '@/types/profile';
+import { useLocale, useTranslations } from 'next-intl';
+import { useMemo } from 'react';
 
 type DetailRecordsProps = {
   label?: string;
@@ -10,18 +10,18 @@ type DetailRecordsProps = {
 };
 
 export const DetailRecords = ({
-  label = "Unknown",
+  label = 'Unknown',
   stats,
   hash,
 }: DetailRecordsProps) => {
-  const t = useTranslations("TrackerPage.DetailRecords");
+  const t = useTranslations('TrackerPage.DetailRecords');
   const locale = useLocale();
 
   const details = useMemo(() => {
-    const isWeapon = hash.startsWith("weponbox");
+    const isWeapon = hash.startsWith('weponbox');
 
     const localeValue =
-      CONFIG.locales.find((l) => l.id === locale)?.value ?? "en-US";
+      CONFIG.locales.find((l) => l.id === locale)?.value ?? 'en-US';
 
     const r4 = stats?.r4Count ?? 0;
     const r5 = stats?.r5Count ?? 0;
@@ -34,32 +34,32 @@ export const DetailRecords = ({
 
     const base = [
       {
-        label: isWeapon ? t("totalIssue") : t("totalHeadhunt"),
+        label: isWeapon ? t('totalIssue') : t('totalHeadhunt'),
         value: totalPulls,
       },
       {
-        label: isWeapon ? t("totalArsenalTicket") : t("totalOroberyl"),
+        label: isWeapon ? t('totalArsenalTicket') : t('totalOroberyl'),
         value: (totalPulls * currencyMultiplier).toLocaleString(localeValue),
       },
       {
-        label: isWeapon ? t("r4Issue") : t("r4Headhunt"),
+        label: isWeapon ? t('r4Issue') : t('r4Headhunt'),
         value: r4,
       },
       {
-        label: isWeapon ? t("r5Issue") : t("r5Headhunt"),
+        label: isWeapon ? t('r5Issue') : t('r5Headhunt'),
         value: r5,
       },
       {
-        label: isWeapon ? t("r6Issue") : t("r6Headhunt"),
+        label: isWeapon ? t('r6Issue') : t('r6Headhunt'),
         value: r6,
       },
       {
-        label: t("r6AvgPity"),
-        value: hasR6 ? Math.round(stats?.r6AvgPity ?? 0) : "-",
+        label: t('r6AvgPity'),
+        value: hasR6 ? Math.round(stats?.r6AvgPity ?? 0) : '-',
       },
     ];
 
-    if (hash === "joint" || hash === "standard" || hash === "beginner") {
+    if (hash === 'joint' || hash === 'standard' || hash === 'beginner') {
       return base;
     }
 
@@ -67,16 +67,16 @@ export const DetailRecords = ({
       ...(!isWeapon
         ? [
             {
-              label: t("rotateWinRate"),
+              label: t('rotateWinRate'),
               value: hasR6
                 ? `${Math.round((stats?.rotateWin ?? 0) * 100)}%`
-                : "-",
+                : '-',
             },
           ]
         : []),
       {
-        label: t("rateupWinRate"),
-        value: hasR6 ? `${Math.round((stats?.rateupWin ?? 0) * 100)}%` : "-",
+        label: t('rateupWinRate'),
+        value: hasR6 ? `${Math.round((stats?.rateupWin ?? 0) * 100)}%` : '-',
       },
     ];
 
@@ -84,21 +84,21 @@ export const DetailRecords = ({
   }, [stats, hash, locale, t]);
 
   return (
-    <div className="flex flex-col gap-4 bg-neutral-800/80 rounded-xl px-3 py-2">
-      <h2 className="font-bold text-xl">{label}</h2>
+    <div className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 px-3 py-2">
+      <h2 className="text-xl font-bold">{label}</h2>
       <div
         className="grid gap-2"
-        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(8rem, 1fr))" }}
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(8rem, 1fr))' }}
       >
         {details.map((detail) => (
           <div
             key={detail.label}
-            className="flex flex-col gap-1 justify-center items-center bg-neutral-900/80 rounded-xl px-2 py-1"
+            className="flex flex-col items-center justify-center gap-1 rounded-xl bg-neutral-900/80 px-2 py-1"
           >
-            <span className="text-sm font-semibold text-center text-white line-clamp-1">
+            <span className="line-clamp-1 text-center text-sm font-semibold text-white">
               {detail.label}
             </span>
-            <span className="font-semibold text-white/80 line-clamp-1">
+            <span className="line-clamp-1 font-semibold text-white/80">
               {detail.value}
             </span>
           </div>

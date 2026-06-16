@@ -1,4 +1,4 @@
-import { InlineElement } from "../../scripts/interfaces/skport-wiki-detail-weapon";
+import { InlineElement } from '../../scripts/interfaces/skport-wiki-detail-weapon';
 
 export interface Weapon {
   id: string;

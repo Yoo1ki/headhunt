@@ -1,15 +1,15 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export function useSWReload() {
   useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
+    if (!('serviceWorker' in navigator)) return;
 
     const handler = () => window.location.reload();
 
-    navigator.serviceWorker.addEventListener("controllerchange", handler);
+    navigator.serviceWorker.addEventListener('controllerchange', handler);
 
     return () => {
-      navigator.serviceWorker.removeEventListener("controllerchange", handler);
+      navigator.serviceWorker.removeEventListener('controllerchange', handler);
     };
   }, []);
 }

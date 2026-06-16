@@ -128,7 +128,7 @@ interface Skill {
 }
 
 interface DescLevelParams {
-  "1": _1;
+  '1': _1;
 }
 
 interface _1 {

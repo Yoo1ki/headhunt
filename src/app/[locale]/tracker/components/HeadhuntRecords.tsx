@@ -1,23 +1,23 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Filter } from "@/components/ui/Filter";
-import { Button } from "@/components/ui/Button";
-import { FaSyncAlt } from "react-icons/fa";
-import { Enums } from "@/types/enums";
-import { CONFIG } from "@/config";
-import { RecordItem } from "@/types/profile";
-import { Banners } from "@/types/banner";
-import { Catalogs } from "@/types/catalog";
-import { useLocale, useTranslations } from "next-intl";
-import { PiImageBroken } from "react-icons/pi";
-import { CFImage } from "@/components/ui/CFImage";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { Filter } from '@/components/ui/Filter';
+import { Button } from '@/components/ui/Button';
+import { FaSyncAlt } from 'react-icons/fa';
+import { Enums } from '@/types/enums';
+import { CONFIG } from '@/config';
+import { RecordItem } from '@/types/profile';
+import { Banners } from '@/types/banner';
+import { Catalogs } from '@/types/catalog';
+import { useLocale, useTranslations } from 'next-intl';
+import { PiImageBroken } from 'react-icons/pi';
+import { CFImage } from '@/components/ui/CFImage';
 
 type HeadhuntRecordsProps = {
   hash: string;
   records: RecordItem[];
   banners: Partial<Banners>;
   catalogs: Partial<Catalogs>;
-  rarities: Enums["rarities"];
+  rarities: Enums['rarities'];
   isSyncing: boolean;
   disabled: boolean;
   onSync: () => void;
@@ -27,12 +27,12 @@ const formatTimestamp = ({ ts, locale }: { ts: number; locale: string }) => {
   const date = new Date(ts);
 
   const formatted = new Intl.DateTimeFormat(locale, {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
   }).format(date);
 
   return formatted;
@@ -53,18 +53,18 @@ export const HeadhuntRecords = ({
   disabled,
   onSync,
 }: HeadhuntRecordsProps) => {
-  const t = useTranslations("TrackerPage");
+  const t = useTranslations('TrackerPage');
   const locale = useLocale();
 
   const [visible, setVisible] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
-  const isWeapon = hash.startsWith("weponbox");
-  const hideBanner = hash === "standard" || hash === "beginner";
+  const isWeapon = hash.startsWith('weponbox');
+  const hideBanner = hash === 'standard' || hash === 'beginner';
 
   const [rarityFilter, setRarityFilter] = useState<string[]>([
-    "rarity_5",
-    "rarity_6",
+    'rarity_5',
+    'rarity_6',
   ]);
 
   const handleChangeRarity = (values: string[]) => {
@@ -81,7 +81,7 @@ export const HeadhuntRecords = ({
 
   const filteredRecords = useMemo(() => {
     return recordsWithNo.filter((record) =>
-      isIncluded(rarityFilter, `rarity_${record.rarity}`),
+      isIncluded(rarityFilter, `rarity_${record.rarity}`)
     );
   }, [recordsWithNo, rarityFilter]);
 
@@ -110,22 +110,22 @@ export const HeadhuntRecords = ({
 
   return (
     <>
-      <div className="bg-neutral-800/80 rounded-xl px-3 py-2 flex flex-col gap-4">
-        <div className="flex justify-between items-center gap-2">
-          <h2 className="font-bold text-xl">
-            {isWeapon ? t("issueRecords") : t("headhuntRecords")}
+      <div className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 px-3 py-2">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-xl font-bold">
+            {isWeapon ? t('issueRecords') : t('headhuntRecords')}
           </h2>
 
           <div>
             <Filter
               data={rarities
                 .filter((r) =>
-                  ["rarity_4", "rarity_5", "rarity_6"].includes(r.id),
+                  ['rarity_4', 'rarity_5', 'rarity_6'].includes(r.id)
                 )
                 .map((e) => ({
                   id: e.id,
                   name: `${e.name}★`,
-                  icon: "rarity",
+                  icon: 'rarity',
                   color: CONFIG.enumColors.rarities[e.id],
                 }))}
               value={rarityFilter}
@@ -136,16 +136,16 @@ export const HeadhuntRecords = ({
 
         <div className="overflow-x-auto">
           {visibleRecords.length ? (
-            <table className="table-auto w-max min-w-full whitespace-nowrap text-center table-records">
+            <table className="table-records w-max min-w-full table-auto text-center whitespace-nowrap">
               <thead>
                 <tr>
-                  <th className="w-10">{t("pull")}</th>
+                  <th className="w-10">{t('pull')}</th>
                   <th className="text-left">
-                    {isWeapon ? t("weapon") : t("operator")}
+                    {isWeapon ? t('weapon') : t('operator')}
                   </th>
-                  <th className="w-15">{t("pity")}</th>
-                  {!hideBanner && <th className="w-30">{t("banner")}</th>}
-                  <th className="w-40">{t("time")}</th>
+                  <th className="w-15">{t('pity')}</th>
+                  {!hideBanner && <th className="w-30">{t('banner')}</th>}
+                  <th className="w-40">{t('time')}</th>
                 </tr>
               </thead>
 
@@ -162,7 +162,7 @@ export const HeadhuntRecords = ({
                     ts: record.timestamp,
                     locale:
                       CONFIG.locales.find((l) => l.id === locale)?.value ??
-                      "en-US",
+                      'en-US',
                   });
 
                   return (
@@ -171,14 +171,14 @@ export const HeadhuntRecords = ({
                       style={
                         {
                           color: CONFIG.enumColors.rarities[rarityId],
-                          "--hover-bg": CONFIG.enumColors.rarities[rarityId],
+                          '--hover-bg': CONFIG.enumColors.rarities[rarityId],
                         } as React.CSSProperties
                       }
                       className="hover:bg-(--hover-bg)/5"
                     >
                       <td className="rounded-l-xl">{record.no}</td>
 
-                      <td className="flex gap-2 items-center">
+                      <td className="flex items-center gap-2">
                         {catalog ? (
                           <CFImage
                             src={catalog.icon}
@@ -188,7 +188,7 @@ export const HeadhuntRecords = ({
                             draggable={false}
                           />
                         ) : (
-                          <div className="w-10 h-10 flex justify-center items-center">
+                          <div className="flex h-10 w-10 items-center justify-center">
                             <PiImageBroken
                               size={24}
                               className="text-white/60"
@@ -198,12 +198,12 @@ export const HeadhuntRecords = ({
                         <span>{name}</span>
                       </td>
 
-                      <td>{record.pity || "Free"}</td>
+                      <td>{record.pity || 'Free'}</td>
 
                       {!hideBanner && (
                         <td>
-                          <div className="flex justify-center items-center">
-                            <div className="relative w-full h-full rounded-md overflow-hidden">
+                          <div className="flex items-center justify-center">
+                            <div className="relative h-full w-full overflow-hidden rounded-md">
                               {banner ? (
                                 <CFImage
                                   src={banner.image}
@@ -211,10 +211,10 @@ export const HeadhuntRecords = ({
                                   width={96}
                                   height={32}
                                   draggable={false}
-                                  className="w-full h-full"
+                                  className="h-full w-full"
                                 />
                               ) : (
-                                <div className="bg-neutral-900/80 w-full h-8 text-xs flex items-center justify-center rounded-md text-white/60">
+                                <div className="flex h-8 w-full items-center justify-center rounded-md bg-neutral-900/80 text-xs text-white/60">
                                   Unknown
                                 </div>
                               )}
@@ -231,17 +231,17 @@ export const HeadhuntRecords = ({
             </table>
           ) : (
             <div className="flex flex-col items-center gap-2 py-10">
-              <p>{t("noRecordFound")}</p>
+              <p>{t('noRecordFound')}</p>
               <Button onClick={onSync} variant="secondary" disabled={disabled}>
                 {isSyncing ? (
                   <>
                     <FaSyncAlt className="animate-spin" />
-                    <span> {t("syncing")}</span>
+                    <span> {t('syncing')}</span>
                   </>
                 ) : (
                   <>
                     <FaSyncAlt />
-                    <span>{t("sync")}</span>
+                    <span>{t('sync')}</span>
                   </>
                 )}
               </Button>
@@ -253,10 +253,10 @@ export const HeadhuntRecords = ({
       {hasMore && (
         <div
           ref={loadMoreRef}
-          className="bg-neutral-800 rounded-xl px-3 py-2 flex justify-center items-center gap-2"
+          className="flex items-center justify-center gap-2 rounded-xl bg-neutral-800 px-3 py-2"
         >
           <AiOutlineLoading3Quarters size={24} className="animate-spin" />
-          <p>{t("loading")}</p>
+          <p>{t('loading')}</p>
         </div>
       )}
     </>

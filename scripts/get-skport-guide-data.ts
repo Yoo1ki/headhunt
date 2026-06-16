@@ -1,30 +1,30 @@
-import { CONFIG } from "@/config";
-import puppeteer from "puppeteer-core";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
+import { CONFIG } from '@/config';
+import puppeteer from 'puppeteer-core';
+import { mkdir, writeFile } from 'fs/promises';
+import path from 'path';
 
 const executablePath =
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const userDataDir = "C:\\src\\Puppeteer\\User Data";
-const pageUrl = "https://game.skport.com/tools/endfield/build-guide";
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const userDataDir = 'C:\\src\\Puppeteer\\User Data';
+const pageUrl = 'https://game.skport.com/tools/endfield/build-guide';
 const endpoints: Record<string, string> = {
-  enums: "enums",
-  "search-chars": "operators",
-  "search-weapons": "weapons",
-  "search-equipments": "gear",
+  enums: 'enums',
+  'search-chars': 'operators',
+  'search-weapons': 'weapons',
+  'search-equipments': 'gear',
 };
 
 const dir = process.cwd();
 
 async function saveJson(type: string, locale: string, data: unknown) {
-  const rawSkportDir = path.join(dir, "raw/skport/guide/", type);
+  const rawSkportDir = path.join(dir, 'raw/skport/guide/', type);
   await mkdir(rawSkportDir, { recursive: true });
   const filePath = path.join(rawSkportDir, `${locale}.json`);
-  await writeFile(filePath, JSON.stringify(data), "utf-8");
+  await writeFile(filePath, JSON.stringify(data), 'utf-8');
 }
 
 async function main() {
-  console.log("🔥 [Get]: SKPort Guide data started");
+  console.log('🔥 [Get]: SKPort Guide data started');
   const browser = await puppeteer.launch({
     executablePath,
     userDataDir,
@@ -32,13 +32,13 @@ async function main() {
   });
 
   for (const locale of CONFIG.locales) {
-    console.log("Loading", locale.name, "...");
+    console.log('Loading', locale.name, '...');
     const page = await browser.newPage();
 
     const pending = new Set(Object.keys(endpoints));
     let done = false;
 
-    page.on("response", async (response) => {
+    page.on('response', async (response) => {
       const url = response.url();
 
       const matched = [...pending].find((e) => url.includes(e));
@@ -64,25 +64,25 @@ async function main() {
 
     await page.evaluateOnNewDocument((region) => {
       localStorage.setItem(
-        "SK_THEME_INFO",
+        'SK_THEME_INFO',
         JSON.stringify({
           region,
-          lang: "en",
-          device: "desktop",
-          color: "dark",
-          nativeColor: "dark",
-        }),
+          lang: 'en',
+          device: 'desktop',
+          color: 'dark',
+          nativeColor: 'dark',
+        })
       );
     }, locale.region);
 
-    await page.goto(pageUrl, { waitUntil: "domcontentloaded" });
+    await page.goto(pageUrl, { waitUntil: 'domcontentloaded' });
 
     await new Promise((r) => setTimeout(r, 5000));
     if (!page.isClosed()) await page.close();
   }
 
   await browser.close();
-  console.log("⚡ [Get]: SKPort Guide data done");
+  console.log('⚡ [Get]: SKPort Guide data done');
 }
 
 main().catch(console.error);

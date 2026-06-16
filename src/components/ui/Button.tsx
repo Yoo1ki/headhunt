@@ -1,39 +1,39 @@
-import { ButtonHTMLAttributes } from "react";
-import clsx from "clsx";
+import { ButtonHTMLAttributes } from 'react';
+import clsx from 'clsx';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "secondary";
-  size?: "sm" | "md";
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md';
   isNew?: boolean;
 };
 
 export const Button = ({
   children,
-  variant = "primary",
-  size = "md",
+  variant = 'primary',
+  size = 'md',
   isNew = false,
   className,
   disabled,
   ...props
 }: ButtonProps) => {
   const baseClass =
-    "relative flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors duration-150";
+    'relative flex justify-center items-center gap-1 font-semibold text-sm rounded-xl transition-colors duration-150';
 
   const sizeClass = {
-    sm: "py-1 px-2",
-    md: "py-2 px-3",
+    sm: 'py-1 px-2',
+    md: 'py-2 px-3',
   }[size];
 
   const variantClass = {
     primary:
-      "bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-white/80 hover:text-white active:text-white/60",
+      'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-white/80 hover:text-white active:text-white/60',
     secondary:
-      "bg-neutral-300 hover:bg-neutral-200 active:bg-neutral-400 text-black/80 hover:text-black active:text-black/60",
+      'bg-neutral-300 hover:bg-neutral-200 active:bg-neutral-400 text-black/80 hover:text-black active:text-black/60',
   }[variant];
 
   const stateClass = disabled
-    ? "bg-neutral-600 text-white/60"
-    : clsx(variantClass, "cursor-pointer");
+    ? 'bg-neutral-600 text-white/60'
+    : clsx(variantClass, 'cursor-pointer');
 
   return (
     <button

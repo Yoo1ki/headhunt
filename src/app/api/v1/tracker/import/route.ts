@@ -1,18 +1,18 @@
-import { CONFIG } from "@/config";
-import { headhuntTypes } from "@/data/tracker/headhunt-types";
+import { CONFIG } from '@/config';
+import { headhuntTypes } from '@/data/tracker/headhunt-types';
 import {
   DataImportRecord,
   GameRecordOperator,
   GameRecordWeapon,
   ResGameRecord,
-} from "@/types/import";
-import { importPayloadSchema } from "@/lib/validators/import-payload";
-import { jsonError, jsonSuccess } from "@/lib/api-response";
+} from '@/types/import';
+import { importPayloadSchema } from '@/lib/validators/import-payload';
+import { jsonError, jsonSuccess } from '@/lib/api-response';
 
 function isOperator(
-  e: GameRecordOperator | GameRecordWeapon,
+  e: GameRecordOperator | GameRecordWeapon
 ): e is GameRecordOperator {
-  return "charId" in e;
+  return 'charId' in e;
 }
 
 export async function POST(req: Request) {
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   // Validasi Payload
   const payload = importPayloadSchema.safeParse(body);
   if (!payload.success) {
-    return jsonError("Bad Request");
+    return jsonError('Bad Request');
   }
   const { type_id: HeadhuntTypeId, url, last_id: lastId } = payload.data;
 
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
   const type = headhuntTypes.find((type) => type.id === HeadhuntTypeId)!;
 
   const params = new URLSearchParams({
-    lang: "en-us",
+    lang: 'en-us',
     ...(lastId ? { seq_id: lastId.toString() } : {}),
     ...(type.poolType ? { pool_type: type.poolType } : {}),
     token: url.token,
@@ -67,11 +67,11 @@ export async function POST(req: Request) {
 
   // Cek Error Invalid Token
   if (success && res?.code === 40100) {
-    return jsonError("Invalid Token", 401);
+    return jsonError('Invalid Token', 401);
   }
   // Cek Error Lain
   if (!success || res?.code !== 0) {
-    return jsonError("Unknown Error", 500);
+    return jsonError('Unknown Error', 500);
   }
 
   // Menyiapkan data output

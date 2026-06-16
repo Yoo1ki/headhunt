@@ -1,14 +1,14 @@
-import { getLocale } from "next-intl/server";
-import { Roboto } from "next/font/google";
-import { CONFIG } from "@/config";
-import { Metadata } from "next";
-import "@/app/globals.css";
+import { getLocale } from 'next-intl/server';
+import { Roboto } from 'next/font/google';
+import { CONFIG } from '@/config';
+import { Metadata } from 'next';
+import '@/app/globals.css';
 
 const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["100", "300", "400", "500", "700", "900"],
-  style: ["normal", "italic"],
-  variable: "--font-roboto",
+  subsets: ['latin'],
+  weight: ['100', '300', '400', '500', '700', '900'],
+  style: ['normal', 'italic'],
+  variable: '--font-roboto',
 });
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className={`${roboto.variable} lg:flex lg:flex-col lg:h-screen`}>
+      <body className={`${roboto.variable} lg:flex lg:h-screen lg:flex-col`}>
         {children}
       </body>
     </html>

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { PageTitle } from "@/components/ui/PageTitle";
-import { useTranslations } from "next-intl";
-import { useCallback, useMemo, useState } from "react";
-import { Weapon } from "@/types/weapons";
-import { CONFIG } from "@/config";
-import { Filter } from "@/components/ui/Filter";
-import { ResetButton } from "@/components/ui/ResetButton";
-import { WeaponCard } from "./components/WeaponCard";
-import { EnumRarity, EnumWPType } from "@/types/enums";
+import { PageTitle } from '@/components/ui/PageTitle';
+import { useTranslations } from 'next-intl';
+import { useCallback, useMemo, useState } from 'react';
+import { Weapon } from '@/types/weapons';
+import { CONFIG } from '@/config';
+import { Filter } from '@/components/ui/Filter';
+import { ResetButton } from '@/components/ui/ResetButton';
+import { WeaponCard } from './components/WeaponCard';
+import { EnumRarity, EnumWPType } from '@/types/enums';
 
 type PageContentProps = {
   rarities: EnumRarity[];
@@ -18,9 +18,9 @@ type PageContentProps = {
 
 const searchByName = <T extends { name: string }>(
   arr: T[],
-  keyword: string,
+  keyword: string
 ): T[] => {
-  const regex = new RegExp(keyword, "i");
+  const regex = new RegExp(keyword, 'i');
   return arr.filter((obj) => regex.test(obj.name));
 };
 
@@ -28,8 +28,8 @@ const isIncluded = <T,>(filter: T[], value: T) =>
   filter.length === 0 || filter.includes(value);
 
 const getPriority = (labelType?: string) => {
-  if (labelType === "label_type_up") return 0;
-  if (labelType === "label_type_new") return 1;
+  if (labelType === 'label_type_up') return 0;
+  if (labelType === 'label_type_new') return 1;
   return 2;
 };
 
@@ -38,17 +38,17 @@ export const PageContent = ({
   wpTypes,
   weapons,
 }: PageContentProps) => {
-  const t = useTranslations("WeaponsPage");
+  const t = useTranslations('WeaponsPage');
 
   const [filters, setFilters] = useState({
-    search: "",
+    search: '',
     rarities: [] as string[],
     wpTypes: [] as string[],
   });
 
   const WpTipesMap = useMemo(
     () => Object.fromEntries(wpTypes.map((r) => [r.id, r])),
-    [wpTypes],
+    [wpTypes]
   );
 
   const handleSearch = useCallback((value: string) => {
@@ -59,22 +59,22 @@ export const PageContent = ({
     <K extends keyof typeof filters>(key: K, value: (typeof filters)[K]) => {
       setFilters((prev) => ({ ...prev, [key]: value }));
     },
-    [],
+    []
   );
 
   const handleChangeRarities = useCallback(
-    (values: string[]) => changeFilter("rarities", values),
-    [changeFilter],
+    (values: string[]) => changeFilter('rarities', values),
+    [changeFilter]
   );
 
   const handleChangeWpTypes = useCallback(
-    (values: string[]) => changeFilter("wpTypes", values),
-    [changeFilter],
+    (values: string[]) => changeFilter('wpTypes', values),
+    [changeFilter]
   );
 
   const handleReset = useCallback(() => {
     setFilters({
-      search: "",
+      search: '',
       rarities: [],
       wpTypes: [],
     });
@@ -85,7 +85,7 @@ export const PageContent = ({
       (wp: Weapon) => isIncluded(filters.rarities, wp.rarityId),
       (wp: Weapon) => isIncluded(filters.wpTypes, wp.HeadhuntTypeId),
     ],
-    [filters],
+    [filters]
   );
 
   const filteredWeapons = useMemo(() => {
@@ -100,28 +100,28 @@ export const PageContent = ({
   }, [weapons, filters.search, filterFns]);
 
   const isResetDisabled =
-    filters.search === "" &&
+    filters.search === '' &&
     filters.rarities.length === 0 &&
     filters.wpTypes.length === 0;
 
   return (
     <>
       <PageTitle
-        title={t("pageTitle")}
+        title={t('pageTitle')}
         search={{
-          placeholder: `${t("searchLabel")}...`,
+          placeholder: `${t('searchLabel')}...`,
           onChange: handleSearch,
           value: filters.search,
         }}
-        desc={t("count", { count: filteredWeapons.length })}
+        desc={t('count', { count: filteredWeapons.length })}
       />
       {
-        <div className="flex flex-wrap mb-4 gap-4">
+        <div className="mb-4 flex flex-wrap gap-4">
           <Filter
             data={rarities.map((e) => ({
               id: e.id,
               name: `${e.name}★`,
-              icon: "rarity",
+              icon: 'rarity',
               color: CONFIG.enumColors.rarities[e.id],
             }))}
             value={filters.rarities}
@@ -141,7 +141,7 @@ export const PageContent = ({
         </div>
       }
       {filteredWeapons.length === 0 ? (
-        <div className="text-center my-40">{t("notfound")}</div>
+        <div className="my-40 text-center">{t('notfound')}</div>
       ) : (
         <div className="grid-weapons">
           {filteredWeapons.map((wp) => {
@@ -153,7 +153,7 @@ export const PageContent = ({
                 rarity={{
                   id: wp.rarityId,
                   color:
-                    CONFIG.enumColors.rarities[wp.rarityId as EnumRarity["id"]],
+                    CONFIG.enumColors.rarities[wp.rarityId as EnumRarity['id']],
                 }}
                 type={{
                   id: wp.HeadhuntTypeId,

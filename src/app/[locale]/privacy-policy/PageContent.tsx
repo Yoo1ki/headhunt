@@ -1,16 +1,16 @@
-import { PageTitle } from "@/components/ui/PageTitle";
-import { CONFIG } from "@/config";
+import { PageTitle } from '@/components/ui/PageTitle';
+import { CONFIG } from '@/config';
 
 export const PageContent = () => {
   return (
     <>
-      <PageTitle title={"Privacy Policy"}>
+      <PageTitle title={'Privacy Policy'}>
         <p>
           <span className="font-semibold">Last updated:</span> 22 April 2026
         </p>
       </PageTitle>
 
-      <div className="flex flex-1 flex-col gap-5 bg-neutral-800/80 rounded-xl p-5">
+      <div className="flex flex-1 flex-col gap-5 rounded-xl bg-neutral-800/80 p-5">
         {/* 1 */}
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">1. Introduction</h2>
@@ -25,7 +25,7 @@ export const PageContent = () => {
         <div className="flex flex-col gap-1">
           <h2 className="text-2xl font-semibold">2. Data Collection</h2>
           <p>
-            {CONFIG.appName} does{" "}
+            {CONFIG.appName} does{' '}
             <strong>
               not collect, store, or process personal data on our servers
             </strong>

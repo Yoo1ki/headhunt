@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
-import React from "react";
+import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
+import React from 'react';
 
 type SettingsMenuProps = {
   isOpen: boolean;

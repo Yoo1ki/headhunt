@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export function usePWAUpdate() {
   const [updateAvailable, setUpdateAvailable] = useState(false);
@@ -6,7 +6,7 @@ export function usePWAUpdate() {
     useState<ServiceWorkerRegistration | null>(null);
 
   useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
+    if (!('serviceWorker' in navigator)) return;
 
     navigator.serviceWorker.ready.then((reg) => {
       setRegistration(reg);
@@ -17,12 +17,12 @@ export function usePWAUpdate() {
       }
 
       // detect update baru
-      reg.addEventListener("updatefound", () => {
+      reg.addEventListener('updatefound', () => {
         const newWorker = reg.installing;
 
-        newWorker?.addEventListener("statechange", () => {
+        newWorker?.addEventListener('statechange', () => {
           if (
-            newWorker.state === "installed" &&
+            newWorker.state === 'installed' &&
             navigator.serviceWorker.controller
           ) {
             setUpdateAvailable(true);
@@ -33,7 +33,7 @@ export function usePWAUpdate() {
   }, []);
 
   const updateApp = () => {
-    registration?.waiting?.postMessage({ type: "SKIP_WAITING" });
+    registration?.waiting?.postMessage({ type: 'SKIP_WAITING' });
   };
 
   return { updateAvailable, updateApp };

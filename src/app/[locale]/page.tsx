@@ -1,17 +1,17 @@
-import { getLocale } from "next-intl/server";
-import { PageContent } from "./PageContent";
-import { Banners } from "@/types/banner";
-import { Catalogs } from "@/types/catalog";
+import { getLocale } from 'next-intl/server';
+import { PageContent } from './PageContent';
+import { Banners } from '@/types/banner';
+import { Catalogs } from '@/types/catalog';
 
 export default async function HomePage() {
   const locale = await getLocale();
 
   const [banners, catalogs] = await Promise.all([
     import(`@/data/tracker/banners/${locale}.json`).then(
-      (m) => m.default as Banners,
+      (m) => m.default as Banners
     ),
     import(`@/data/tracker/catalogs/${locale}.json`).then(
-      (m) => m.default as Catalogs,
+      (m) => m.default as Catalogs
     ),
   ]);
 
@@ -30,19 +30,19 @@ export default async function HomePage() {
   });
 
   const limitedBanners = activeBanners
-    .filter((banner) => !banner.id.startsWith("weaponbox"))
+    .filter((banner) => !banner.id.startsWith('weaponbox'))
     .map((banner) => {
       let itemName = catalogs[banner.rateup]?.name ?? banner.rateup;
-      if (banner.id.startsWith("joint")) {
+      if (banner.id.startsWith('joint')) {
         itemName =
-          banner.rotate?.map((id) => catalogs[id].name).join(", ") ?? itemName;
+          banner.rotate?.map((id) => catalogs[id].name).join(', ') ?? itemName;
       }
       return {
         id: banner.id,
         name: banner.name,
         endTime: banner.endTime,
         itemName,
-        icon: catalogs[banner.rateup]?.icon ?? "",
+        icon: catalogs[banner.rateup]?.icon ?? '',
       };
     });
 

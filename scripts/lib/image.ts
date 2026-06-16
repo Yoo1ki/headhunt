@@ -1,10 +1,10 @@
-import sharp from "sharp";
-import crypto from "crypto";
-import path from "path";
-import fs from "fs/promises";
+import sharp from 'sharp';
+import crypto from 'crypto';
+import path from 'path';
+import fs from 'fs/promises';
 
 export const hashBuffer = (buffer: Buffer): string => {
-  return crypto.createHash("sha256").update(buffer).digest("hex");
+  return crypto.createHash('sha256').update(buffer).digest('hex');
 };
 
 export const downloadImage = async (url: string): Promise<Buffer> => {
@@ -26,7 +26,7 @@ export const resizeImage = async ({
 };
 
 export const squareImage = async (
-  buffer: Buffer<ArrayBufferLike>,
+  buffer: Buffer<ArrayBufferLike>
 ): Promise<Buffer<ArrayBufferLike>> => {
   const image = sharp(buffer);
   const metadata = await image.metadata();

@@ -1,14 +1,14 @@
-import fs from "fs/promises";
-import path from "path";
+import fs from 'fs/promises';
+import path from 'path';
 import {
   SKPortWikiDetailWeapon,
   Document,
   InlineElement,
-} from "./interfaces/skport-wiki-detail-weapon";
+} from './interfaces/skport-wiki-detail-weapon';
 
 const dir = process.cwd();
 const paths = {
-  rawSkportWikiDetail: path.join(dir, "raw/skport/wiki/detail"),
+  rawSkportWikiDetail: path.join(dir, 'raw/skport/wiki/detail'),
 } as const;
 
 async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
@@ -17,9 +17,9 @@ async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
 
   await Promise.all(
     files.map(async (file) => {
-      const content = await fs.readFile(path.join(dir, file), "utf-8");
+      const content = await fs.readFile(path.join(dir, file), 'utf-8');
       data[file] = JSON.parse(content) as T;
-    }),
+    })
   );
 
   return data;
@@ -61,34 +61,34 @@ async function main() {
   // operators, weapons, ...
   for (const folder of folders) {
     const items = await fs.readdir(
-      path.join(paths.rawSkportWikiDetail, folder),
+      path.join(paths.rawSkportWikiDetail, folder)
     );
 
     // rossi, lupine-scarlet, ...
     for (const item of items) {
       const detailMaps = await readJsonFiles<SKPortWikiDetailWeapon>(
-        path.join(paths.rawSkportWikiDetail, folder, item),
+        path.join(paths.rawSkportWikiDetail, folder, item)
       );
 
       // id.json, en.json, ...
       for (const [file, json] of Object.entries(detailMaps)) {
-        if (folder !== "weapons") break;
+        if (folder !== 'weapons') break;
 
-        let baseATK = "-/-";
+        let baseATK = '-/-';
         let skills: {
           label: string;
           content: InlineElement[];
         }[] = [];
 
         const document = json.data.item.document;
-        const isRarity6 = json.data.item.tagIds.includes("10006");
+        const isRarity6 = json.data.item.tagIds.includes('10006');
 
         const chapterInformationId = document.chapterGroup.find((f) =>
-          ["Informasi Senjata", "Weapon Information"].includes(f.title.trim()),
+          ['Informasi Senjata', 'Weapon Information'].includes(f.title.trim())
         )?.widgets[0].id;
 
         const chapterSkillId = document.chapterGroup.find((f) =>
-          ["Skill & Aktivasi", "Skill & Activation"].includes(f.title.trim()),
+          ['Skill & Aktivasi', 'Skill & Activation'].includes(f.title.trim())
         )?.widgets[0].id;
 
         // Informasi Senjata
@@ -105,19 +105,19 @@ async function main() {
           const cellContent = getTableCellContents({
             document,
             chapterId: chapterInformationId,
-            blockId: "siDaPc",
+            blockId: 'siDaPc',
             cellPositions,
           });
 
           baseATK = cellContent
             .slice(0, 2)
-            .map((e) => e?.[0]?.text.text || "-")
-            .join("/");
+            .map((e) => e?.[0]?.text.text || '-')
+            .join('/');
 
           if (!chapterSkillId) {
             skills = cellContent.slice(2).map((e) => {
               return {
-                label: "9/9",
+                label: '9/9',
                 content: e,
               };
             });
@@ -135,13 +135,13 @@ async function main() {
           const cellContent = getTableCellContents({
             document,
             chapterId: chapterSkillId,
-            blockId: "6kzKo0",
+            blockId: '6kzKo0',
             cellPositions,
           });
 
           skills = cellContent.map((e, i) => {
             return {
-              label: i === 2 ? "4/9" : "9/9",
+              label: i === 2 ? '4/9' : '9/9',
               content: e,
             };
           });

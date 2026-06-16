@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FaSearch, FaTimes } from 'react-icons/fa';
 
 type SearchFormProps = {
   placeholder?: string;
@@ -9,7 +9,7 @@ type SearchFormProps = {
 };
 
 export const SearchForm = ({
-  placeholder = "Cari Karakter...",
+  placeholder = 'Cari Karakter...',
   value,
   onChange,
 }: SearchFormProps) => {
@@ -18,10 +18,10 @@ export const SearchForm = ({
   }
 
   return (
-    <div className="relative group lg:w-fit w-full">
+    <div className="group relative w-full lg:w-fit">
       <input
         type="text"
-        className="rounded-xl py-2 px-10 w-full bg-white/10 hover:bg-white/15 focus:ring-yellow-400 focus:ring-2 focus:bg-white/15 outline-none placeholder-white/60"
+        className="w-full rounded-xl bg-white/10 px-10 py-2 placeholder-white/60 outline-none hover:bg-white/15 focus:bg-white/15 focus:ring-2 focus:ring-yellow-400"
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
@@ -31,7 +31,7 @@ export const SearchForm = ({
         <button
           type="button"
           className="absolute top-0 right-0 mt-2 mr-2 p-1"
-          onClick={() => onChange("")}
+          onClick={() => onChange('')}
         >
           <FaTimes className="text-white/60" />
         </button>

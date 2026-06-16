@@ -1,26 +1,26 @@
-import fs from "fs/promises";
-import { CONFIG } from "@/config";
-import puppeteer, { Browser, HTTPResponse } from "puppeteer-core";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
-import { SKPortWikiCatalog } from "./interfaces/skport-wiki-catalog";
-import { SKPortWikiDetailOperator } from "./interfaces/skport-wiki-detail-operator";
+import fs from 'fs/promises';
+import { CONFIG } from '@/config';
+import puppeteer, { Browser, HTTPResponse } from 'puppeteer-core';
+import { mkdir, writeFile } from 'fs/promises';
+import path from 'path';
+import { SKPortWikiCatalog } from './interfaces/skport-wiki-catalog';
+import { SKPortWikiDetailOperator } from './interfaces/skport-wiki-detail-operator';
 
 const dir = process.cwd();
 
 const paths = {
-  rawCatalog: path.join(dir, "raw/skport/wiki/catalog"),
+  rawCatalog: path.join(dir, 'raw/skport/wiki/catalog'),
 } as const;
 
 const executablePath =
-  "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
-const userDataDir = "C:\\src\\Puppeteer\\User Data";
-const pageUrl = "https://wiki.skport.com/endfield/detail";
+  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const userDataDir = 'C:\\src\\Puppeteer\\User Data';
+const pageUrl = 'https://wiki.skport.com/endfield/detail';
 
 const subIds: Record<string, string> = {
-  "1": "operators",
-  "2": "weapons",
-  "4": "gear",
+  '1': 'operators',
+  '2': 'weapons',
+  '4': 'gear',
 };
 
 async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
@@ -28,7 +28,7 @@ async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
   const data: Record<string, T> = {};
 
   for (const file of files) {
-    const content = await fs.readFile(path.join(dir, file), "utf-8");
+    const content = await fs.readFile(path.join(dir, file), 'utf-8');
     data[file] = JSON.parse(content);
   }
 
@@ -38,23 +38,23 @@ async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
 async function saveJson(dir: string, locale: string, data: unknown) {
   await mkdir(dir, { recursive: true });
   const filePath = path.join(dir, `${locale}.json`);
-  await writeFile(filePath, JSON.stringify(data), "utf-8");
+  await writeFile(filePath, JSON.stringify(data), 'utf-8');
 }
 
 function generateSlug(title: string) {
   return title
     .toLowerCase()
     .trim()
-    .replace(/[\s\W-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[\s\W-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function buildSlugMap(
-  json: SKPortWikiCatalog,
+  json: SKPortWikiCatalog
 ): Record<string, Record<string, string>> {
   const result: Record<string, Record<string, string>> = {};
 
-  const subData = json.data.catalog.find((e) => e.id === "1")?.typeSub;
+  const subData = json.data.catalog.find((e) => e.id === '1')?.typeSub;
 
   const items = Object.entries(subIds).flatMap(
     ([subId]) =>
@@ -64,7 +64,7 @@ function buildSlugMap(
           subId,
           itemId: item.itemId,
           itemName: item.name,
-        })) ?? [],
+        })) ?? []
   );
 
   for (const item of items) {
@@ -79,7 +79,7 @@ async function fetchItem(
   browser: Browser,
   item: { subId: string; path: string; itemId: string },
   localeId: string,
-  region: string,
+  region: string
 ): Promise<SKPortWikiDetailOperator | null> {
   for (let attempt = 1; attempt <= Infinity; attempt++) {
     const page = await browser.newPage();
@@ -93,7 +93,7 @@ async function fetchItem(
             if (!found) resolve(null);
           }, 8000);
 
-          page.on("response", async (response: HTTPResponse) => {
+          page.on('response', async (response: HTTPResponse) => {
             const url = response.url();
 
             if (!url.includes(`/web/v1/wiki/item/info?id=${item.itemId}`))
@@ -114,22 +114,22 @@ async function fetchItem(
 
           await page.evaluateOnNewDocument((region: string) => {
             localStorage.setItem(
-              "SK_THEME_INFO",
+              'SK_THEME_INFO',
               JSON.stringify({
                 region,
-                lang: "en",
-                device: "desktop",
-                color: "dark",
-                nativeColor: "dark",
-              }),
+                lang: 'en',
+                device: 'desktop',
+                color: 'dark',
+                nativeColor: 'dark',
+              })
             );
           }, region);
 
           await page.goto(
             `${pageUrl}?mainTypeId=1&subTypeId=${item.subId}&gameEntryId=${item.itemId}`,
-            { waitUntil: "domcontentloaded" },
+            { waitUntil: 'domcontentloaded' }
           );
-        },
+        }
       );
 
       await page.close();
@@ -148,7 +148,7 @@ async function fetchItem(
 }
 
 async function main() {
-  console.log("🔥 [Get]: SKPort Wiki detail started");
+  console.log('🔥 [Get]: SKPort Wiki detail started');
 
   const browser = await puppeteer.launch({
     executablePath,
@@ -158,14 +158,14 @@ async function main() {
 
   const catalogMap = await readJsonFiles<SKPortWikiCatalog>(paths.rawCatalog);
 
-  const slugMap = buildSlugMap(catalogMap["en.json"]);
+  const slugMap = buildSlugMap(catalogMap['en.json']);
 
   const localesMap = Object.fromEntries(
-    CONFIG.locales.filter((e) => e.enable).map((e) => [e.id, e]),
+    CONFIG.locales.filter((e) => e.enable).map((e) => [e.id, e])
   );
 
   for (const [file, json] of Object.entries(catalogMap)) {
-    const subData = json.data.catalog.find((e) => e.id === "1")?.typeSub;
+    const subData = json.data.catalog.find((e) => e.id === '1')?.typeSub;
 
     const items = Object.entries(subIds).flatMap(
       ([subId, path]) =>
@@ -175,10 +175,10 @@ async function main() {
             subId,
             path,
             itemId: item.itemId,
-          })) ?? [],
+          })) ?? []
     );
 
-    const localeId = file.split(".")[0];
+    const localeId = file.split('.')[0];
     if (!localesMap[localeId]) continue;
 
     const total = items.length;
@@ -193,7 +193,7 @@ async function main() {
         browser,
         item,
         localeId,
-        localesMap[localeId].region,
+        localesMap[localeId].region
       );
 
       if (!res) {
@@ -203,22 +203,22 @@ async function main() {
 
       const rawDir = path.join(
         dir,
-        "raw/skport/wiki/detail/",
+        'raw/skport/wiki/detail/',
         item.path,
-        slugMap[item.subId][item.itemId],
+        slugMap[item.subId][item.itemId]
       );
 
       await saveJson(rawDir, localeId, res);
 
       console.log(
         `[${localeId}] (${item.path}): 💾`,
-        slugMap[item.subId][item.itemId],
+        slugMap[item.subId][item.itemId]
       );
     }
   }
 
   await browser.close();
-  console.log("⚡ [Get]: SKPort Wiki data done");
+  console.log('⚡ [Get]: SKPort Wiki data done');
 }
 
 main().catch(console.error);

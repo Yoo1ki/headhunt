@@ -1,4 +1,4 @@
-import { SearchForm } from "./SearchForm";
+import { SearchForm } from './SearchForm';
 
 type PageTitleProps = {
   title: string;
@@ -18,9 +18,9 @@ export const PageTitle = ({
   children,
 }: PageTitleProps) => {
   return (
-    <div className="mb-4 flex flex-col gap-4 lg:flex-row lg:gap-2 items-center justify-between">
-      <div className="flex flex-col lg:flex-row items-center lg:items-end gap-2">
-        <h1 className="text-4xl text-shadow-lg font-medium text-center">
+    <div className="mb-4 flex flex-col items-center justify-between gap-4 lg:flex-row lg:gap-2">
+      <div className="flex flex-col items-center gap-2 lg:flex-row lg:items-end">
+        <h1 className="text-center text-4xl font-medium text-shadow-lg">
           {title}
         </h1>
         {desc && <span className="text-sm text-white/80">{desc}</span>}

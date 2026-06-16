@@ -1,9 +1,9 @@
-import { getRemainingTime } from "@/lib/time";
-import { useEffect, useState } from "react";
+import { getRemainingTime } from '@/lib/time';
+import { useEffect, useState } from 'react';
 
 export function useCountdown(endTime?: number | string | Date) {
   const [time, setTime] = useState(() =>
-    endTime ? getRemainingTime(endTime) : null,
+    endTime ? getRemainingTime(endTime) : null
   );
 
   useEffect(() => {

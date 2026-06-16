@@ -1,6 +1,6 @@
-import { jsonError } from "@/lib/api-response";
+import { jsonError } from '@/lib/api-response';
 
-const handleAll = () => jsonError("Not Found", 404);
+const handleAll = () => jsonError('Not Found', 404);
 
 export {
   handleAll as GET,

@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { create } from "zustand";
-import { useStorageStore } from "./useStorageStore";
-import { HeadhuntTypeId, headhuntTypes } from "@/data/tracker/headhunt-types";
+import { create } from 'zustand';
+import { useStorageStore } from './useStorageStore';
+import { HeadhuntTypeId, headhuntTypes } from '@/data/tracker/headhunt-types';
 import {
   BannerItem,
   GachaResult,
   Headhunt,
   RecordItem,
   TypeItem,
-} from "@/types/profile";
-import { ImportRecordItem, ResImportRecord } from "@/types/import";
-import banners from "@/data/tracker/banners/en.json";
-import { Banners } from "@/types/banner";
-import { fetchWithRetry } from "@/lib/fetch-with-retry";
+} from '@/types/profile';
+import { ImportRecordItem, ResImportRecord } from '@/types/import';
+import banners from '@/data/tracker/banners/en.json';
+import { Banners } from '@/types/banner';
+import { fetchWithRetry } from '@/lib/fetch-with-retry';
 
-type TProcessType = "import" | "sync";
+type TProcessType = 'import' | 'sync';
 
 type ImportState = {
   processType: TProcessType;
   isImporting: boolean;
   totalRecord: number;
-  errorType: "unknown" | "expired" | "network" | null;
+  errorType: 'unknown' | 'expired' | 'network' | null;
 
   importRecords: (url: string, processType?: TProcessType) => Promise<void>;
 };
@@ -120,7 +120,7 @@ function getStats({
       rotateWin: 0,
       rateupWin: 0,
       guarantee: 0,
-    },
+    }
   );
 
   const r4Count = (oldData?.r4Count ?? 0) + newCount.r4;
@@ -139,12 +139,12 @@ function getStats({
 
   const r5AvgPity = combineAverage(
     { avg: oldData?.r5AvgPity, count: oldData?.r5Count },
-    { pityCount: newCount.r5Pity, count: newCount.r5 },
+    { pityCount: newCount.r5Pity, count: newCount.r5 }
   );
 
   const r6AvgPity = combineAverage(
     { avg: oldData?.r6AvgPity, count: oldData?.r6Count },
-    { pityCount: newCount.r6Pity, count: newCount.r6 },
+    { pityCount: newCount.r6Pity, count: newCount.r6 }
   );
 
   const rotateWin = attempt > 0 ? rotateWinCount / attempt : 0;
@@ -164,12 +164,12 @@ function getStats({
 }
 
 export const useImportStore = create<ImportState>((set) => ({
-  processType: "import",
+  processType: 'import',
   isImporting: false,
   totalRecord: 0,
   errorType: null,
 
-  importRecords: async (url, processType = "import") => {
+  importRecords: async (url, processType = 'import') => {
     const { getCurrentProfile, setProfile } = useStorageStore.getState();
 
     const profile = getCurrentProfile();
@@ -183,7 +183,7 @@ export const useImportStore = create<ImportState>((set) => ({
           rateup: value.rateup,
           rotate: value.rotate,
         },
-      ]),
+      ])
     );
 
     const parsedUrl = new URL(url);
@@ -215,9 +215,9 @@ export const useImportStore = create<ImportState>((set) => ({
         try {
           // Metode ini harus diganti jika trafik banyak
           // karena ini multiple request
-          const response = await fetchWithRetry("/api/v1/tracker/import", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
+          const response = await fetchWithRetry('/api/v1/tracker/import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               type_id: type.id,
               url: parsedUrl,
@@ -230,7 +230,7 @@ export const useImportStore = create<ImportState>((set) => ({
             await new Promise((r) => setTimeout(r, 300));
             isError = true;
             set({
-              errorType: response.status === 401 ? "expired" : "unknown",
+              errorType: response.status === 401 ? 'expired' : 'unknown',
             });
             break;
           }
@@ -238,7 +238,7 @@ export const useImportStore = create<ImportState>((set) => ({
           const json = (await response.json()) as ResImportRecord;
 
           const newList = json.data.list.filter(
-            (record) => record.id > lastRecordId,
+            (record) => record.id > lastRecordId
           );
 
           list.push(...newList);
@@ -253,7 +253,7 @@ export const useImportStore = create<ImportState>((set) => ({
           await new Promise((r) => setTimeout(r, 300));
           isError = true;
           set({
-            errorType: err instanceof TypeError ? "network" : "unknown",
+            errorType: err instanceof TypeError ? 'network' : 'unknown',
           });
           break;
         }
@@ -285,10 +285,10 @@ export const useImportStore = create<ImportState>((set) => ({
 
     if (missingBannerIds.size) {
       try {
-        const res = await fetchWithRetry("/api/v1/tracker/banner", {
-          method: "POST",
+        const res = await fetchWithRetry('/api/v1/tracker/banner', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             ids: [...missingBannerIds],
@@ -300,7 +300,7 @@ export const useImportStore = create<ImportState>((set) => ({
           await new Promise((r) => setTimeout(r, 300));
           isError = true;
           set({
-            errorType: res.status === 401 ? "expired" : "unknown",
+            errorType: res.status === 401 ? 'expired' : 'unknown',
           });
         }
 
@@ -318,7 +318,7 @@ export const useImportStore = create<ImportState>((set) => ({
         await new Promise((r) => setTimeout(r, 300));
         isError = true;
         set({
-          errorType: err instanceof TypeError ? "network" : "unknown",
+          errorType: err instanceof TypeError ? 'network' : 'unknown',
         });
       }
     }
@@ -435,7 +435,7 @@ export const useImportStore = create<ImportState>((set) => ({
       //* Update Banner
       groupBy(
         newHeadhunt.records[type.id] ?? [],
-        (record) => record.bannerId,
+        (record) => record.bannerId
       ).forEach((records, id) => {
         const pity = pityMap.get(id);
         const stats = getStats({

@@ -1,24 +1,24 @@
-import { CONFIG } from "@/config";
-import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { CONFIG } from '@/config';
+import { Link } from '@/i18n/navigation';
+import { useTranslations } from 'next-intl';
 
 export const Footer = () => {
-  const t = useTranslations("App");
+  const t = useTranslations('App');
   const y = new Date().getFullYear();
 
   return (
-    <footer className="bg-neutral-800/80 p-4 lg:rounded-xl w-full">
+    <footer className="w-full bg-neutral-800/80 p-4 lg:rounded-xl">
       <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row gap-2 items-center text-center justify-between text-sm text-white/80">
-          <div className="lg:text-left text-center">
-            <p>{`${CONFIG.appName} ${t("disclaimerP1")}`}</p>
-            <p>{t("disclaimerP2")}</p>
+        <div className="flex flex-col items-center justify-between gap-2 text-center text-sm text-white/80 lg:flex-row">
+          <div className="text-center lg:text-left">
+            <p>{`${CONFIG.appName} ${t('disclaimerP1')}`}</p>
+            <p>{t('disclaimerP2')}</p>
           </div>
-          <div className="lg:text-right text-center">
-            <div className="flex gap-2 justify-center lg:justify-end">
+          <div className="text-center lg:text-right">
+            <div className="flex justify-center gap-2 lg:justify-end">
               <Link
                 href="/privacy-policy"
-                className="hover:text-yellow-500 duration-300"
+                className="duration-300 hover:text-yellow-500"
               >
                 Privacy Policy
               </Link>
@@ -33,7 +33,7 @@ export const Footer = () => {
             </div>
             <p className="font-semibold">
               &copy; {CONFIG.since}
-              {y > CONFIG.since && " - " + y} {CONFIG.appName}
+              {y > CONFIG.since && ' - ' + y} {CONFIG.appName}
             </p>
           </div>
         </div>

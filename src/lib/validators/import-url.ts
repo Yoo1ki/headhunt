@@ -1,5 +1,5 @@
-import { z } from "zod";
-import { CONFIG } from "@/config";
+import { z } from 'zod';
+import { CONFIG } from '@/config';
 
 const extractImportUrl = (value: string) => {
   const url = new URL(value);
@@ -9,8 +9,8 @@ const extractImportUrl = (value: string) => {
   const params = url.searchParams;
 
   const patterns = [
-    { token: "u8_token", server: "server" },
-    { token: "token", server: "server_id" },
+    { token: 'u8_token', server: 'server' },
+    { token: 'token', server: 'server_id' },
   ];
 
   for (const pattern of patterns) {
@@ -30,13 +30,13 @@ export const importUrlSchema = z.url().transform((value, ctx) => {
     const result = extractImportUrl(value);
 
     if (!result) {
-      ctx.addIssue({ code: "custom", message: "Invalid URL" });
+      ctx.addIssue({ code: 'custom', message: 'Invalid URL' });
       return z.NEVER;
     }
 
     return result;
   } catch {
-    ctx.addIssue({ code: "custom", message: "Invalid URL" });
+    ctx.addIssue({ code: 'custom', message: 'Invalid URL' });
     return z.NEVER;
   }
 });

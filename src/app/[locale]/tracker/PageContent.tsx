@@ -1,32 +1,32 @@
-"use client";
+'use client';
 
-import { Loading } from "@/components/ui/Loading";
-import { PageTitle } from "@/components/ui/PageTitle";
-import { useTranslations } from "next-intl";
-import { useEffect, useMemo, useState } from "react";
-import { useHash } from "@/hooks/useHash";
-import { FaFileImport, FaGear } from "react-icons/fa6";
-import { FaSyncAlt } from "react-icons/fa";
-import { Banners } from "@/types/banner";
-import { Button } from "@/components/ui/Button";
-import { useStorageStore } from "@/store/useStorageStore";
-import { useImportStore } from "@/store/useImportStore";
-import { TypeCard } from "./components/TypeCard";
-import { ImportRecords } from "./components/ImportRecords";
-import { HeadhuntRecords } from "./components/HeadhuntRecords";
-import { RecentHeadhunts } from "./components/RecentHeadhunts";
-import { RecentBanners } from "./components/RecentBanners";
-import { DetailRecords } from "./components/DetailRecords";
-import { Catalogs } from "@/types/catalog";
-import { Enums } from "@/types/enums";
-import { RecordItem } from "@/types/profile";
-import { SettingsMenu } from "./components/SettingsMenu";
+import { Loading } from '@/components/ui/Loading';
+import { PageTitle } from '@/components/ui/PageTitle';
+import { useTranslations } from 'next-intl';
+import { useEffect, useMemo, useState } from 'react';
+import { useHash } from '@/hooks/useHash';
+import { FaFileImport, FaGear } from 'react-icons/fa6';
+import { FaSyncAlt } from 'react-icons/fa';
+import { Banners } from '@/types/banner';
+import { Button } from '@/components/ui/Button';
+import { useStorageStore } from '@/store/useStorageStore';
+import { useImportStore } from '@/store/useImportStore';
+import { TypeCard } from './components/TypeCard';
+import { ImportRecords } from './components/ImportRecords';
+import { HeadhuntRecords } from './components/HeadhuntRecords';
+import { RecentHeadhunts } from './components/RecentHeadhunts';
+import { RecentBanners } from './components/RecentBanners';
+import { DetailRecords } from './components/DetailRecords';
+import { Catalogs } from '@/types/catalog';
+import { Enums } from '@/types/enums';
+import { RecordItem } from '@/types/profile';
+import { SettingsMenu } from './components/SettingsMenu';
 
 type PageContentProps = {
   types: Types;
   banners: Banners;
   catalogs: Catalogs;
-  rarities: Enums["rarities"];
+  rarities: Enums['rarities'];
 };
 
 type Types = {
@@ -54,7 +54,7 @@ export const PageContent = ({
   catalogs,
   rarities,
 }: PageContentProps) => {
-  const t = useTranslations("TrackerPage");
+  const t = useTranslations('TrackerPage');
 
   const hasHydrated = useStorageStore((s) => s.hasHydrated);
   const profile = useStorageStore((s) => s.getCurrentProfile());
@@ -69,19 +69,19 @@ export const PageContent = ({
 
   const combinedHeadhuntTypes = useMemo(
     () => [...types.opTypes, ...types.wpTypes],
-    [types],
+    [types]
   );
 
   const hashList = useMemo(
     () => combinedHeadhuntTypes.map((e) => e.id),
-    [combinedHeadhuntTypes],
+    [combinedHeadhuntTypes]
   );
 
-  const hash = useHash(hasHydrated ? types.opTypes[0]?.id : "", hashList);
+  const hash = useHash(hasHydrated ? types.opTypes[0]?.id : '', hashList);
 
   const isBannerType = useMemo(
     () => types.opTypes.some((t) => t.id === hash),
-    [types.opTypes, hash],
+    [types.opTypes, hash]
   );
 
   const { records, bannerIds } = useMemo(() => {
@@ -109,7 +109,7 @@ export const PageContent = ({
         ? source.filter((r) => r.bannerId === selectedBannerId)
         : source;
     } else {
-      const baseKey = hash.split("_")[0];
+      const baseKey = hash.split('_')[0];
       const source = allRecords?.[baseKey] ?? [];
 
       result = source.filter((r) => r.bannerId === hash);
@@ -150,7 +150,7 @@ export const PageContent = ({
 
   const handleSync = async () => {
     if (!profile?.stores?.headhunt?.url || isImporting) return;
-    importRecords(profile?.stores?.headhunt?.url, "sync");
+    importRecords(profile?.stores?.headhunt?.url, 'sync');
   };
 
   const handleOpenImport = () => {
@@ -161,12 +161,12 @@ export const PageContent = ({
     setIsOpenSettings(true);
   };
 
-  const resetKey = `${hash}-${selectedBannerId ?? "all"}`;
+  const resetKey = `${hash}-${selectedBannerId ?? 'all'}`;
 
   return (
     <>
-      <PageTitle title={t("pageTitle")}>
-        <div className="flex gap-2 justify-end items-stretch">
+      <PageTitle title={t('pageTitle')}>
+        <div className="flex items-stretch justify-end gap-2">
           <Button
             onClick={handleSync}
             variant="secondary"
@@ -174,27 +174,27 @@ export const PageContent = ({
               !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
             }
           >
-            {isImporting && processType === "sync" ? (
+            {isImporting && processType === 'sync' ? (
               <>
                 <FaSyncAlt className="animate-spin" />
-                <span>{t("syncing")}</span>
+                <span>{t('syncing')}</span>
               </>
             ) : (
               <>
                 <FaSyncAlt />
-                <span>{t("sync")}</span>
+                <span>{t('sync')}</span>
               </>
             )}
           </Button>
           <Button
             onClick={handleOpenImport}
-            disabled={!hasHydrated || (isImporting && processType === "sync")}
+            disabled={!hasHydrated || (isImporting && processType === 'sync')}
           >
             <FaFileImport />
-            {isImporting && processType === "import" ? (
-              <span>{t("importing")}</span>
+            {isImporting && processType === 'import' ? (
+              <span>{t('importing')}</span>
             ) : (
-              <span>{t("import")}</span>
+              <span>{t('import')}</span>
             )}
           </Button>
           <Button
@@ -211,10 +211,10 @@ export const PageContent = ({
         </div>
       </PageTitle>
 
-      <div className="flex flex-col flex-1 gap-2 xl:gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-2">
+      <div className="flex flex-1 flex-col gap-2 xl:gap-4">
+        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
           {types.opTypes
-            .filter((type) => type.id !== "weponbox")
+            .filter((type) => type.id !== 'weponbox')
             .map((type) => {
               const types = hasHydrated
                 ? profile?.stores?.headhunt?.types[type.id]
@@ -223,9 +223,9 @@ export const PageContent = ({
               let pity5 = types?.r5Pity ?? 0;
               let pity6 = types?.r6Pity ?? 0;
 
-              if (type.id === "joint" && hasHydrated) {
+              if (type.id === 'joint' && hasHydrated) {
                 const banners =
-                  profile?.stores?.headhunt?.banners["joint_1_2_2"];
+                  profile?.stores?.headhunt?.banners['joint_1_2_2'];
                 pity5 = banners?.r5Pity ?? 0;
                 pity6 = banners?.r6Pity ?? 0;
               }
@@ -246,11 +246,11 @@ export const PageContent = ({
             })}
         </div>
 
-        <div className="flex flex-col xl:flex-row gap-4 w-full flex-1">
-          <div className="flex flex-col flex-1 gap-4">
+        <div className="flex w-full flex-1 flex-col gap-4 xl:flex-row">
+          <div className="flex flex-1 flex-col gap-4">
             <div className="flex flex-col gap-2">
               {types.opTypes
-                .filter((type) => type.id === "weponbox")
+                .filter((type) => type.id === 'weponbox')
                 .map((type) => {
                   return (
                     <TypeCard
@@ -293,10 +293,10 @@ export const PageContent = ({
               ADS
             </div> */}
           </div>
-          <div className="flex flex-col gap-4 flex-2">
+          <div className="flex flex-2 flex-col gap-4">
             {!hasHydrated ? (
-              <div className="flex flex-1 justify-center items-center bg-neutral-800/80 rounded-xl py-4">
-                <Loading label={t("loading")} />
+              <div className="flex flex-1 items-center justify-center rounded-xl bg-neutral-800/80 py-4">
+                <Loading label={t('loading')} />
               </div>
             ) : profile?.stores?.headhunt?.records ? (
               <>
@@ -342,16 +342,16 @@ export const PageContent = ({
                   banners={banners}
                   rarities={rarities}
                   disabled={!profile.stores.headhunt.url || isImporting}
-                  isSyncing={isImporting && processType === "sync"}
+                  isSyncing={isImporting && processType === 'sync'}
                   onSync={handleSync}
                 />
               </>
             ) : (
-              <div className="flex flex-col flex-1 justify-center items-center bg-neutral-800/80 rounded-xl gap-2 px-3 py-2">
+              <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-xl bg-neutral-800/80 px-3 py-2">
                 <div>
                   {profile?.stores?.headhunt?.records
-                    ? t("noGachaRecords")
-                    : t("noRecordImported")}
+                    ? t('noGachaRecords')
+                    : t('noRecordImported')}
                 </div>
                 {profile?.stores?.headhunt ? (
                   <Button
@@ -359,28 +359,28 @@ export const PageContent = ({
                     variant="secondary"
                     disabled={!profile.stores.headhunt?.url || isImporting}
                   >
-                    {isImporting && processType === "sync" ? (
+                    {isImporting && processType === 'sync' ? (
                       <>
                         <FaSyncAlt className="animate-spin" />
-                        <span>{t("syncing")}</span>
+                        <span>{t('syncing')}</span>
                       </>
                     ) : (
                       <>
                         <FaSyncAlt />
-                        <span>{t("sync")}</span>
+                        <span>{t('sync')}</span>
                       </>
                     )}
                   </Button>
                 ) : (
                   <Button
                     onClick={() => setIsOpenImport(true)}
-                    disabled={isImporting && processType === "sync"}
+                    disabled={isImporting && processType === 'sync'}
                   >
                     <FaFileImport />
-                    {isImporting && processType === "import" ? (
-                      <span>{t("importing")}</span>
+                    {isImporting && processType === 'import' ? (
+                      <span>{t('importing')}</span>
                     ) : (
-                      <span>{t("import")}</span>
+                      <span>{t('import')}</span>
                     )}
                   </Button>
                 )}

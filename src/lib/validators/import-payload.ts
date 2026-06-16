@@ -1,10 +1,10 @@
-import { z } from "zod";
-import { importUrlSchema } from "@/lib/validators/import-url";
-import { headhuntTypes } from "@/data/tracker/headhunt-types";
+import { z } from 'zod';
+import { importUrlSchema } from '@/lib/validators/import-url';
+import { headhuntTypes } from '@/data/tracker/headhunt-types';
 
 export const importPayloadSchema = z.object({
   type_id: z.string().refine((val) => headhuntTypes.some((e) => e.id === val), {
-    message: "Invalid Type",
+    message: 'Invalid Type',
   }),
   url: importUrlSchema,
   last_id: z.number().optional(),

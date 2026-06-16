@@ -1,17 +1,17 @@
-import { getLocale } from "next-intl/server";
-import { PageContent } from "./PageContent";
-import { Banners } from "@/types/banner";
-import { Catalogs } from "@/types/catalog";
-import { Enums } from "@/types/enums";
-import { HeadhuntTypeId, headhuntTypes } from "@/data/tracker/headhunt-types";
-import { getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
+import { getLocale } from 'next-intl/server';
+import { PageContent } from './PageContent';
+import { Banners } from '@/types/banner';
+import { Catalogs } from '@/types/catalog';
+import { Enums } from '@/types/enums';
+import { HeadhuntTypeId, headhuntTypes } from '@/data/tracker/headhunt-types';
+import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 
 export async function generateMetadata() {
-  const t = await getTranslations("TrackerPage");
+  const t = await getTranslations('TrackerPage');
 
   const metadata: Metadata = {
-    title: t("title"),
+    title: t('title'),
   };
 
   return metadata;
@@ -19,14 +19,14 @@ export async function generateMetadata() {
 
 export default async function TrackerPage() {
   const locale = await getLocale();
-  const t = await getTranslations("TrackerPage");
+  const t = await getTranslations('TrackerPage');
 
   const [banners, catalogs, enums] = await Promise.all([
     import(`@/data/tracker/banners/${locale}.json`).then(
-      (m) => m.default as Banners,
+      (m) => m.default as Banners
     ),
     import(`@/data/tracker/catalogs/${locale}.json`).then(
-      (m) => m.default as Catalogs,
+      (m) => m.default as Catalogs
     ),
     import(`@/data/enums/${locale}.json`).then((m) => m.default as Enums),
   ]);
@@ -56,7 +56,7 @@ export default async function TrackerPage() {
         icons: [
           {
             name: catalogs[banner.rateup]?.name ?? banner.rateup,
-            url: catalogs[banner.rateup]?.icon ?? "",
+            url: catalogs[banner.rateup]?.icon ?? '',
           },
         ],
         r5PityLimit: weponbox!.r5PityLimit,
@@ -74,7 +74,7 @@ export default async function TrackerPage() {
       ? [
           {
             name: catalogs[banner.rateup]?.name ?? banner.rateup,
-            url: catalogs[banner.rateup]?.icon ?? "",
+            url: catalogs[banner.rateup]?.icon ?? '',
           },
         ]
       : [
@@ -108,7 +108,7 @@ export default async function TrackerPage() {
       icons = banner?.rotate?.map((id) => {
         return {
           name: catalogs[id]?.name ?? id,
-          url: catalogs[id]?.icon ?? "",
+          url: catalogs[id]?.icon ?? '',
         };
       }) ?? [
         {
@@ -134,7 +134,7 @@ export default async function TrackerPage() {
   };
 
   const rarities = enums.rarities.filter((r) =>
-    ["rarity_4", "rarity_5", "rarity_6"].includes(r.id),
+    ['rarity_4', 'rarity_5', 'rarity_6'].includes(r.id)
   );
 
   return (

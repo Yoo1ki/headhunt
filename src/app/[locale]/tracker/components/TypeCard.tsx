@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import { CFImage } from "@/components/ui/CFImage";
+import clsx from 'clsx';
+import { CFImage } from '@/components/ui/CFImage';
 
 type TypeCardProps = {
   hash: string;
@@ -28,15 +28,15 @@ export const TypeCard = ({
   isSelected,
 }: TypeCardProps) => {
   const borderColor = isSelected
-    ? "border-yellow-500 bg-neutral-700/80"
-    : "border-transparent bg-neutral-800/80";
+    ? 'border-yellow-500 bg-neutral-700/80'
+    : 'border-transparent bg-neutral-800/80';
 
   const content = (
     <>
       <div className="flex items-end">
-        {hash !== "weponbox" ? (
-          hash === "joint" ? (
-            <div className="relative w-25 h-25 grid grid-cols-2">
+        {hash !== 'weponbox' ? (
+          hash === 'joint' ? (
+            <div className="relative grid h-25 w-25 grid-cols-2">
               {icons.map((icon, index) => (
                 <CFImage
                   key={index}
@@ -49,7 +49,7 @@ export const TypeCard = ({
               ))}
             </div>
           ) : (
-            <div className="relative w-25 h-25">
+            <div className="relative h-25 w-25">
               <CFImage
                 src={icons[0].url}
                 alt={icons[0].name}
@@ -59,7 +59,7 @@ export const TypeCard = ({
                 className="absolute inset-0"
               />
               {icons.length > 1 && (
-                <div className="absolute bottom-0 right-0 left-0 flex justify-center gap-2">
+                <div className="absolute right-0 bottom-0 left-0 flex justify-center gap-2">
                   {icons.slice(1).map((icon, index) => (
                     <CFImage
                       key={index}
@@ -79,12 +79,12 @@ export const TypeCard = ({
           <></>
         )}
       </div>
-      <div className="flex flex-1 pl-1 pr-3 py-2">
+      <div className="flex flex-1 py-2 pr-3 pl-1">
         <div
-          className={`flex flex-col flex-1 gap-1 justify-between ${hash === "weponbox" ? "items-center" : ""}`}
+          className={`flex flex-1 flex-col justify-between gap-1 ${hash === 'weponbox' ? 'items-center' : ''}`}
         >
           <p className="font-bold">{name}</p>
-          {hash === "weponbox" ? (
+          {hash === 'weponbox' ? (
             <div className="flex gap-1">
               {icons.map((icon, index) => (
                 <CFImage
@@ -99,10 +99,10 @@ export const TypeCard = ({
             </div>
           ) : (
             <div className="flex flex-col">
-              <div className="flex justify-between items-center rounded-lg text-[#FF7100]">
+              <div className="flex items-center justify-between rounded-lg text-[#FF7100]">
                 <CFImage
                   src="rarity_6"
-                  alt={"6★"}
+                  alt={'6★'}
                   width={54}
                   height={29}
                   draggable={false}
@@ -113,10 +113,10 @@ export const TypeCard = ({
                   {pity6}/{pity6Limit}
                 </div>
               </div>
-              <div className="flex justify-between items-center rounded-lg text-[#FFC000]">
+              <div className="flex items-center justify-between rounded-lg text-[#FFC000]">
                 <CFImage
                   src="rarity_5"
-                  alt={"5★"}
+                  alt={'5★'}
                   width={54}
                   height={29}
                   draggable={false}
@@ -134,9 +134,9 @@ export const TypeCard = ({
     </>
   );
 
-  if (hash === "rerun") {
+  if (hash === 'rerun') {
     return (
-      <div className="flex bg-neutral-800/80 rounded-xl overflow-hidden">
+      <div className="flex overflow-hidden rounded-xl bg-neutral-800/80">
         {content}
       </div>
     );
@@ -145,8 +145,8 @@ export const TypeCard = ({
   return (
     <a
       className={clsx(
-        "border-2 flex hover:bg-neutral-700/80 rounded-xl overflow-hidden transition duration-300",
-        borderColor,
+        'flex overflow-hidden rounded-xl border-2 transition duration-300 hover:bg-neutral-700/80',
+        borderColor
       )}
       href={`#${hash}`}
     >

@@ -1,8 +1,8 @@
-import { Banners } from "@/types/banner";
-import { useMemo, useState } from "react";
-import { Tooltip } from "@/components/ui/Tooltip";
-import { CFImage } from "@/components/ui/CFImage";
-import { useTranslations } from "next-intl";
+import { Banners } from '@/types/banner';
+import { useMemo, useState } from 'react';
+import { Tooltip } from '@/components/ui/Tooltip';
+import { CFImage } from '@/components/ui/CFImage';
+import { useTranslations } from 'next-intl';
 
 type RecentBannersProps = {
   banners: Partial<Banners>;
@@ -19,7 +19,7 @@ export const RecentBanners = ({
   selectedId,
   onSelected,
 }: RecentBannersProps) => {
-  const t = useTranslations("TrackerPage");
+  const t = useTranslations('TrackerPage');
   const [visible, setVisible] = useState(PAGE_SIZE);
 
   const bannerIdsArray = useMemo(() => [...bannerIds], [bannerIds]);
@@ -41,24 +41,24 @@ export const RecentBanners = ({
 
   const getColor = (isSelected: boolean) =>
     isSelected
-      ? "ring-2 bg-white/10"
-      : "bg-neutral-900 hover:ring-2 hover:ring-white/50 ";
+      ? 'ring-2 bg-white/10'
+      : 'bg-neutral-900 hover:ring-2 hover:ring-white/50 ';
 
   return (
-    <div className="bg-neutral-800/80 rounded-xl px-3 py-2 flex flex-col gap-4">
-      <h2 className="font-bold text-xl">{t("recentBanners")}</h2>
+    <div className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 px-3 py-2">
+      <h2 className="text-xl font-bold">{t('recentBanners')}</h2>
 
       <div
-        className="grid gap-2 items-center"
+        className="grid items-center gap-2"
         style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(6rem, 1fr))",
+          gridTemplateColumns: 'repeat(auto-fill, minmax(6rem, 1fr))',
         }}
       >
         <div
-          className={`${getColor(selectedId === null)} px-3 py-1 w-full h-full rounded-md flex justify-center items-center cursor-pointer`}
+          className={`${getColor(selectedId === null)} flex h-full w-full cursor-pointer items-center justify-center rounded-md px-3 py-1`}
           onClick={() => onSelected(null)}
         >
-          <span className="text-xs font-semibold line-clamp-1">{t("all")}</span>
+          <span className="line-clamp-1 text-xs font-semibold">{t('all')}</span>
         </div>
         {fBannerIds.map((bannerId) => {
           const banner = banners[bannerId];
@@ -74,7 +74,7 @@ export const RecentBanners = ({
                   ? () => (isSelected ? onSelected(null) : onSelected(bannerId))
                   : undefined
               }
-              className={`${colorClass} relative w-full h-full rounded-md overflow-hidden ${banner ? "cursor-pointer" : "select-none"}`}
+              className={`${colorClass} relative h-full w-full overflow-hidden rounded-md ${banner ? 'cursor-pointer' : 'select-none'}`}
             >
               {banner ? (
                 <CFImage
@@ -83,10 +83,10 @@ export const RecentBanners = ({
                   width={96}
                   height={32}
                   draggable={false}
-                  className="w-full h-full"
+                  className="h-full w-full"
                 />
               ) : (
-                <div className="bg-neutral-900/80 text-xs w-full h-full flex items-center justify-center rounded-md text-white/60">
+                <div className="flex h-full w-full items-center justify-center rounded-md bg-neutral-900/80 text-xs text-white/60">
                   Unknown
                 </div>
               )}
@@ -99,10 +99,10 @@ export const RecentBanners = ({
             title={`${bannerIdsArray.length - visible}`}
           >
             <button
-              className="rounded-xl w-full text-xs px-3 py-1 self-center cursor-pointer bg-neutral-700/80 text-white/80 hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60 transition"
+              className="w-full cursor-pointer self-center rounded-xl bg-neutral-700/80 px-3 py-1 text-xs text-white/80 transition hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60"
               onClick={handleLoadMore}
             >
-              {t("more")}
+              {t('more')}
             </button>
           </Tooltip>
         )}

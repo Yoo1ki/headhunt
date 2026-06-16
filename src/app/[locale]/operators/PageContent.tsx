@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { PageTitle } from "@/components/ui/PageTitle";
-import { useTranslations } from "next-intl";
-import { useCallback, useMemo, useState } from "react";
-import { Operator } from "@/types/operator";
-import { OperatorCard } from "./components/OperatorCard";
-import { CONFIG } from "@/config";
-import { Filter } from "@/components/ui/Filter";
-import { ResetButton } from "@/components/ui/ResetButton";
-import { EnumElement, EnumOpClass, EnumRarity } from "@/types/enums";
+import { PageTitle } from '@/components/ui/PageTitle';
+import { useTranslations } from 'next-intl';
+import { useCallback, useMemo, useState } from 'react';
+import { Operator } from '@/types/operator';
+import { OperatorCard } from './components/OperatorCard';
+import { CONFIG } from '@/config';
+import { Filter } from '@/components/ui/Filter';
+import { ResetButton } from '@/components/ui/ResetButton';
+import { EnumElement, EnumOpClass, EnumRarity } from '@/types/enums';
 
 type PageContentProps = {
   rarities: EnumRarity[];
@@ -19,9 +19,9 @@ type PageContentProps = {
 
 const searchByName = <T extends { name: string }>(
   arr: T[],
-  keyword: string,
+  keyword: string
 ): T[] => {
-  const regex = new RegExp(keyword, "i");
+  const regex = new RegExp(keyword, 'i');
   return arr.filter((obj) => regex.test(obj.name));
 };
 
@@ -29,8 +29,8 @@ const isIncluded = <T,>(filter: T[], value: T) =>
   filter.length === 0 || filter.includes(value);
 
 const getPriority = (labelType?: string) => {
-  if (labelType === "label_type_up") return 0;
-  if (labelType === "label_type_new") return 1;
+  if (labelType === 'label_type_up') return 0;
+  if (labelType === 'label_type_new') return 1;
   return 2;
 };
 
@@ -40,10 +40,10 @@ export const PageContent = ({
   opClass,
   operators,
 }: PageContentProps) => {
-  const t = useTranslations("OperatorsPage");
+  const t = useTranslations('OperatorsPage');
 
   const [filters, setFilters] = useState({
-    search: "",
+    search: '',
     rarities: [] as string[],
     elements: [] as string[],
     opClass: [] as string[],
@@ -51,19 +51,19 @@ export const PageContent = ({
 
   const elementsMap = useMemo(
     () => Object.fromEntries(elements.map((e) => [e.id, e])),
-    [elements],
+    [elements]
   );
 
   const opClassMap = useMemo(
     () => Object.fromEntries(opClass.map((o) => [o.id, o])),
-    [opClass],
+    [opClass]
   );
 
   const changeFilter = useCallback(
     <K extends keyof typeof filters>(key: K, value: (typeof filters)[K]) => {
       setFilters((prev) => ({ ...prev, [key]: value }));
     },
-    [],
+    []
   );
 
   const handleSearch = useCallback((value: string) => {
@@ -71,23 +71,23 @@ export const PageContent = ({
   }, []);
 
   const handleChangeRarities = useCallback(
-    (values: string[]) => changeFilter("rarities", values),
-    [changeFilter],
+    (values: string[]) => changeFilter('rarities', values),
+    [changeFilter]
   );
 
   const handleChangeElements = useCallback(
-    (values: string[]) => changeFilter("elements", values),
-    [changeFilter],
+    (values: string[]) => changeFilter('elements', values),
+    [changeFilter]
   );
 
   const handleChangeOpClass = useCallback(
-    (values: string[]) => changeFilter("opClass", values),
-    [changeFilter],
+    (values: string[]) => changeFilter('opClass', values),
+    [changeFilter]
   );
 
   const handleReset = useCallback(() => {
     setFilters({
-      search: "",
+      search: '',
       rarities: [],
       elements: [],
       opClass: [],
@@ -100,7 +100,7 @@ export const PageContent = ({
       (op: Operator) => isIncluded(filters.elements, op.elementId),
       (op: Operator) => isIncluded(filters.opClass, op.opClassId),
     ],
-    [filters],
+    [filters]
   );
 
   const filteredOperators = useMemo(() => {
@@ -115,7 +115,7 @@ export const PageContent = ({
   }, [operators, filters.search, filterFns]);
 
   const isDisableResetButton =
-    filters.search === "" &&
+    filters.search === '' &&
     filters.rarities.length === 0 &&
     filters.elements.length === 0 &&
     filters.opClass.length === 0;
@@ -123,25 +123,25 @@ export const PageContent = ({
   return (
     <>
       <PageTitle
-        title={t("pageTitle")}
+        title={t('pageTitle')}
         search={{
-          placeholder: `${t("searchLabel")}...`,
+          placeholder: `${t('searchLabel')}...`,
           onChange: handleSearch,
           value: filters.search,
         }}
-        desc={t("count", { count: filteredOperators.length })}
+        desc={t('count', { count: filteredOperators.length })}
       />
       {
-        <div className="flex flex-wrap mb-4 gap-4">
+        <div className="mb-4 flex flex-wrap gap-4">
           <Filter
             data={rarities
               .filter((r) =>
-                ["rarity_4", "rarity_5", "rarity_6"].includes(r.id),
+                ['rarity_4', 'rarity_5', 'rarity_6'].includes(r.id)
               )
               .map((e) => ({
                 id: e.id,
                 name: `${e.name}★`,
-                icon: "rarity",
+                icon: 'rarity',
                 color: CONFIG.enumColors.rarities[e.id],
               }))}
             value={filters.rarities}
@@ -171,7 +171,7 @@ export const PageContent = ({
         </div>
       }
       {filteredOperators.length === 0 ? (
-        <div className="text-center my-40">{t("notfound")}</div>
+        <div className="my-40 text-center">{t('notfound')}</div>
       ) : (
         <div className="grid-operators">
           {filteredOperators.map((op) => {
@@ -184,7 +184,7 @@ export const PageContent = ({
                 name={op.name}
                 avatar={op.avatar}
                 rarityColor={
-                  CONFIG.enumColors.rarities[op.rarityId as EnumRarity["id"]]
+                  CONFIG.enumColors.rarities[op.rarityId as EnumRarity['id']]
                 }
                 element={{
                   name: _element.name,

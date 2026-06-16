@@ -1,4 +1,4 @@
-import { ImportRecordItem } from "./import";
+import { ImportRecordItem } from './import';
 
 export type Profile = {
   id: string;
@@ -43,7 +43,7 @@ type Detail = {
   guarantee: number;
 };
 
-export type RecordItem = Omit<ImportRecordItem, "rarity"> & {
+export type RecordItem = Omit<ImportRecordItem, 'rarity'> & {
   typeId: string;
   pity: number;
   rarity: number;

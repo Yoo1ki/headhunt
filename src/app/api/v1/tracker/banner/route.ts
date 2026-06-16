@@ -1,8 +1,8 @@
-import { CONFIG } from "@/config";
-import { jsonError, jsonSuccess } from "@/lib/api-response";
-import { bannerPayloadSchema } from "@/lib/validators/banner-payload";
-import { GamePoolOperator } from "../../../../../../scripts/interfaces/game-pool-operator";
-import { GamePoolWeapon } from "../../../../../../scripts/interfaces/game-pool-weapon";
+import { CONFIG } from '@/config';
+import { jsonError, jsonSuccess } from '@/lib/api-response';
+import { bannerPayloadSchema } from '@/lib/validators/banner-payload';
+import { GamePoolOperator } from '../../../../../../scripts/interfaces/game-pool-operator';
+import { GamePoolWeapon } from '../../../../../../scripts/interfaces/game-pool-weapon';
 
 type Banner = {
   id: string;
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   // Validasi Payload
   const payload = bannerPayloadSchema.safeParse(body);
   if (!payload.success) {
-    return jsonError("Bad Request");
+    return jsonError('Bad Request');
   }
   const { ids } = payload.data;
 
@@ -24,11 +24,11 @@ export async function POST(req: Request) {
 
   for (const id of ids) {
     const params = new URLSearchParams({
-      lang: "en-us",
+      lang: 'en-us',
       pool_id: id,
-      server_id: "2",
+      server_id: '2',
     });
-    const url = new URL("/api/content", CONFIG.endfieldBaseUrl);
+    const url = new URL('/api/content', CONFIG.endfieldBaseUrl);
     url.search = params.toString();
 
     // Fetch API
@@ -56,11 +56,11 @@ export async function POST(req: Request) {
 
     // Cek Error
     if (!success || res?.code !== 0) {
-      return jsonError("Unknown Error", 500);
+      return jsonError('Unknown Error', 500);
     }
 
     const data = res.data.pool;
-    const isOperator = data.pool_gacha_type === "char";
+    const isOperator = data.pool_gacha_type === 'char';
 
     const rotate = isOperator
       ? (res as GamePoolOperator).data.pool.rotate_list

@@ -1,9 +1,9 @@
-import { PageContent } from "./PageContent";
-import type { Metadata } from "next";
+import { PageContent } from './PageContent';
+import type { Metadata } from 'next';
 
 export async function generateMetadata() {
   const metadata: Metadata = {
-    title: "Privacy Policy",
+    title: 'Privacy Policy',
   };
 
   return metadata;

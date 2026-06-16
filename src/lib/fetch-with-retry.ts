@@ -6,7 +6,7 @@ type FetchRetryOptions = RequestInit & {
 
 export async function fetchWithRetry(
   url: string,
-  options: FetchRetryOptions = {},
+  options: FetchRetryOptions = {}
 ) {
   const { retries = 3, retryDelay = 500, retryOn, ...fetchOptions } = options;
 
@@ -38,5 +38,5 @@ export async function fetchWithRetry(
     }
   }
 
-  throw new Error("Unreachable");
+  throw new Error('Unreachable');
 }

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { FaArrowUp } from "react-icons/fa6";
+import { useEffect, useState } from 'react';
+import { FaArrowUp } from 'react-icons/fa6';
 
 export const GoToTop = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const container = document.getElementById("scroll-container");
+    const container = document.getElementById('scroll-container');
 
     const getScrollTop = () => {
       if (container && window.innerWidth >= 1024) {
@@ -21,43 +21,34 @@ export const GoToTop = () => {
     };
 
     if (container) {
-      container.addEventListener("scroll", handleScroll);
+      container.addEventListener('scroll', handleScroll);
     }
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
       if (container) {
-        container.removeEventListener("scroll", handleScroll);
+        container.removeEventListener('scroll', handleScroll);
       }
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   const scrollToTop = () => {
-    const container = document.getElementById("scroll-container");
+    const container = document.getElementById('scroll-container');
 
     if (container && window.innerWidth >= 1024) {
-      container.scrollTo({ top: 0, behavior: "smooth" });
+      container.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   return (
     <button
       onClick={scrollToTop}
-      className={`
-        fixed bottom-5 right-5 z-50
-        px-2.5 py-2.5 rounded-full
-        bg-white/5 text-white
-        shadow-lg
-        transition-all duration-300
-        hover:bg-white/10
-        cursor-pointer backdrop-blur-sm
-        ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}
-      `}
+      className={`fixed right-5 bottom-5 z-50 cursor-pointer rounded-full bg-white/5 px-2.5 py-2.5 text-white shadow-lg backdrop-blur-sm transition-all duration-300 hover:bg-white/10 ${show ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'} `}
     >
-      <div className="absolute inset-0.5 ring-1 ring-white/10 rounded-full" />
+      <div className="absolute inset-0.5 rounded-full ring-1 ring-white/10" />
       <FaArrowUp />
     </button>
   );

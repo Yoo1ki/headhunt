@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from 'react';
 
 type ModalProps = {
   title: string;
@@ -21,17 +21,17 @@ export const Modal = ({
     if (!isOpen) return;
 
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && !disableClose) {
+      if (e.key === 'Escape' && !disableClose) {
         onClose();
       }
     };
 
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKey);
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKey);
 
     return () => {
-      document.body.style.overflow = "auto";
-      window.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = 'auto';
+      window.removeEventListener('keydown', handleKey);
     };
   }, [isOpen, disableClose, onClose]);
 
@@ -46,14 +46,14 @@ export const Modal = ({
       role="dialog"
       aria-modal="true"
     >
-      <div className="absolute inset-0 flex flex-col justify-center-safe items-center overflow-y-auto p-2 lg:p-4">
-        <div className="flex flex-col w-full max-w-xl">
+      <div className="absolute inset-0 flex flex-col items-center justify-center-safe overflow-y-auto p-2 lg:p-4">
+        <div className="flex w-full max-w-xl flex-col">
           <div
-            className="relative overflow-hidden bg-neutral-800/90 rounded-xl p-4"
+            className="relative overflow-hidden rounded-xl bg-neutral-800/90 p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-0 right-0 rounded-bl-xl bg-neutral-300 hover:bg-neutral-200 active:bg-neutral-400 text-neutral-700 hover:text-red-500 active:text-red-500/60 text-sm font-semibold px-2 py-1 cursor-pointer"
+              className="absolute top-0 right-0 cursor-pointer rounded-bl-xl bg-neutral-300 px-2 py-1 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 hover:text-red-500 active:bg-neutral-400 active:text-red-500/60"
               onClick={() => {
                 if (!disableClose) onClose();
               }}
@@ -61,7 +61,7 @@ export const Modal = ({
               ✕
             </button>
             <div className="flex flex-col gap-2">
-              <h2 className="text-xl font-bold mr-8">{title}</h2>
+              <h2 className="mr-8 text-xl font-bold">{title}</h2>
               {children}
             </div>
           </div>

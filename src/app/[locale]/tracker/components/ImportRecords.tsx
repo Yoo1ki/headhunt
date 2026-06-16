@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/Button";
-import { Modal } from "@/components/ui/Modal";
-import { Tabs } from "@/components/ui/Tabs";
-import { importUrlSchema } from "@/lib/validators/import-url";
-import { useImportStore } from "@/store/useImportStore";
-import { useState } from "react";
-import { FaFileImport, FaLink, FaPaste } from "react-icons/fa6";
-import { MdError } from "react-icons/md";
-import { useTranslations } from "next-intl";
+import { Button } from '@/components/ui/Button';
+import { Modal } from '@/components/ui/Modal';
+import { Tabs } from '@/components/ui/Tabs';
+import { importUrlSchema } from '@/lib/validators/import-url';
+import { useImportStore } from '@/store/useImportStore';
+import { useState } from 'react';
+import { FaFileImport, FaLink, FaPaste } from 'react-icons/fa6';
+import { MdError } from 'react-icons/md';
+import { useTranslations } from 'next-intl';
 
 type ImportRecordsProps = {
   isOpen: boolean;
@@ -14,17 +14,17 @@ type ImportRecordsProps = {
 };
 
 export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
-  const t = useTranslations("TrackerPage");
+  const t = useTranslations('TrackerPage');
   const importRecords = useImportStore((s) => s.importRecords);
   const isImporting = useImportStore((s) => s.isImporting);
 
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState("");
+  const [url, setUrl] = useState('');
+  const [error, setError] = useState('');
 
   const validateUrl = (value: string) => {
     setUrl(value);
     const result = importUrlSchema.safeParse(value);
-    setError(result.success ? "" : result.error.issues[0].message);
+    setError(result.success ? '' : result.error.issues[0].message);
   };
 
   const handleImport = () => {
@@ -47,7 +47,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   return (
     <Modal title="Import Headhunting Records" isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
-        <Tabs tabs={["Windows", "Android", "IOS"]}>
+        <Tabs tabs={['Windows', 'Android', 'IOS']}>
           {/* <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <div className="font-semibold">1.</div>
@@ -119,10 +119,10 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               <div className="font-semibold">1.</div>
               <div>
                 <div className="font-semibold">
-                  {t("ImportRecords.WindowsSteps.openHeadHuntingTitle")}
+                  {t('ImportRecords.WindowsSteps.openHeadHuntingTitle')}
                 </div>
                 <div className="text-sm text-white/80">
-                  {t.rich("ImportRecords.WindowsSteps.openHeadHuntingDesc", {
+                  {t.rich('ImportRecords.WindowsSteps.openHeadHuntingDesc', {
                     game: (chunks) => <strong>{chunks}</strong>,
                     menu: (chunks) => <strong>{chunks}</strong>,
                   })}
@@ -135,10 +135,10 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               <div className="font-semibold">2.</div>
               <div>
                 <div className="font-semibold">
-                  {t("ImportRecords.WindowsSteps.openPowerShellTitle")}
+                  {t('ImportRecords.WindowsSteps.openPowerShellTitle')}
                 </div>
                 <div className="text-sm text-white/80">
-                  {t.rich("ImportRecords.WindowsSteps.openPowerShellDesc", {
+                  {t.rich('ImportRecords.WindowsSteps.openPowerShellDesc', {
                     app: (chunks) => <strong>{chunks}</strong>,
                     key: (chunks) => <strong>{chunks}</strong>,
                   })}
@@ -152,23 +152,23 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
               <div className="flex-1">
                 <div className="font-semibold">
-                  {t("ImportRecords.WindowsSteps.runCommandTitle")}
+                  {t('ImportRecords.WindowsSteps.runCommandTitle')}
                 </div>
 
                 <div className="text-sm text-white/80">
-                  {t.rich("ImportRecords.WindowsSteps.runCommandDesc", {
+                  {t.rich('ImportRecords.WindowsSteps.runCommandDesc', {
                     app: (chunks) => <strong>{chunks}</strong>,
                     key: (chunks) => <strong>{chunks}</strong>,
                   })}
                 </div>
-                <div className="mt-1 flex justify-between items-start rounded bg-black/30 p-2 text-sm text-white/80">
+                <div className="mt-1 flex items-start justify-between rounded bg-black/30 p-2 text-sm text-white/80">
                   <code className="break-all">{command}</code>
 
                   <button
                     onClick={handleCopy}
-                    className="ml-2 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 active:bg-white/30 cursor-pointer"
+                    className="ml-2 cursor-pointer rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20 active:bg-white/30"
                   >
-                    {copied ? "Copied" : "Copy"}
+                    {copied ? 'Copied' : 'Copy'}
                   </button>
                 </div>
               </div>
@@ -177,9 +177,9 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
           <div className="font-semibold">Coming soon!</div>
           <div className="font-semibold">Coming soon!</div>
         </Tabs>
-        <div className="border-l-2 border-yellow-500 rounded-md py-0.5 pl-4 pr-0.5 bg-yellow-500/20 font-light text-sm italic">
+        <div className="rounded-md border-l-2 border-yellow-500 bg-yellow-500/20 py-0.5 pr-0.5 pl-4 text-sm font-light italic">
           <p>
-            {t.rich("importInstruction", {
+            {t.rich('importInstruction', {
               bold: (chunks) => <span className="font-semibold">{chunks}</span>,
             })}
           </p>
@@ -191,19 +191,19 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
           }}
           className="flex flex-col gap-2"
         >
-          <div className="font-semibold">{t("pasteUrl")}</div>
+          <div className="font-semibold">{t('pasteUrl')}</div>
 
           <div className="relative">
-            <FaLink className="absolute left-3 top-1/2 -translate-y-1/2 text-white" />
+            <FaLink className="absolute top-1/2 left-3 -translate-y-1/2 text-white" />
             <input
               type="text"
               value={url}
               onChange={(e) => validateUrl(e.target.value)}
               placeholder="https://ef-webview.gryphline.com/page/gacha_char?..."
-              className={`pl-10 pr-3 py-2 rounded-xl bg-neutral-900/80 text-white focus:outline-none w-full ${
+              className={`w-full rounded-xl bg-neutral-900/80 py-2 pr-3 pl-10 text-white focus:outline-none ${
                 error
-                  ? "ring-2 ring-red-500"
-                  : "focus:ring-2 focus:ring-yellow-500"
+                  ? 'ring-2 ring-red-500'
+                  : 'focus:ring-2 focus:ring-yellow-500'
               }`}
               inputMode="text"
               autoCapitalize="none"
@@ -211,10 +211,10 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
             />
           </div>
 
-          <div className="flex justify-between items-center gap-2 mt-2">
+          <div className="mt-2 flex items-center justify-between gap-2">
             <div>
               {error && (
-                <div className="text-red-500 text-sm flex items-center gap-1">
+                <div className="flex items-center gap-1 text-sm text-red-500">
                   <MdError />
                   <span>{error}</span>
                 </div>
@@ -236,7 +236,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               </Button>
               <Button type="submit" disabled={isImporting || !url || !!error}>
                 <FaFileImport />
-                <span>{isImporting ? t("importing") : t("import")}</span>
+                <span>{isImporting ? t('importing') : t('import')}</span>
               </Button>
             </div>
           </div>

@@ -3,7 +3,7 @@ export function getRemainingTime(endTime: number | string | Date) {
 
   let end: number;
 
-  if (typeof endTime === "number") {
+  if (typeof endTime === 'number') {
     end = endTime * 1000;
   } else {
     end = new Date(endTime).getTime();
@@ -14,7 +14,7 @@ export function getRemainingTime(endTime: number | string | Date) {
   if (diff <= 0) {
     return {
       expired: true,
-      text: "Ended",
+      text: 'Ended',
       totalMs: 0,
     };
   }

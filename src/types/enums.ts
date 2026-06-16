@@ -1,4 +1,4 @@
-import { CONFIG } from "@/config";
+import { CONFIG } from '@/config';
 
 export type RarityId = keyof typeof CONFIG.enumColors.rarities;
 export type ElementId = keyof typeof CONFIG.enumColors.elements;

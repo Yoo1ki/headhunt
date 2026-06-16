@@ -1,20 +1,20 @@
-import fs from "fs/promises";
-import path from "path";
-import { SKPortGuideOperators } from "./interfaces/skport-guide-operators";
-import { SKPortGuideWeapons } from "./interfaces/skport-guide-weapons";
-import { writeJsonFiles } from "./lib/write-json-files";
-import { ensureDirs } from "./lib/ensure-dirs";
-import { Catalog } from "@/types/catalog";
-import { SKPortGuideEnums } from "./interfaces/skport-guide-enums";
-import { Weapon, WeaponDetail } from "@/types/weapons";
-import { Operator } from "@/types/operator";
-import { RarityId } from "@/types/enums";
+import fs from 'fs/promises';
+import path from 'path';
+import { SKPortGuideOperators } from './interfaces/skport-guide-operators';
+import { SKPortGuideWeapons } from './interfaces/skport-guide-weapons';
+import { writeJsonFiles } from './lib/write-json-files';
+import { ensureDirs } from './lib/ensure-dirs';
+import { Catalog } from '@/types/catalog';
+import { SKPortGuideEnums } from './interfaces/skport-guide-enums';
+import { Weapon, WeaponDetail } from '@/types/weapons';
+import { Operator } from '@/types/operator';
+import { RarityId } from '@/types/enums';
 import {
   SKPortWikiDetailWeapon,
   Document,
   InlineElement,
-} from "./interfaces/skport-wiki-detail-weapon";
-import { resizeImage, saveAsPng, downloadImage } from "./lib/image";
+} from './interfaces/skport-wiki-detail-weapon';
+import { resizeImage, saveAsPng, downloadImage } from './lib/image';
 
 type OperatorExtra = {
   slug: string;
@@ -28,25 +28,25 @@ type WeaponExtra = {
 };
 
 const dir = process.cwd();
-const BASE_LANG = "en.json" as const;
+const BASE_LANG = 'en.json' as const;
 
 const paths = {
-  rawSKPortWikiDetail: path.join(dir, "raw/skport/wiki/detail"),
-  rawSKPortGuideEnums: path.join(dir, "raw/skport/guide/enums"),
-  rawSKPortGuideOperators: path.join(dir, "raw/skport/guide/operators"),
-  rawSKPortGuideWeapons: path.join(dir, "raw/skport/guide/weapons"),
-  generatedEnums: path.join(dir, "src/data/enums"),
-  generatedOperators: path.join(dir, "src/data/operators"),
-  generatedWeapons: path.join(dir, "src/data/weapons"),
-  generatedTrackerCatalogs: path.join(dir, "src/data/tracker/catalogs"),
-  assets: path.join(dir, "public/assets"),
+  rawSKPortWikiDetail: path.join(dir, 'raw/skport/wiki/detail'),
+  rawSKPortGuideEnums: path.join(dir, 'raw/skport/guide/enums'),
+  rawSKPortGuideOperators: path.join(dir, 'raw/skport/guide/operators'),
+  rawSKPortGuideWeapons: path.join(dir, 'raw/skport/guide/weapons'),
+  generatedEnums: path.join(dir, 'src/data/enums'),
+  generatedOperators: path.join(dir, 'src/data/operators'),
+  generatedWeapons: path.join(dir, 'src/data/weapons'),
+  generatedTrackerCatalogs: path.join(dir, 'src/data/tracker/catalogs'),
+  assets: path.join(dir, 'public/assets'),
 } as const;
 
 const enumPicks = {
-  rarities: "rarities",
-  charProperties: "elements",
-  professions: "opClass",
-  weaponTypes: "wpTypes",
+  rarities: 'rarities',
+  charProperties: 'elements',
+  professions: 'opClass',
+  weaponTypes: 'wpTypes',
 } as const;
 
 async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
@@ -55,9 +55,9 @@ async function readJsonFiles<T>(dir: string): Promise<Record<string, T>> {
 
   await Promise.all(
     files.map(async (file) => {
-      const content = await fs.readFile(path.join(dir, file), "utf-8");
+      const content = await fs.readFile(path.join(dir, file), 'utf-8');
       data[file] = JSON.parse(content) as T;
-    }),
+    })
   );
 
   return data;
@@ -67,24 +67,24 @@ function generateSlug(title: string) {
   return title
     .toLowerCase()
     .trim()
-    .replace(/[\s\W-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+    .replace(/[\s\W-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 function getSKPortGuideOperatorId(
-  op: SKPortGuideOperators["data"]["chars"][number],
+  op: SKPortGuideOperators['data']['chars'][number]
 ): string {
   const talent = op.abilityTalents.find((talent) =>
-    talent.id.startsWith("chr_"),
+    talent.id.startsWith('chr_')
   );
   if (!talent) throw new Error(`[Operator -> ${op.name}]: Talent not found`);
-  return talent.id.split("_").slice(0, -1).join("_");
+  return talent.id.split('_').slice(0, -1).join('_');
 }
 
 function getSKPortGuideWeaponId(
-  wp: SKPortGuideWeapons["data"]["weapons"][number],
+  wp: SKPortGuideWeapons['data']['weapons'][number]
 ): string {
-  const skill = wp.skills.find((skill) => skill.key.startsWith("sk_wpn_"));
+  const skill = wp.skills.find((skill) => skill.key.startsWith('sk_wpn_'));
   if (!skill) throw new Error(`[Weapon -> ${wp.name}]: Skill not found`);
   return skill.key.slice(3);
 }
@@ -100,7 +100,7 @@ function transformEnum<T extends Record<string, string>>({
     Object.entries(enumPicks).map(([jsonKey, outKey]) => {
       let items = json.data[jsonKey as keyof typeof json.data] ?? [];
 
-      if (jsonKey === "rarities") {
+      if (jsonKey === 'rarities') {
         items = [...items].sort((a, b) => a.key.localeCompare(b.key));
       }
 
@@ -111,7 +111,7 @@ function transformEnum<T extends Record<string, string>>({
           name: item.value,
         })),
       ];
-    }),
+    })
   ) as Record<T[keyof T], { id: string; name: string }[]>;
 }
 
@@ -127,18 +127,18 @@ function transformOperator({
     const extra = extraMap.get(id);
 
     const slug =
-      (extra?.slug ?? "") +
-      (id === "chr_0002_endminm"
-        ? "-m"
-        : id === "chr_0003_endminf"
-          ? "-f"
-          : "");
+      (extra?.slug ?? '') +
+      (id === 'chr_0002_endminm'
+        ? '-m'
+        : id === 'chr_0003_endminf'
+          ? '-f'
+          : '');
 
     const data: Operator = {
       id,
       slug,
       name: op.name,
-      avatar: extra?.avatarRt || "",
+      avatar: extra?.avatarRt || '',
       rarityId: op.rarity.key,
       elementId: op.property.key,
       opClassId: op.profession.key,
@@ -164,13 +164,13 @@ function transformWeapon({
     const id = getSKPortGuideWeaponId(wp);
     const extra = extraMap.get(id);
 
-    const slug = extra?.slug ?? "";
-    const weaponDetail = detailMap.get("weapons")?.get(slug)?.get(file);
+    const slug = extra?.slug ?? '';
+    const weaponDetail = detailMap.get('weapons')?.get(slug)?.get(file);
 
     const data: Weapon = {
       id: id,
       name: wp.name,
-      icon: extra?.icon || "",
+      icon: extra?.icon || '',
       rarityId: wp.rarity.key,
       HeadhuntTypeId: wp.type.key,
       detail: weaponDetail,
@@ -286,36 +286,36 @@ async function getDetailMap() {
 
   // operators, weapons, ...
   for (const folder of folders) {
-    if (folder !== "weapons") continue;
+    if (folder !== 'weapons') continue;
 
     const items = await fs.readdir(
-      path.join(paths.rawSKPortWikiDetail, folder),
+      path.join(paths.rawSKPortWikiDetail, folder)
     );
 
     // rossi, lupine-scarlet, ...
     for (const item of items) {
       const detailMaps = await readJsonFiles<SKPortWikiDetailWeapon>(
-        path.join(paths.rawSKPortWikiDetail, folder, item),
+        path.join(paths.rawSKPortWikiDetail, folder, item)
       );
 
       // id.json, en.json, ...
       for (const [file, json] of Object.entries(detailMaps)) {
         // if (json.data.item.itemId !== "733") break;
-        let baseATK = "-/-";
+        let baseATK = '-/-';
         let skills: {
           label: string;
           content: InlineElement[][];
         }[] = [];
 
         const document = json.data.item.document;
-        const isRarity6 = json.data.item.tagIds.includes("10006");
+        const isRarity6 = json.data.item.tagIds.includes('10006');
 
         const chapterInformationId = document.chapterGroup.find((f) =>
-          ["Informasi Senjata", "Weapon Information"].includes(f.title.trim()),
+          ['Informasi Senjata', 'Weapon Information'].includes(f.title.trim())
         )?.widgets[0].id;
 
         const chapterSkillId = document.chapterGroup.find((f) =>
-          ["Skill & Aktivasi", "Skill & Activation"].includes(f.title.trim()),
+          ['Skill & Aktivasi', 'Skill & Activation'].includes(f.title.trim())
         )?.widgets[0].id;
 
         // Informasi Senjata
@@ -331,18 +331,18 @@ async function getDetailMap() {
           const cellContent = getSKPortWikiTableCellContents({
             document,
             chapterId: chapterInformationId,
-            blockId: "siDaPc",
+            blockId: 'siDaPc',
             cellPositions,
           });
 
           baseATK = cellContent
             .slice(0, 2)
-            .map((e) => e?.[0]?.[0]?.text.text || "-")
-            .join("/");
+            .map((e) => e?.[0]?.[0]?.text.text || '-')
+            .join('/');
 
           if (!chapterSkillId) {
             skills = cellContent.slice(2).map((e) => ({
-              label: "9/9",
+              label: '9/9',
               content: e ?? [],
             }));
           }
@@ -359,12 +359,12 @@ async function getDetailMap() {
           const cellContent = getSKPortWikiTableCellContents({
             document,
             chapterId: chapterSkillId,
-            blockId: "6kzKo0",
+            blockId: '6kzKo0',
             cellPositions,
           });
 
           skills = cellContent.map((e, i) => ({
-            label: i === 2 && isRarity6 ? "4/9" : "9/9",
+            label: i === 2 && isRarity6 ? '4/9' : '9/9',
             content: e ?? [],
           }));
         }
@@ -389,7 +389,7 @@ async function main() {
     paths.generatedOperators,
     paths.generatedWeapons,
     paths.generatedTrackerCatalogs,
-    paths.assets,
+    paths.assets
   );
 
   const [enumsDataMap, operatorsDataMap, weaponsDataMap] = await Promise.all([
@@ -446,9 +446,9 @@ async function main() {
           json,
           enumPicks,
         }),
-      ]),
+      ])
     ),
-    paths.generatedEnums,
+    paths.generatedEnums
   );
 
   await writeJsonFiles(
@@ -459,9 +459,9 @@ async function main() {
           json,
           extraMap: operatorsExtraMap,
         }),
-      ]),
+      ])
     ),
-    paths.generatedOperators,
+    paths.generatedOperators
   );
 
   await writeJsonFiles(
@@ -474,9 +474,9 @@ async function main() {
           extraMap: weaponsExtraMap,
           detailMap,
         }),
-      ]),
+      ])
     ),
-    paths.generatedWeapons,
+    paths.generatedWeapons
   );
 
   await writeJsonFiles(
@@ -486,7 +486,7 @@ async function main() {
       operatorsExtraMap,
       weaponsExtraMap,
     }),
-    paths.generatedTrackerCatalogs,
+    paths.generatedTrackerCatalogs
   );
 }
 

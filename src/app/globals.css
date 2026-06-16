@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 body {
   @apply bg-neutral-900 text-white;
@@ -13,7 +13,7 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-white/10 rounded-xl cursor-pointer;
+  @apply cursor-pointer rounded-xl bg-white/10;
 }
 
 .scrollbar-hide::-webkit-scrollbar {
