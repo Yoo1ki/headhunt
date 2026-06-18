@@ -47,5 +47,5 @@ next-env.d.ts
 .dev.vars*
 
 # Other
-/raw/skport/
+/raw/
 src/data/**/*.json
