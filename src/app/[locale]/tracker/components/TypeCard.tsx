@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CFImage } from '@/components/ui/CFImage';
+import { CFImage } from '@/components/CFImage';
 
 type TypeCardProps = {
   hash: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { CFImage } from '@/components/ui/CFImage';
+import { CFImage } from '@/components/CFImage';
 import { CONFIG } from '@/config';
 import { WeaponDetail } from '@/types/weapons';
 import clsx from 'clsx';

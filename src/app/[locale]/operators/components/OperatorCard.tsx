@@ -1,7 +1,7 @@
 'use client';
 
-import { CFImage } from '@/components/ui/CFImage';
-import { Tooltip } from '@/components/ui/Tooltip';
+import { CFImage } from '@/components/CFImage';
+import { Tooltip } from '@/components/Tooltip';
 
 type IconProps = {
   name: string;

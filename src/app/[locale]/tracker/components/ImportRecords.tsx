@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/Button';
-import { Modal } from '@/components/ui/Modal';
-import { Tabs } from '@/components/ui/Tabs';
+import { Button } from '@/components/Button';
+import { Modal } from '@/components/Modal';
+import { Tabs } from '@/components/Tabs';
 import { importUrlSchema } from '@/lib/validators/import-url';
 import { useImportStore } from '@/store/useImportStore';
 import { useState } from 'react';

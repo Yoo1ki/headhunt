@@ -1,12 +1,12 @@
 'use client';
 
-import { PageTitle } from '@/components/ui/PageTitle';
+import { PageTitle } from '@/components/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { Weapon } from '@/types/weapons';
 import { CONFIG } from '@/config';
-import { Filter } from '@/components/ui/Filter';
-import { ResetButton } from '@/components/ui/ResetButton';
+import { Filter } from '@/components/Filter';
+import { ResetButton } from '@/components/ResetButton';
 import { WeaponCard } from './components/WeaponCard';
 import { EnumRarity, EnumWPType } from '@/types/enums';
 

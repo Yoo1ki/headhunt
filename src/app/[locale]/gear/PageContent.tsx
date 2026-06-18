@@ -1,4 +1,4 @@
-import { PageTitle } from '@/components/ui/PageTitle';
+import { PageTitle } from '@/components/PageTitle';
 
 export const PageContent = () => {
   return (

@@ -1,13 +1,13 @@
 'use client';
 
-import { PageTitle } from '@/components/ui/PageTitle';
+import { PageTitle } from '@/components/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { Operator } from '@/types/operator';
 import { OperatorCard } from './components/OperatorCard';
 import { CONFIG } from '@/config';
-import { Filter } from '@/components/ui/Filter';
-import { ResetButton } from '@/components/ui/ResetButton';
+import { Filter } from '@/components/Filter';
+import { ResetButton } from '@/components/ResetButton';
 import { EnumElement, EnumOpClass, EnumRarity } from '@/types/enums';
 
 type PageContentProps = {

@@ -1,14 +1,14 @@
 'use client';
 
-import { Loading } from '@/components/ui/Loading';
-import { PageTitle } from '@/components/ui/PageTitle';
+import { Loading } from '@/components/Loading';
+import { PageTitle } from '@/components/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useHash } from '@/hooks/useHash';
 import { FaFileImport, FaGear } from 'react-icons/fa6';
 import { FaSyncAlt } from 'react-icons/fa';
 import { Banners } from '@/types/banner';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/Button';
 import { useStorageStore } from '@/store/useStorageStore';
 import { useImportStore } from '@/store/useImportStore';
 import { TypeCard } from './components/TypeCard';

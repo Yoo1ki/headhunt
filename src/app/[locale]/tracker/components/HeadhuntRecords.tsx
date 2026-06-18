@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { Filter } from '@/components/ui/Filter';
-import { Button } from '@/components/ui/Button';
+import { Filter } from '@/components/Filter';
+import { Button } from '@/components/Button';
 import { FaSyncAlt } from 'react-icons/fa';
 import { Enums } from '@/types/enums';
 import { CONFIG } from '@/config';
@@ -10,7 +10,7 @@ import { Banners } from '@/types/banner';
 import { Catalogs } from '@/types/catalog';
 import { useLocale, useTranslations } from 'next-intl';
 import { PiImageBroken } from 'react-icons/pi';
-import { CFImage } from '@/components/ui/CFImage';
+import { CFImage } from '@/components/CFImage';
 
 type HeadhuntRecordsProps = {
   hash: string;

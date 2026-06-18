@@ -1,14 +1,14 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { Header } from '@/components/common/Header';
-import { Sidebar } from '@/components/common/Sidebar';
-import { Footer } from '@/components/common/Footer';
-import { ImportStatus } from '@/components/common/ImportStatus';
-import { GoToTop } from '@/components/common/GoToTop';
+import { Header } from '@/components/Header';
+import { Sidebar } from '@/components/Sidebar';
+import { Footer } from '@/components/Footer';
+import { ImportStatus } from '@/components/ImportStatus';
+import { GoToTop } from '@/components/GoToTop';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import PWAUpdateToast from '@/components/common/PWAUpdateToast';
+import PWAUpdateToast from '@/components/PWAUpdateToast';
 import { CONFIG } from '@/config';
 
 type Props = {

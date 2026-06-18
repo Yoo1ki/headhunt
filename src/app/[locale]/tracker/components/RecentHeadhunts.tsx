@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
-import { Filter } from '@/components/ui/Filter';
-import { Tooltip } from '@/components/ui/Tooltip';
+import { Filter } from '@/components/Filter';
+import { Tooltip } from '@/components/Tooltip';
 import { Enums, RarityId } from '@/types/enums';
 import { CONFIG } from '@/config';
 import { GachaResult, RecordItem } from '@/types/profile';
 import { Catalogs } from '@/types/catalog';
 import { PiImageBroken } from 'react-icons/pi';
-import { CFImage } from '@/components/ui/CFImage';
+import { CFImage } from '@/components/CFImage';
 import { useTranslations } from 'next-intl';
 
 type RecentHeadhuntsProps = {

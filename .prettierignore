@@ -48,3 +48,4 @@ next-env.d.ts
 
 # Other
 /raw/skport/
+src/data/**/*.json

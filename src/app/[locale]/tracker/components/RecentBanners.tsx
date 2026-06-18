@@ -1,7 +1,7 @@
 import { Banners } from '@/types/banner';
 import { useMemo, useState } from 'react';
-import { Tooltip } from '@/components/ui/Tooltip';
-import { CFImage } from '@/components/ui/CFImage';
+import { Tooltip } from '@/components/Tooltip';
+import { CFImage } from '@/components/CFImage';
 import { useTranslations } from 'next-intl';
 
 type RecentBannersProps = {
