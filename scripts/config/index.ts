@@ -17,7 +17,11 @@ export const scriptConfig = {
       id: 'weaponbox_constant_5',
     },
 
-    // Laevatain
+    //!------------
+    //! Version 1.0
+    //!------------
+
+    //? Laevatain
     {
       id: 'special_1_0_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260120/50d526c2fbe23f2df695a00e078a69bc.jpg',
@@ -29,7 +33,7 @@ export const scriptConfig = {
       endAt: '2026-03-12T05:59:59+08:00',
     },
 
-    // Gilberta
+    //? Gilberta
     {
       id: 'special_1_0_3',
       img: 'https://web-static.hg-cdn.com/upload/image/20260203/73c1e112f72c898e1260d41537e1d1c6.jpg',
@@ -43,7 +47,7 @@ export const scriptConfig = {
       endAt: '2026-03-29T11:59:59+08:00',
     },
 
-    // Yvonne
+    //? Yvonne
     {
       id: 'special_1_0_2',
       img: 'https://web-static.hg-cdn.com/upload/image/20260212/fbbfb727480e4a3bb511864a7ecb3277.jpg',
@@ -57,7 +61,11 @@ export const scriptConfig = {
       endAt: '2026-04-17T05:59:59+08:00',
     },
 
-    // Tangtang
+    //!------------
+    //! Version 1.1
+    //!------------
+
+    //? Tangtang
     {
       id: 'special_1_1_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260310/9f5ebe889a3b539b1ff07bdf02340e1d.jpg',
@@ -71,7 +79,7 @@ export const scriptConfig = {
       endAt: '2026-05-22T11:59:59+08:00',
     },
 
-    // Rossi
+    //? Rossi
     {
       id: 'special_1_1_2',
       img: 'https://web-static.hg-cdn.com/upload/image/20260326/c35ebdab5dd595e9e399eccf5a509097.jpg',
@@ -85,7 +93,11 @@ export const scriptConfig = {
       endAt: '2026-06-26T11:59:59+08:00',
     },
 
-    // Zhuang Fangyi
+    //!------------
+    //! Version 1.2
+    //!------------
+
+    //? Zhuang Fangyi
     {
       id: 'special_1_2_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260415/37361030b3767e534571412904bd5865.jpg',
@@ -96,9 +108,10 @@ export const scriptConfig = {
       id: 'weponbox_1_2_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260414/8a3cf8d087ed968c012e074e57bfa0cb.jpg',
       startAt: '2026-04-17T06:00:00+08:00',
+      endAt: '2026-07-16T05:59:59+08:00',
     },
 
-    // Laevatain, Gilberta, Ardelia, Pogranichnik
+    //? Laevatain, Gilberta, Ardelia, Pogranichnik
     {
       id: 'joint_1_2_2',
       img: 'https://web-static.hg-cdn.com/upload/image/20260507/5a8135bcb23b1cb335ac2843e8922eaa.jpg',
@@ -120,7 +133,11 @@ export const scriptConfig = {
       endAt: '2026-06-05T05:59:59+08:00',
     },
 
-    // Mi Fu
+    //!------------
+    //! Version 1.3
+    //!------------
+
+    //? Mi Fu
     {
       id: 'special_1_3_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260602/a9e99e3ed17caa72f0b601f0c6756ada.jpg',
@@ -131,6 +148,19 @@ export const scriptConfig = {
       id: 'weponbox_1_3_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260602/9dc2914038ca1320902160c03f7d02cc.jpg',
       startAt: '2026-06-05T06:00:00+08:00',
+    },
+
+    //? Camille
+    {
+      id: 'special_1_3_2',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260623/8fa82798e55b138aa12bae3346ee4eb9.jpg',
+      startAt: '2026-06-26T12:00:00+08:00',
+      endAt: '2026-07-16T05:59:59+08:00',
+    },
+    {
+      id: 'weponbox_1_3_2',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260623/97e99951cf987183a67c773e8f6c9ab3.jpg',
+      startAt: '2026-06-26T12:00:00+08:00',
     },
   ],
 } as const;
