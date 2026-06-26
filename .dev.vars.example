@@ -1,0 +1,4 @@
+# Copy this file to `.dev.vars`
+
+# Load .env.development* files when running `wrangler dev`
+NEXTJS_ENV=development
