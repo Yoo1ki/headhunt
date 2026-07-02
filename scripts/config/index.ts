@@ -162,5 +162,9 @@ export const scriptConfig = {
       img: 'https://web-static.hg-cdn.com/upload/image/20260623/97e99951cf987183a67c773e8f6c9ab3.jpg',
       startAt: '2026-06-26T12:00:00+08:00',
     },
+
+    //!------------
+    //! Version 1.4
+    //!------------
   ],
 } as const;
