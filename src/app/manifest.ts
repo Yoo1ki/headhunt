@@ -6,7 +6,6 @@ export default function manifest(): MetadataRoute.Manifest {
     name: CONFIG.appName,
     short_name: CONFIG.appShortName,
     start_url: '/',
-    scope: '/',
     icons: [
       {
         src: '/web-app-manifest-192x192.png',
