@@ -148,6 +148,7 @@ export const scriptConfig = {
       id: 'weponbox_1_3_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260602/9dc2914038ca1320902160c03f7d02cc.jpg',
       startAt: '2026-06-05T06:00:00+08:00',
+      endAt: '2026-08-09T11:59:59+08:00',
     },
 
     //? Camille
