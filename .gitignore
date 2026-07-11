@@ -48,13 +48,13 @@ next-env.d.ts
 .wrangler
 .dev.vars*
 
+# PWA
+**/public/workbox-*.js
+**/public/sw.js
+**/public/fallback-*.js
+
 # other
 /raw/skport/
 /raw/riset/
 
 !.dev.vars.example
-
-#pwa
-**/public/workbox-*.js
-**/public/sw.js
-**/public/fallback-*.js

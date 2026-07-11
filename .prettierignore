@@ -46,6 +46,11 @@ next-env.d.ts
 .wrangler
 .dev.vars*
 
+# PWA
+**/public/workbox-*.js
+**/public/sw.js
+**/public/fallback-*.js
+
 # Other
 /raw/
 src/data/**/*.json
