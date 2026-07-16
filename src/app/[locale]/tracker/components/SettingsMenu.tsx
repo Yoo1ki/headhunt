@@ -8,6 +8,10 @@ type SettingsMenuProps = {
 };
 
 export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
+  const handleBackup = () => {};
+
+  const handleRestore = () => {};
+
   return (
     <Modal title="Settings" isOpen={isOpen} onClose={onClose}>
       <div className="border-t border-white/80" />
@@ -15,8 +19,12 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         <div className="flex flex-col gap-2">
           <div className="font-semibold">Backup Records</div>
           <div className="flex gap-2">
-            <Button variant="secondary">Backup</Button>
-            <Button variant="primary">Restore</Button>
+            <Button variant="secondary" onClick={handleBackup}>
+              Backup
+            </Button>
+            <Button variant="primary" onClick={handleRestore}>
+              Restore
+            </Button>
           </div>
         </div>
       </div>

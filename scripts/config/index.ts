@@ -167,5 +167,18 @@ export const scriptConfig = {
     //!------------
     //! Version 1.4
     //!------------
+
+    //? Arcane
+    {
+      id: 'special_1_4_1',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260713/e291ab7168b1326cdf274efa5e4c7b29.jpg',
+      startAt: '2026-07-16T06:00:00+08:00',
+      endAt: '2026-08-09T11:59:59+08:00',
+    },
+    {
+      id: 'weponbox_1_4_1',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260714/48ae2b7ee5288ddb767df14528a2e694.jpg',
+      startAt: '2026-07-16T06:00:00+08:00',
+    },
   ],
 } as const;

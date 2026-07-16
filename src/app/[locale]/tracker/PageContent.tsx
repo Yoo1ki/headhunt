@@ -202,7 +202,7 @@ export const PageContent = ({
             variant="secondary"
             isNew={true}
             disabled={
-              // !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
+              // !hasHydrated || isImporting
               true
             }
           >
