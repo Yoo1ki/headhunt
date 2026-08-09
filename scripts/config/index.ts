@@ -162,6 +162,7 @@ export const scriptConfig = {
       id: 'weponbox_1_3_2',
       img: 'https://web-static.hg-cdn.com/upload/image/20260623/97e99951cf987183a67c773e8f6c9ab3.jpg',
       startAt: '2026-06-26T12:00:00+08:00',
+      endAt: '2026-09-02T05:59:59+08:00',
     },
 
     //!------------
@@ -179,6 +180,19 @@ export const scriptConfig = {
       id: 'weponbox_1_4_1',
       img: 'https://web-static.hg-cdn.com/upload/image/20260714/48ae2b7ee5288ddb767df14528a2e694.jpg',
       startAt: '2026-07-16T06:00:00+08:00',
+    },
+
+    //? Liino
+    {
+      id: 'special_1_4_2',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260804/07a90ba3dba8a2375e6d77f5fd3afe61.jpg',
+      startAt: '2026-08-09T12:00:00+08:00',
+      endAt: '2026-09-02T05:59:59+08:00',
+    },
+    {
+      id: 'weponbox_1_4_2',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260803/a9f0f4517c55500e1799a5c1c0c35473.jpg',
+      startAt: '2026-08-09T12:00:00+08:00',
     },
   ],
 } as const;
