@@ -2,7 +2,9 @@ import type { NextConfig } from 'next';
 import createNextIntlPlugin from 'next-intl/plugin';
 import withPWAInit from 'next-pwa';
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  htmlLimitedBots: /.*/,
+};
 
 const withPWA = withPWAInit({
   dest: 'public',
