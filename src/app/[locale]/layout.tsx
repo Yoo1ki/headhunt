@@ -8,7 +8,6 @@ import { ImportStatus } from '@/components/ImportStatus';
 import { GoToTop } from '@/components/GoToTop';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import PWAUpdateToast from '@/components/PWAUpdateToast';
 import { CONFIG } from '@/config';
 
 type Props = {
@@ -49,6 +48,9 @@ export async function generateMetadata() {
       'free gacha tool',
       'gacha tools',
     ],
+    other: {
+      "IE_RM_OFF": "true",
+    },
   };
 
   return metadata;
@@ -78,7 +80,6 @@ export default async function HomeLayout({ children, params }: Props) {
               <Footer />
             </div>
             <ImportStatus />
-            <PWAUpdateToast />
             <GoToTop />
           </div>
         </div>
