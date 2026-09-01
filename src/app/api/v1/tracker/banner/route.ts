@@ -1,8 +1,9 @@
 import { CONFIG } from '@/config';
 import { jsonError, jsonSuccess } from '@/lib/api-response';
+import { fetchJsonWithRetry } from '@/lib/fetch-json-with-retry';
 import { bannerPayloadSchema } from '@/lib/validators/banner-payload';
-import { GamePoolOperator } from '../../../../../../scripts/interfaces/game-pool-operator';
-import { GamePoolWeapon } from '../../../../../../scripts/interfaces/game-pool-weapon';
+import { parseJsonRequest } from '@/lib/parse-json-request';
+import type { GamePool, GamePoolOperator } from '@/types/api/game-pool';
 
 type Banner = {
   id: string;
@@ -11,7 +12,7 @@ type Banner = {
 };
 
 export async function POST(req: Request) {
-  const body = await req.json();
+  const body = await parseJsonRequest(req);
 
   // Validasi Payload
   const payload = bannerPayloadSchema.safeParse(body);
@@ -32,30 +33,12 @@ export async function POST(req: Request) {
     url.search = params.toString();
 
     // Fetch API
-    const maxRetries = 3;
-    let attempts = 0;
-    let res: GamePoolOperator | GamePoolWeapon | null = null;
-    let success = false;
-
-    while (attempts < maxRetries && !success) {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          attempts++;
-          await new Promise((r) => setTimeout(r, 500));
-          continue;
-        }
-        res = await response.json();
-        success = true;
-      } catch (err) {
-        console.error(`Attempt ${attempts + 1} failed:`, err);
-        attempts++;
-        await new Promise((r) => setTimeout(r, 500));
-      }
-    }
+    const res = await fetchJsonWithRetry<GamePool>(url, {
+      context: 'tracker.banner',
+    });
 
     // Cek Error
-    if (!success || res?.code !== 0) {
+    if (res?.code !== 0) {
       return jsonError('Unknown Error', 500);
     }
 
@@ -68,9 +51,15 @@ export async function POST(req: Request) {
           .filter((id): id is string => Boolean(id))
       : [];
 
+    const rateup = data.all.find((item) => item.name === data.up6_name);
+    if (!rateup) {
+      console.warn('[tracker.banner] Rate-up item not found', { bannerId: id });
+      return jsonError('Unknown Error', 500);
+    }
+
     bannerMap[id] = {
       id,
-      rateup: data.all.find((e) => e.name === data.up6_name)!.id,
+      rateup: rateup.id,
       ...(rotate.length ? { rotate } : {}),
     };
   }

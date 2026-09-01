@@ -1,4 +1,4 @@
-import { InlineElement } from '../../scripts/interfaces/skport-wiki-detail-weapon';
+import type { InlineElement } from './api/rich-text';
 
 export interface Weapon {
   id: string;

@@ -1,8 +1,8 @@
 import { getLocale } from 'next-intl/server';
-import { PageContent } from './PageContent';
-import { Banners } from '@/types/banner';
-import { Catalogs } from '@/types/catalog';
-import { Enums } from '@/types/enums';
+import { TrackerPageContent } from './_components/TrackerPageContent';
+import type { Banners } from '@/types/banner';
+import type { Catalogs } from '@/types/catalog';
+import type { Enums } from '@/types/enums';
 import { HeadhuntTypeId, headhuntTypes } from '@/data/tracker/headhunt-types';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
@@ -33,7 +33,9 @@ export default async function TrackerPage() {
 
   const now = Date.now() / 1000;
 
-  const weponbox = headhuntTypes.find((e) => e.id === HeadhuntTypeId.Weponbox);
+  const weaponBoxType = headhuntTypes.find(
+    (type) => type.id === HeadhuntTypeId.Weponbox
+  );
 
   const sortedBanners = Object.values(banners).sort((a, b) => {
     const aStart = a.startTime ?? 0;
@@ -47,7 +49,7 @@ export default async function TrackerPage() {
     return now >= start && now <= end;
   });
 
-  const wpTypes = activeBanners
+  const weaponTypes = activeBanners
     .filter((banner) => banner.id.startsWith(HeadhuntTypeId.Weponbox))
     .map((banner) => {
       return {
@@ -59,13 +61,13 @@ export default async function TrackerPage() {
             url: catalogs[banner.rateup]?.icon ?? '',
           },
         ],
-        r5PityLimit: weponbox!.r5PityLimit,
-        r6PityLimit: weponbox!.r6PityLimit,
-        guaranteeAt: weponbox!.guaranteeAt,
+        r5PityLimit: weaponBoxType!.r5PityLimit,
+        r6PityLimit: weaponBoxType!.r6PityLimit,
+        guaranteeAt: weaponBoxType!.guaranteeAt,
       };
     });
 
-  const opTypes = headhuntTypes.map((type) => {
+  const operatorTypes = headhuntTypes.map((type) => {
     const banner =
       activeBanners.find((banner) => banner.id.startsWith(type.id)) ??
       sortedBanners.find((banner) => banner.id.startsWith(type.id));
@@ -85,17 +87,19 @@ export default async function TrackerPage() {
         ];
 
     if (type.id === HeadhuntTypeId.Weponbox) {
-      const primary = wpTypes.slice(1, 3).flatMap((wp) => wp.icons);
+      const primary = weaponTypes
+        .slice(1, 3)
+        .flatMap((weaponType) => weaponType.icons);
       const subIcons =
         primary.length >= 2
           ? primary
           : sortedBanners
-              .filter((b) => b.id.startsWith(HeadhuntTypeId.Weponbox))
+              .filter((banner) => banner.id.startsWith(HeadhuntTypeId.Weponbox))
               .slice(1, 3)
-              .map((b) => {
+              .map((weaponBanner) => {
                 return {
-                  name: catalogs[b.rateup].name,
-                  url: catalogs[b.rateup].icon,
+                  name: catalogs[weaponBanner.rateup].name,
+                  url: catalogs[weaponBanner.rateup].icon,
                 };
               });
       icons.push(...subIcons);
@@ -129,8 +133,8 @@ export default async function TrackerPage() {
   });
 
   const types = {
-    opTypes,
-    wpTypes,
+    operatorTypes,
+    weaponTypes,
   };
 
   const rarities = enums.rarities.filter((r) =>
@@ -138,7 +142,7 @@ export default async function TrackerPage() {
   );
 
   return (
-    <PageContent
+    <TrackerPageContent
       types={types}
       banners={banners}
       catalogs={catalogs}

@@ -1,12 +1,15 @@
 import fs from 'fs/promises';
 import path from 'path';
 import sharp from 'sharp';
-import { GamePoolOperator } from './interfaces/game-pool-operator';
-import { GamePoolWeapon } from './interfaces/game-pool-weapon';
+import type {
+  GamePoolOperator,
+  GamePoolWeapon,
+} from '../src/types/api/game-pool';
 import { writeJsonFiles } from './lib/write-json-files';
-import { scriptConfig } from './config';
-import { Banner } from '@/types/banner';
+import { bannerPoolConfig } from './config/banner-pools';
+import type { Banner } from '@/types/banner';
 import { downloadImage, resizeImage, saveAsPng } from './lib/image';
+import { logger, runScript } from './lib/logger';
 
 const dir = process.cwd();
 
@@ -19,11 +22,11 @@ async function ensureDirs(...dirs: string[]) {
   await Promise.all(dirs.map((d) => fs.mkdir(d, { recursive: true })));
 }
 
-type TPoolData = GamePoolOperator | GamePoolWeapon;
+type PoolData = GamePoolOperator | GamePoolWeapon;
 
 interface IPoolResult {
   poolId: string;
-  files: Record<string, TPoolData>;
+  files: Record<string, PoolData>;
 }
 
 export async function readAllPools(): Promise<IPoolResult[]> {
@@ -49,10 +52,10 @@ export async function readAllPools(): Promise<IPoolResult[]> {
           const content = await fs.readFile(filePath, 'utf-8');
 
           try {
-            const parsed: TPoolData = JSON.parse(content);
+            const parsed: PoolData = JSON.parse(content);
             return [file.name, parsed] as const;
           } catch {
-            console.warn(`⚠️ gagal parse: ${file.name}`);
+            logger.warn(`Failed to parse ${file.name}`);
             return null;
           }
         })
@@ -60,7 +63,9 @@ export async function readAllPools(): Promise<IPoolResult[]> {
 
       // filter null + jadi object
       const validEntries = Object.fromEntries(
-        fileEntries.filter((e): e is readonly [string, TPoolData] => e !== null)
+        fileEntries.filter(
+          (entry): entry is readonly [string, PoolData] => entry !== null
+        )
       );
 
       return {
@@ -213,14 +218,16 @@ async function bannerImages(
 function getTimestampSecond(iso: string) {
   return Math.floor(Date.parse(iso) / 1000);
 }
-type PoolId = (typeof scriptConfig.pools)[number]['id'];
+type PoolId = (typeof bannerPoolConfig.pools)[number]['id'];
 
 async function main() {
   await ensureDirs(paths.generatedBanners, paths.assets);
 
   const results = await readAllPools();
 
-  const orderMap = new Map(scriptConfig.pools.map((e, i) => [e.id, i]));
+  const orderMap = new Map(
+    bannerPoolConfig.pools.map((pool, index) => [pool.id, index])
+  );
   const sortedResults = results.sort((a, b) => {
     const indexA = orderMap.get(a.poolId as PoolId) ?? Infinity;
     const indexB = orderMap.get(b.poolId as PoolId) ?? Infinity;
@@ -231,7 +238,9 @@ async function main() {
 
   for (const result of sortedResults) {
     Object.values(result.files).forEach((json) => {
-      const configPool = scriptConfig.pools.find((e) => e.id === result.poolId);
+      const configPool = bannerPoolConfig.pools.find(
+        (pool) => pool.id === result.poolId
+      );
       const image =
         configPool && 'img' in configPool
           ? configPool.img
@@ -240,7 +249,7 @@ async function main() {
     });
   }
 
-  console.log(`Total unique assets: ${assets.size}`);
+  logger.info(`Found ${assets.size} unique assets`);
 
   const assetsMap = await bannerImages(assets, paths.assets);
 
@@ -251,7 +260,9 @@ async function main() {
       const locale = fileName;
 
       const data = json.data.pool;
-      const pool = scriptConfig.pools.find((e) => e.id === result.poolId);
+      const pool = bannerPoolConfig.pools.find(
+        (pool) => pool.id === result.poolId
+      );
       const isOperator = data.pool_gacha_type === 'char';
 
       let rotate: string[] = [];
@@ -289,4 +300,4 @@ async function main() {
   await writeJsonFiles(bannerMap, paths.generatedBanners);
 }
 
-main().catch(console.error);
+runScript('Banner data generation', main);

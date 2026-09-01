@@ -1,7 +1,7 @@
 import { getLocale } from 'next-intl/server';
 import { Roboto } from 'next/font/google';
 import { CONFIG } from '@/config';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import '@/app/globals.css';
 
 const roboto = Roboto({

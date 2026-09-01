@@ -1,9 +1,9 @@
-import { CONFIG } from '@/config';
+import type { CONFIG } from '@/config';
 
 export type RarityId = keyof typeof CONFIG.enumColors.rarities;
 export type ElementId = keyof typeof CONFIG.enumColors.elements;
 export type OpClassId = keyof typeof CONFIG.enumColors.opClass;
-export type WpHeadhuntTypeId = keyof typeof CONFIG.enumColors.wpTypes;
+export type WeaponHeadhuntTypeId = keyof typeof CONFIG.enumColors.wpTypes;
 
 export interface Enums {
   rarities: EnumRarity[];
@@ -25,6 +25,6 @@ export interface EnumOpClass {
   name: string;
 }
 export interface EnumWPType {
-  id: WpHeadhuntTypeId;
+  id: WeaponHeadhuntTypeId;
   name: string;
 }

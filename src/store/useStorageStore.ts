@@ -3,7 +3,7 @@
 import LZString from 'lz-string';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { Profile } from '@/types/profile';
+import type { Profile } from '@/types/profile';
 
 type StorageState = {
   profiles: Record<string, Profile>;
@@ -70,18 +70,21 @@ export const useStorageStore = create<StorageState>()(
 
       removeProfile: (id) => {
         set((state) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { [id]: _, ...rest } = state.profiles;
+          const profiles = Object.fromEntries(
+            Object.entries(state.profiles).filter(
+              ([profileId]) => profileId !== id
+            )
+          );
           let newCurrentId = state.currentProfileId;
 
           // jika profile yang dihapus adalah current, set ke id terkecil yang ada
           if (state.currentProfileId === id) {
-            const remainingIds = Object.keys(rest).sort((a, b) => +a - +b);
+            const remainingIds = Object.keys(profiles).sort((a, b) => +a - +b);
             newCurrentId = remainingIds[0] || '';
           }
 
           return {
-            profiles: rest,
+            profiles,
             currentProfileId: newCurrentId,
           };
         });

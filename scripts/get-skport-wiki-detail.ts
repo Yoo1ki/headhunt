@@ -1,10 +1,13 @@
 import fs from 'fs/promises';
 import { CONFIG } from '@/config';
-import puppeteer, { Browser, HTTPResponse } from 'puppeteer-core';
+import type { Browser, HTTPResponse } from 'puppeteer-core';
+import puppeteer from 'puppeteer-core';
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
-import { SKPortWikiCatalog } from './interfaces/skport-wiki-catalog';
-import { SKPortWikiDetailOperator } from './interfaces/skport-wiki-detail-operator';
+import type { SKPortWikiCatalog } from './types/skport-wiki-catalog';
+import type { SKPortWikiDetailOperator } from './types/skport-wiki-detail-operator';
+import { logger, runScript } from './lib/logger';
+import { browserConfig } from './config/browser';
 
 const dir = process.cwd();
 
@@ -12,9 +15,6 @@ const paths = {
   rawCatalog: path.join(dir, 'raw/skport/wiki/catalog'),
 } as const;
 
-const executablePath =
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const userDataDir = 'C:\\src\\Puppeteer\\User Data';
 const pageUrl = 'https://wiki.skport.com/endfield/detail';
 
 const subIds: Record<string, string> = {
@@ -136,7 +136,7 @@ async function fetchItem(
 
       if (data) return data;
 
-      console.log(`[${localeId}] (${item.path}) retry ${attempt}...`);
+      logger.warn(`[${localeId}] Retrying ${item.path} (attempt ${attempt})`);
 
       await new Promise((r) => setTimeout(r, 1000));
     } catch {
@@ -148,11 +148,8 @@ async function fetchItem(
 }
 
 async function main() {
-  console.log('🔥 [Get]: SKPort Wiki detail started');
-
   const browser = await puppeteer.launch({
-    executablePath,
-    userDataDir,
+    ...browserConfig,
     headless: true,
   });
 
@@ -184,10 +181,10 @@ async function main() {
     const total = items.length;
     let current = 0;
 
-    console.log(`[${localeId}] Total :`, total);
+    logger.info(`[${localeId}] ${total} items found`);
 
     for (const item of items) {
-      console.log(`[${localeId}] ${++current}/${total} Loading...`);
+      logger.info(`[${localeId}] ${++current}/${total} loading`);
 
       const res = await fetchItem(
         browser,
@@ -197,7 +194,7 @@ async function main() {
       );
 
       if (!res) {
-        console.log(`[${localeId}] (${item.path}) ❌ gagal total`);
+        logger.error(`[${localeId}] Failed to load ${item.path}`);
         continue;
       }
 
@@ -210,15 +207,14 @@ async function main() {
 
       await saveJson(rawDir, localeId, res);
 
-      console.log(
-        `[${localeId}] (${item.path}): 💾`,
+      logger.success(
+        `[${localeId}] Saved ${item.path}`,
         slugMap[item.subId][item.itemId]
       );
     }
   }
 
   await browser.close();
-  console.log('⚡ [Get]: SKPort Wiki data done');
 }
 
-main().catch(console.error);
+runScript('SKPort wiki detail fetch', main);

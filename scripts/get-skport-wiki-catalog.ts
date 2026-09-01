@@ -2,11 +2,10 @@ import { CONFIG } from '@/config';
 import puppeteer from 'puppeteer-core';
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
-import { SKPortWikiCatalog } from './interfaces/skport-wiki-catalog';
+import type { SKPortWikiCatalog } from './types/skport-wiki-catalog';
+import { logger, runScript } from './lib/logger';
+import { browserConfig } from './config/browser';
 
-const executablePath =
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const userDataDir = 'C:\\src\\Puppeteer\\User Data';
 const pageUrl = 'https://wiki.skport.com/endfield';
 const endpoints: Record<string, string> = {
   'catalog?typeMainId=1': 'catalog',
@@ -22,15 +21,13 @@ async function saveJson(type: string, locale: string, data: unknown) {
 }
 
 async function main() {
-  console.log('🔥 [Get]: SKPort Wiki data started');
   const browser = await puppeteer.launch({
-    executablePath,
-    userDataDir,
+    ...browserConfig,
     headless: true,
   });
 
   for (const locale of CONFIG.locales) {
-    console.log('Loading', locale.name, '...');
+    logger.info(`Loading ${locale.name}`);
     const page = await browser.newPage();
 
     const pending = new Set(Object.keys(endpoints));
@@ -49,7 +46,7 @@ async function main() {
         const type = endpoints[matched];
 
         await saveJson(type, locale.id, res);
-        console.log(`💾 SAVED [${locale.id}] (${type})`);
+        logger.success(`Saved [${locale.id}] (${type})`);
 
         pending.delete(matched);
 
@@ -80,7 +77,6 @@ async function main() {
   }
 
   await browser.close();
-  console.log('⚡ [Get]: SKPort Wiki data done');
 }
 
-main().catch(console.error);
+runScript('SKPort wiki catalog fetch', main);

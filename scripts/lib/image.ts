@@ -2,15 +2,16 @@ import sharp from 'sharp';
 import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs/promises';
+import { logger } from './logger';
 
 export const hashBuffer = (buffer: Buffer): string => {
   return crypto.createHash('sha256').update(buffer).digest('hex');
 };
 
 export const downloadImage = async (url: string): Promise<Buffer> => {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to download: ${url}`);
-  return Buffer.from(await res.arrayBuffer());
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to download: ${url}`);
+  return Buffer.from(await response.arrayBuffer());
 };
 
 export const resizeImage = async ({
@@ -57,7 +58,7 @@ export const saveAsPng = async ({
     await fs.access(outputPath);
   } catch {
     await fs.writeFile(outputPath, buffer);
-    console.log(`💾 ${filename}`);
+    logger.success(`Saved ${filename}`);
   }
 
   return hash;

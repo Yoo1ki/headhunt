@@ -1,7 +1,7 @@
-import { PageContent } from './PageContent';
+import { OperatorsPageContent } from './_components/OperatorsPageContent';
 import { getLocale } from 'next-intl/server';
-import { Operator } from '@/types/operator';
-import { Enums } from '@/types/enums';
+import type { Operator } from '@/types/operator';
+import type { Enums } from '@/types/enums';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
@@ -26,7 +26,7 @@ export default async function OperatorsPage() {
   ]);
 
   return (
-    <PageContent
+    <OperatorsPageContent
       rarities={enums.rarities}
       elements={enums.elements}
       opClass={enums.opClass}

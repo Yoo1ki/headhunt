@@ -1,4 +1,4 @@
-import { PageContent } from './PageContent';
+import { PrivacyPolicyPageContent } from './_components/PrivacyPolicyPageContent';
 import type { Metadata } from 'next';
 
 export async function generateMetadata() {
@@ -10,5 +10,5 @@ export async function generateMetadata() {
 }
 
 export default async function PrivacyPolicyPage() {
-  return <PageContent />;
+  return <PrivacyPolicyPageContent />;
 }

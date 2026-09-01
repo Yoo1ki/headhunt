@@ -10,7 +10,24 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  {
+    ignores: [
+      '.next/**',
+      '.open-next/**',
+      '.wrangler/**',
+      'cloudflare-env.d.ts',
+      'next-env.d.ts',
+    ],
+  },
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  {
+    rules: {
+      '@typescript-eslint/consistent-type-imports': [
+        'error',
+        { fixStyle: 'separate-type-imports', prefer: 'type-imports' },
+      ],
+    },
+  },
 ];
 
 export default eslintConfig;

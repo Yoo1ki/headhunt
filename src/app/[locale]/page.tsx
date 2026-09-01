@@ -1,7 +1,7 @@
 import { getLocale } from 'next-intl/server';
-import { PageContent } from './PageContent';
-import { Banners } from '@/types/banner';
-import { Catalogs } from '@/types/catalog';
+import { HomePageContent } from './_components/HomePageContent';
+import type { Banners } from '@/types/banner';
+import type { Catalogs } from '@/types/catalog';
 
 export default async function HomePage() {
   const locale = await getLocale();
@@ -46,5 +46,5 @@ export default async function HomePage() {
       };
     });
 
-  return <PageContent banners={limitedBanners} />;
+  return <HomePageContent banners={limitedBanners} />;
 }

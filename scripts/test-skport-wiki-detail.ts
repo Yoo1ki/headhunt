@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {
+import type {
   SKPortWikiDetailWeapon,
   Document,
   InlineElement,
-} from './interfaces/skport-wiki-detail-weapon';
+} from './types/skport-wiki-detail-weapon';
+import { logger, runScript } from './lib/logger';
 
 const dir = process.cwd();
 const paths = {
@@ -74,7 +75,6 @@ async function main() {
       for (const [file, json] of Object.entries(detailMaps)) {
         if (folder !== 'weapons') break;
 
-        let baseATK = '-/-';
         let skills: {
           label: string;
           content: InlineElement[];
@@ -109,11 +109,6 @@ async function main() {
             cellPositions,
           });
 
-          baseATK = cellContent
-            .slice(0, 2)
-            .map((e) => e?.[0]?.text.text || '-')
-            .join('/');
-
           if (!chapterSkillId) {
             skills = cellContent.slice(2).map((e) => {
               return {
@@ -146,10 +141,10 @@ async function main() {
             };
           });
         }
-        console.log(file, json.data.item.itemId, `${skills[2]?.label}`);
+        logger.info(file, json.data.item.itemId, skills[2]?.label);
       }
     }
   }
 }
 
-main().catch(console.error);
+runScript('SKPort wiki detail diagnostics', main);

@@ -1,20 +1,21 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { SKPortGuideOperators } from './interfaces/skport-guide-operators';
-import { SKPortGuideWeapons } from './interfaces/skport-guide-weapons';
+import type { SKPortGuideOperators } from './types/skport-guide-operators';
+import type { SKPortGuideWeapons } from './types/skport-guide-weapons';
 import { writeJsonFiles } from './lib/write-json-files';
 import { ensureDirs } from './lib/ensure-dirs';
-import { Catalog } from '@/types/catalog';
-import { SKPortGuideEnums } from './interfaces/skport-guide-enums';
-import { Weapon, WeaponDetail } from '@/types/weapons';
-import { Operator } from '@/types/operator';
-import { RarityId } from '@/types/enums';
-import {
+import type { Catalog } from '@/types/catalog';
+import type { SKPortGuideEnums } from './types/skport-guide-enums';
+import type { Weapon, WeaponDetail } from '@/types/weapons';
+import type { Operator } from '@/types/operator';
+import type { RarityId } from '@/types/enums';
+import type {
   SKPortWikiDetailWeapon,
   Document,
   InlineElement,
-} from './interfaces/skport-wiki-detail-weapon';
+} from './types/skport-wiki-detail-weapon';
 import { resizeImage, saveAsPng, downloadImage } from './lib/image';
+import { runScript } from './lib/logger';
 
 type OperatorExtra = {
   slug: string;
@@ -490,4 +491,4 @@ async function main() {
   );
 }
 
-main().catch(console.error);
+runScript('Content data generation', main);

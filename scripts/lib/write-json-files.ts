@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { logger } from './logger';
 
 export async function writeJsonFiles(
   dataMap: Record<string, unknown>,
@@ -9,7 +10,7 @@ export async function writeJsonFiles(
     Object.entries(dataMap).map(async ([file, data]) => {
       const outputPath = path.join(outputDir, file);
       await fs.writeFile(outputPath, JSON.stringify(data));
-      console.log(`💾 ${outputPath}`);
+      logger.success(`Saved ${outputPath}`);
     })
   );
 }

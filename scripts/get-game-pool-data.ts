@@ -1,11 +1,14 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { GamePoolOperator } from './interfaces/game-pool-operator';
-import { GamePoolWeapon } from './interfaces/game-pool-weapon';
+import type {
+  GamePoolOperator,
+  GamePoolWeapon,
+} from '../src/types/api/game-pool';
 import { CONFIG } from '@/config';
 import { ensureDirs } from './lib/ensure-dirs';
 import { writeJsonFiles } from './lib/write-json-files';
-import { scriptConfig } from './config';
+import { bannerPoolConfig } from './config/banner-pools';
+import { logger, runScript } from './lib/logger';
 
 const dir = process.cwd();
 
@@ -20,20 +23,22 @@ async function getContent(lang: string, poolId: string) {
     server_id: '2',
   });
 
-  const res = await fetch(`${CONFIG.endfieldBaseUrl}/api/content?${params}`);
+  const response = await fetch(
+    `${CONFIG.endfieldBaseUrl}/api/content?${params}`
+  );
 
-  if (!res.ok) {
-    throw new Error(`❌ Failed fetch ${lang} (${poolId}): ${res.status}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch ${lang} (${poolId}): ${response.status}`);
   }
 
-  return res.json();
+  return response.json();
 }
 
 async function main() {
   await ensureDirs(paths.rawBanners);
 
   await Promise.all(
-    scriptConfig.pools.map(async (pool) => {
+    bannerPoolConfig.pools.map(async (pool) => {
       const outputDir = path.join(paths.rawBanners, pool.id);
 
       const logs: string[] = [];
@@ -49,8 +54,7 @@ async function main() {
           } catch {}
 
           const data = (await getContent(locale.value, pool.id)) as
-            | GamePoolOperator
-            | GamePoolWeapon;
+            GamePoolOperator | GamePoolWeapon;
 
           if (data.code !== 0) {
             logs.push(`⚠️ skip ${locale.id} (code: ${data.code})`);
@@ -67,9 +71,9 @@ async function main() {
       >[];
 
       if (filtered.length === 0) {
-        console.log(`\n📦 ${pool.id}`);
-        logs.forEach((l) => console.log('  ' + l));
-        console.warn(`🚫 no new data`);
+        logger.info(`Pool ${pool.id}`);
+        logs.forEach((message) => logger.info(message));
+        logger.warn(`No new data for pool ${pool.id}`);
         return;
       }
 
@@ -78,10 +82,10 @@ async function main() {
       await fs.mkdir(outputDir, { recursive: true });
       await writeJsonFiles(dataMap, outputDir);
 
-      console.log(`\n📦 ${pool.id}`);
-      logs.forEach((l) => console.log('  ' + l));
+      logger.info(`Pool ${pool.id}`);
+      logs.forEach((message) => logger.info(message));
     })
   );
 }
 
-main().catch(console.error);
+runScript('Game pool data fetch', main);

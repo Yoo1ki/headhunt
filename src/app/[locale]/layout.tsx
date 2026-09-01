@@ -1,11 +1,11 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import { Header } from '@/components/Header';
-import { Sidebar } from '@/components/Sidebar';
-import { Footer } from '@/components/Footer';
-import { ImportStatus } from '@/components/ImportStatus';
-import { GoToTop } from '@/components/GoToTop';
+import { Header } from '@/components/layout/Header';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Footer } from '@/components/layout/Footer';
+import { ImportStatus } from '@/components/shared/ImportStatus';
+import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import { CONFIG } from '@/config';
@@ -49,7 +49,7 @@ export async function generateMetadata() {
       'gacha tools',
     ],
     other: {
-      "IE_RM_OFF": "true",
+      IE_RM_OFF: 'true',
     },
   };
 
@@ -80,7 +80,7 @@ export default async function HomeLayout({ children, params }: Props) {
               <Footer />
             </div>
             <ImportStatus />
-            <GoToTop />
+            <ScrollToTop />
           </div>
         </div>
       </div>

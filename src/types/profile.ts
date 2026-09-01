@@ -1,4 +1,4 @@
-import { ImportRecordItem } from './import';
+import type { ImportRecordItem } from './import';
 
 export type Profile = {
   id: string;

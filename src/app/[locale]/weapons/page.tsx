@@ -1,7 +1,7 @@
-import { PageContent } from './PageContent';
+import { WeaponsPageContent } from './_components/WeaponsPageContent';
 import { getLocale } from 'next-intl/server';
-import { Weapon } from '@/types/weapons';
-import { Enums } from '@/types/enums';
+import type { Weapon } from '@/types/weapons';
+import type { Enums } from '@/types/enums';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 
@@ -24,9 +24,9 @@ export default async function WeaponsPage() {
   ]);
 
   return (
-    <PageContent
+    <WeaponsPageContent
       rarities={enums.rarities}
-      wpTypes={enums.wpTypes}
+      weaponTypes={enums.wpTypes}
       weapons={weapons}
     />
   );

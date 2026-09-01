@@ -3,27 +3,31 @@
 import { create } from 'zustand';
 import { useStorageStore } from './useStorageStore';
 import { HeadhuntTypeId, headhuntTypes } from '@/data/tracker/headhunt-types';
-import {
+import type {
   BannerItem,
-  GachaResult,
   Headhunt,
   RecordItem,
   TypeItem,
 } from '@/types/profile';
-import { ImportRecordItem, ResImportRecord } from '@/types/import';
+import { GachaResult } from '@/types/profile';
+import type { ImportRecordItem, ResImportRecord } from '@/types/import';
 import banners from '@/data/tracker/banners/en.json';
-import { Banners } from '@/types/banner';
+import type { Banners } from '@/types/banner';
 import { fetchWithRetry } from '@/lib/fetch-with-retry';
+import { delay } from '@/lib/delay';
 
-type TProcessType = 'import' | 'sync';
+type ImportProcessType = 'import' | 'sync';
 
 type ImportState = {
-  processType: TProcessType;
+  processType: ImportProcessType;
   isImporting: boolean;
   totalRecord: number;
   errorType: 'unknown' | 'expired' | 'network' | null;
 
-  importRecords: (url: string, processType?: TProcessType) => Promise<void>;
+  importRecords: (
+    url: string,
+    processType?: ImportProcessType
+  ) => Promise<void>;
 };
 
 type HeadhuntBanners = Record<
@@ -61,9 +65,9 @@ export function combineAverage(oldData: AvgInput, newData: NewData): number {
   const oldCount = oldData.count ?? 0;
 
   const newTotal = newData.pityCount;
-  const newCount = newData.count;
+  const incomingCount = newData.count;
 
-  const totalCount = oldCount + newCount;
+  const totalCount = oldCount + incomingCount;
 
   if (totalCount === 0) return 0;
 
@@ -77,7 +81,7 @@ function getStats({
   records: RecordItem[];
   oldData: BannerItem | TypeItem | undefined;
 }) {
-  const newCount = records.reduce(
+  const newStats = records.reduce(
     (acc, record) => {
       if (record.pity === 0) acc.free++;
 
@@ -123,28 +127,28 @@ function getStats({
     }
   );
 
-  const r4Count = (oldData?.r4Count ?? 0) + newCount.r4;
-  const r5Count = (oldData?.r5Count ?? 0) + newCount.r5;
-  const r6Count = (oldData?.r6Count ?? 0) + newCount.r6;
-  const freeCount = (oldData?.freeCount ?? 0) + newCount.free;
+  const r4Count = (oldData?.r4Count ?? 0) + newStats.r4;
+  const r5Count = (oldData?.r5Count ?? 0) + newStats.r5;
+  const r6Count = (oldData?.r6Count ?? 0) + newStats.r6;
+  const freeCount = (oldData?.freeCount ?? 0) + newStats.free;
 
   const oldAttempt = (oldData?.r6Count ?? 0) - (oldData?.guarantee ?? 0);
   const oldRotateWinCount = (oldData?.rotateWin ?? 0) * oldAttempt;
   const oldRateupWinCount = (oldData?.rateupWin ?? 0) * oldAttempt;
-  const rotateWinCount = oldRotateWinCount + newCount.rotateWin;
-  const rateupWinCount = oldRateupWinCount + newCount.rateupWin;
+  const rotateWinCount = oldRotateWinCount + newStats.rotateWin;
+  const rateupWinCount = oldRateupWinCount + newStats.rateupWin;
 
-  const guarantee = (oldData?.guarantee ?? 0) + newCount.guarantee;
+  const guarantee = (oldData?.guarantee ?? 0) + newStats.guarantee;
   const attempt = r6Count - guarantee;
 
   const r5AvgPity = combineAverage(
     { avg: oldData?.r5AvgPity, count: oldData?.r5Count },
-    { pityCount: newCount.r5Pity, count: newCount.r5 }
+    { pityCount: newStats.r5Pity, count: newStats.r5 }
   );
 
   const r6AvgPity = combineAverage(
     { avg: oldData?.r6AvgPity, count: oldData?.r6Count },
-    { pityCount: newCount.r6Pity, count: newCount.r6 }
+    { pityCount: newStats.r6Pity, count: newStats.r6 }
   );
 
   const rotateWin = attempt > 0 ? rotateWinCount / attempt : 0;
@@ -208,7 +212,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
       const lastRecordId = oldHeadhunt?.types[type.id]?.lastRecordId ?? 0;
 
-      const list: ImportRecordItem[] = [];
+      const fetchedRecords: ImportRecordItem[] = [];
       let hasMore = true;
 
       while (hasMore) {
@@ -221,13 +225,15 @@ export const useImportStore = create<ImportState>((set) => ({
             body: JSON.stringify({
               type_id: type.id,
               url: parsedUrl,
-              ...(list.at(-1)?.id ? { last_id: list.at(-1)?.id } : {}),
+              ...(fetchedRecords.at(-1)?.id
+                ? { last_id: fetchedRecords.at(-1)?.id }
+                : {}),
             }),
           });
 
           if (!response.ok) {
             // Kasih delay minimal 300ms biar notif muncul
-            await new Promise((r) => setTimeout(r, 300));
+            await delay(300);
             isError = true;
             set({
               errorType: response.status === 401 ? 'expired' : 'unknown',
@@ -237,20 +243,20 @@ export const useImportStore = create<ImportState>((set) => ({
 
           const json = (await response.json()) as ResImportRecord;
 
-          const newList = json.data.list.filter(
+          const newRecords = json.data.list.filter(
             (record) => record.id > lastRecordId
           );
 
-          list.push(...newList);
+          fetchedRecords.push(...newRecords);
           set((state) => ({
-            totalRecord: state.totalRecord + newList.length,
+            totalRecord: state.totalRecord + newRecords.length,
           }));
 
-          if (newList.length !== json.data.list.length) break;
+          if (newRecords.length !== json.data.list.length) break;
           hasMore = json.data.hasMore;
         } catch (err: unknown) {
           // Kasih delay minimal 300ms biar notif muncul
-          await new Promise((r) => setTimeout(r, 300));
+          await delay(300);
           isError = true;
           set({
             errorType: err instanceof TypeError ? 'network' : 'unknown',
@@ -259,7 +265,7 @@ export const useImportStore = create<ImportState>((set) => ({
         }
       }
 
-      newRawRecords.set(type.id, list);
+      newRawRecords.set(type.id, fetchedRecords);
     }
 
     //* Check & Get Temporary Missing Banners
@@ -285,7 +291,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
     if (missingBannerIds.size) {
       try {
-        const res = await fetchWithRetry('/api/v1/tracker/banner', {
+        const response = await fetchWithRetry('/api/v1/tracker/banner', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -295,27 +301,27 @@ export const useImportStore = create<ImportState>((set) => ({
           }),
         });
 
-        if (!res.ok) {
+        if (!response.ok) {
           // Kasih delay minimal 300ms biar notif muncul
-          await new Promise((r) => setTimeout(r, 300));
+          await delay(300);
           isError = true;
           set({
-            errorType: res.status === 401 ? 'expired' : 'unknown',
+            errorType: response.status === 401 ? 'expired' : 'unknown',
           });
         }
 
-        const json = (await res.json()) as {
-          data: HeadhuntBanners;
-        };
+        if (response.ok) {
+          const json = (await response.json()) as {
+            data: HeadhuntBanners;
+          };
 
-        const newBanners = json.data;
-
-        for (const [id, banner] of Object.entries(newBanners)) {
-          headhuntBanners[id] = banner;
+          for (const [id, banner] of Object.entries(json.data)) {
+            headhuntBanners[id] = banner;
+          }
         }
       } catch (err: unknown) {
         // Kasih delay minimal 300ms biar notif muncul
-        await new Promise((r) => setTimeout(r, 300));
+        await delay(300);
         isError = true;
         set({
           errorType: err instanceof TypeError ? 'network' : 'unknown',
@@ -330,7 +336,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
       const isWeapon = type.id === HeadhuntTypeId.Weponbox;
       const isJoint = type.id === HeadhuntTypeId.Joint;
-      const isWpOrJo = isWeapon || isJoint;
+      const usesBannerPity = isWeapon || isJoint;
 
       const oldType = oldHeadhunt?.types[type.id];
 
@@ -363,28 +369,30 @@ export const useImportStore = create<ImportState>((set) => ({
               : GachaResult.Lose;
 
         // Hitung Pity
-        const key = isWpOrJo ? record.bannerId : type.id;
-        const old = isWpOrJo ? oldBanner : oldHeadhunt?.types[type.id];
-        const _pity = pityMap.get(key) ?? {
-          pity5: old?.r5Pity ?? 0,
-          pity6: old?.r6Pity ?? 0,
+        const pityKey = usesBannerPity ? record.bannerId : type.id;
+        const previousPity = usesBannerPity
+          ? oldBanner
+          : oldHeadhunt?.types[type.id];
+        const pityState = pityMap.get(pityKey) ?? {
+          pity5: previousPity?.r5Pity ?? 0,
+          pity6: previousPity?.r6Pity ?? 0,
         };
         if (!record.isFree) {
           pity++;
-          _pity.pity5++;
-          _pity.pity6++;
+          pityState.pity5++;
+          pityState.pity6++;
 
           if (record.rarity === 5) {
-            pity = Math.min(_pity.pity5, _pity.pity6);
-            _pity.pity5 = 0;
+            pity = Math.min(pityState.pity5, pityState.pity6);
+            pityState.pity5 = 0;
           }
 
           if (record.rarity === 6) {
-            pity = _pity.pity6;
-            _pity.pity6 = 0;
+            pity = pityState.pity6;
+            pityState.pity6 = 0;
           }
 
-          pityMap.set(key, _pity);
+          pityMap.set(pityKey, pityState);
 
           // Cek Guarantee
           const {
@@ -395,22 +403,22 @@ export const useImportStore = create<ImportState>((set) => ({
           } = oldBanner ?? {};
           const count = r4Count + r5Count + r6Count - freeCount;
 
-          const _rateupState = rateupState.get(record.bannerId) ?? {
+          const currentRateupState = rateupState.get(record.bannerId) ?? {
             no: count,
             hasGotRateup: Boolean(oldBanner?.rateupWin),
           };
 
-          _rateupState.no++;
+          currentRateupState.no++;
           const isRateup = record.itemId === banner?.rateup;
           if (
             isRateup &&
-            _rateupState.no === (type?.guaranteeAt ?? Infinity) &&
-            !_rateupState.hasGotRateup
+            currentRateupState.no === (type?.guaranteeAt ?? Infinity) &&
+            !currentRateupState.hasGotRateup
           ) {
             result = GachaResult.Guarantee;
           }
-          if (isRateup) _rateupState.hasGotRateup = true;
-          rateupState.set(record.bannerId, _rateupState);
+          if (isRateup) currentRateupState.hasGotRateup = true;
+          rateupState.set(record.bannerId, currentRateupState);
         }
 
         //* Update Record
@@ -446,7 +454,7 @@ export const useImportStore = create<ImportState>((set) => ({
         newHeadhunt.banners[id] = {
           id,
           typeId: type.id,
-          ...(isWpOrJo
+          ...(usesBannerPity
             ? {
                 r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
                 r6Pity: pity?.pity6 ?? 0,
@@ -474,7 +482,7 @@ export const useImportStore = create<ImportState>((set) => ({
       newHeadhunt.types[type.id] = {
         id: type.id,
         lastRecordId,
-        ...(!isWpOrJo
+        ...(!usesBannerPity
           ? {
               r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
               r6Pity: pity?.pity6 ?? 0,

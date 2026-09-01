@@ -1,4 +1,4 @@
-import { RarityId } from './enums';
+import type { RarityId } from './enums';
 
 export type Catalogs = Record<string, Catalog>;
 

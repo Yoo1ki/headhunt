@@ -1,3 +1,5 @@
+import { delay } from './delay';
+
 type FetchRetryOptions = RequestInit & {
   retries?: number;
   retryDelay?: number;
@@ -33,8 +35,7 @@ export async function fetchWithRetry(
       }
 
       // exponential backoff
-      const delay = retryDelay * 2 ** (attempt - 1);
-      await new Promise((r) => setTimeout(r, delay));
+      await delay(retryDelay * 2 ** (attempt - 1));
     }
   }
 

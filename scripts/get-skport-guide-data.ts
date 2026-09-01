@@ -2,10 +2,9 @@ import { CONFIG } from '@/config';
 import puppeteer from 'puppeteer-core';
 import { mkdir, writeFile } from 'fs/promises';
 import path from 'path';
+import { logger, runScript } from './lib/logger';
+import { browserConfig } from './config/browser';
 
-const executablePath =
-  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const userDataDir = 'C:\\src\\Puppeteer\\User Data';
 const pageUrl = 'https://game.skport.com/tools/endfield/build-guide';
 const endpoints: Record<string, string> = {
   enums: 'enums',
@@ -24,15 +23,13 @@ async function saveJson(type: string, locale: string, data: unknown) {
 }
 
 async function main() {
-  console.log('🔥 [Get]: SKPort Guide data started');
   const browser = await puppeteer.launch({
-    executablePath,
-    userDataDir,
+    ...browserConfig,
     headless: true,
   });
 
   for (const locale of CONFIG.locales) {
-    console.log('Loading', locale.name, '...');
+    logger.info(`Loading ${locale.name}`);
     const page = await browser.newPage();
 
     const pending = new Set(Object.keys(endpoints));
@@ -51,7 +48,7 @@ async function main() {
         const type = endpoints[matched];
 
         await saveJson(type, locale.id, res);
-        console.log(`💾 SAVED [${locale.id}] (${type})`);
+        logger.success(`Saved [${locale.id}] (${type})`);
 
         pending.delete(matched);
 
@@ -82,7 +79,6 @@ async function main() {
   }
 
   await browser.close();
-  console.log('⚡ [Get]: SKPort Guide data done');
 }
 
-main().catch(console.error);
+runScript('SKPort guide data fetch', main);
