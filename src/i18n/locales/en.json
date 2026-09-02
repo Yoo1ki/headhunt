@@ -57,6 +57,7 @@
   },
   "OperatorsPage": {
     "title": "Operators - Arknights: Endfield",
+    "description": "Browse Arknights: Endfield operators by rarity, element, and class to help you build your team.",
     "pageTitle": "Operators",
     "searchLabel": "Search Operators",
     "notfound": "No operators found.",
@@ -64,6 +65,7 @@
   },
   "WeaponsPage": {
     "title": "Weapons - Arknights: Endfield",
+    "description": "Browse Arknights: Endfield weapons by rarity and weapon type, with detailed stats and skill information.",
     "pageTitle": "Weapons",
     "searchLabel": "Search Weapons",
     "notfound": "No weapons found.",
@@ -72,10 +74,17 @@
   },
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
+    "description": "Track your Arknights: Endfield pity and gacha history with Headhunt.cc.",
     "pageTitle": "Headhunt Tracker",
     "recentBanners": "Recent Banners",
     "recentHeadhunts": "Recent Headhunts",
     "recentIssues": "Recent Issues",
+    "migrationNotice": {
+      "title": "Thank you for continuing to use Headhunt Tracker",
+      "fixedLabel": "Pity calculation improvements are now active",
+      "description": "We have fixed an issue that caused some pity calculations to be inaccurate. We will continue improving this tool. If you find another bug, please report it through Discord.",
+      "dismiss": "Got it"
+    },
     "headhuntRecords": "Headhunt Records",
     "issueRecords": "Issue Records",
     "loading": "Loading...",

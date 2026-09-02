@@ -42,16 +42,18 @@ export const Header = ({ className }: HeaderProps) => {
             </Link>
             <div className="flex items-center gap-4">
               <LocaleSwitcher />
-              <div
+              <button
+                type="button"
                 onClick={onClick}
-                className="cursor-pointer text-white lg:hidden"
+                aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                className="cursor-pointer rounded-lg p-1 text-white transition-colors hover:bg-white/10 lg:hidden"
               >
                 {isOpen ? (
                   <SlClose className="h-8 w-8" />
                 ) : (
                   <SlMenu className="h-8 w-8" />
                 )}
-              </div>
+              </button>
             </div>
           </div>
         </div>

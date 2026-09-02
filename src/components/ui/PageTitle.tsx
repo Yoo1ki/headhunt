@@ -18,15 +18,19 @@ export const PageTitle = ({
   children,
 }: PageTitleProps) => {
   return (
-    <div className="mb-4 flex flex-col items-center justify-between gap-4 lg:flex-row lg:gap-2">
-      <div className="flex flex-col items-center gap-2 lg:flex-row lg:items-end">
-        <h1 className="text-center text-4xl font-medium text-shadow-lg">
+    <div className="mb-5 flex flex-col gap-3 border-b border-white/10 pb-4 lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex min-w-0 flex-col gap-1">
+        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
           {title}
         </h1>
-        {desc && <span className="text-sm text-white/80">{desc}</span>}
+        {desc && <span className="text-sm text-white/55">{desc}</span>}
       </div>
-      {search && <SearchForm {...search} />}
-      {children}
+      {(search || children) && (
+        <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
+          {search && <SearchForm {...search} />}
+          {children}
+        </div>
+      )}
     </div>
   );
 };

@@ -18,10 +18,10 @@ export const SearchForm = ({
   }
 
   return (
-    <div className="group relative w-full lg:w-fit">
+    <div className="group relative w-full sm:min-w-64 lg:w-72">
       <input
         type="text"
-        className="w-full rounded-xl bg-white/10 px-10 py-2 placeholder-white/60 outline-none hover:bg-white/15 focus:bg-white/15 focus:ring-2 focus:ring-yellow-400"
+        className="w-full rounded-xl border border-white/10 bg-white/5 px-10 py-2.5 text-sm text-white placeholder-white/40 transition-colors outline-none hover:border-white/20 hover:bg-white/10 focus:border-yellow-400/70 focus:bg-white/10 focus:ring-2 focus:ring-yellow-400/20"
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
@@ -30,14 +30,15 @@ export const SearchForm = ({
       {value && (
         <button
           type="button"
-          className="absolute top-0 right-0 mt-2 mr-2 p-1"
+          aria-label="Clear search"
+          className="absolute top-1/2 right-2 -translate-y-1/2 rounded-lg p-1.5 text-white/45 transition-colors hover:bg-white/10 hover:text-white"
           onClick={() => onChange('')}
         >
           <FaTimes className="text-white/60" />
         </button>
       )}
 
-      <div className="absolute top-0 left-0 mt-3 ml-3">
+      <div className="absolute top-1/2 left-3 -translate-y-1/2">
         <FaSearch className="text-white/60 group-focus-within:text-white/80" />
       </div>
     </div>

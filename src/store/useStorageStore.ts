@@ -14,6 +14,7 @@ type StorageState = {
   googleDriveLastBackupSignature: string;
   localDataUpdatedAt: number;
   hasHydrated: boolean;
+  migrationNotice: boolean;
 
   getCurrentProfile: () => Profile | null;
   setProfile: (
@@ -29,6 +30,7 @@ type StorageState = {
   setGoogleDriveAutoBackup: (enabled: boolean) => void;
   setGoogleDriveConnected: (connected: boolean) => void;
   setGoogleDriveLastBackupSignature: (signature: string) => void;
+  dismissMigrationNotice: () => void;
 };
 
 const storage = {
@@ -59,6 +61,7 @@ export const useStorageStore = create<StorageState>()(
       googleDriveLastBackupSignature: '',
       localDataUpdatedAt: 0,
       hasHydrated: false,
+      migrationNotice: false,
 
       getCurrentProfile: () => {
         const { profiles, currentProfileId } = get();
@@ -140,6 +143,10 @@ export const useStorageStore = create<StorageState>()(
       setGoogleDriveLastBackupSignature: (signature) => {
         set({ googleDriveLastBackupSignature: signature });
       },
+
+      dismissMigrationNotice: () => {
+        set({ migrationNotice: false });
+      },
     }),
     {
       name: 'storage',
@@ -155,6 +162,7 @@ export const useStorageStore = create<StorageState>()(
         return {
           ...state,
           profiles: migrateProfilesToV2(state.profiles),
+          migrationNotice: true,
         } as StorageState;
       },
 

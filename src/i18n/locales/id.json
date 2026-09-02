@@ -57,6 +57,7 @@
   },
   "OperatorsPage": {
     "title": "List Operator - Arknights: Endfield",
+    "description": "Jelajahi daftar operator Arknights: Endfield lengkap dengan rarity, elemen, dan class untuk membantu menyusun tim.",
     "pageTitle": "Operator",
     "searchLabel": "Cari Operator",
     "notfound": "Operator tidak ditemukan.",
@@ -64,6 +65,7 @@
   },
   "WeaponsPage": {
     "title": "List Senjata - Arknights: Endfield",
+    "description": "Jelajahi daftar senjata Arknights: Endfield berdasarkan rarity dan tipe senjata, lengkap dengan detail statistik.",
     "pageTitle": "Senjata",
     "searchLabel": "Cari Senjata",
     "notfound": "Senjata tidak ditemukan.",
@@ -72,10 +74,17 @@
   },
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
+    "description": "Lacak pity dan riwayat gacha Arknights: Endfield dengan mudah menggunakan Headhunt.cc.",
     "pageTitle": "Headhunt Tracker",
     "recentBanners": "Banner Terbaru",
     "recentHeadhunts": "Headhunt Terbaru",
     "recentIssues": "Edisi Terbaru",
+    "migrationNotice": {
+      "title": "Terima kasih sudah tetap menggunakan Headhunt.cc",
+      "fixedLabel": "Perbaikan perhitungan pity sudah diterapkan",
+      "description": "Kami telah memperbaiki masalah yang menyebabkan beberapa perhitungan pity kurang tepat. Kami akan terus mengembangkan tools ini. Jika kamu menemukan bug lain, mohon laporkan melalui Discord.",
+      "dismiss": "Mengerti"
+    },
     "headhuntRecords": "Riwayat Headhunt",
     "issueRecords": "Riwayat Edisi",
     "loading": "Memuat...",

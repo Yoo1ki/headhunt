@@ -12,6 +12,7 @@ export async function generateMetadata() {
 
   const metadata: Metadata = {
     title: t('title'),
+    description: t('description'),
   };
 
   return metadata;

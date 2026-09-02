@@ -5,7 +5,11 @@ import { PageTitle } from '@/components/ui/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useHash } from '@/hooks/useHash';
-import { FaDownload, FaFileImport, FaGear } from 'react-icons/fa6';
+import {
+  FaDownload,
+  FaFileImport,
+  FaGear,
+} from 'react-icons/fa6';
 import { FaSyncAlt } from 'react-icons/fa';
 import type { Banners } from '@/types/banner';
 import { Button } from '@/components/ui/Button';

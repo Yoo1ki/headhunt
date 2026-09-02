@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Footer } from '@/components/layout/Footer';
 import { ImportStatus } from '@/components/shared/ImportStatus';
+import { MigrationNotice } from '@/components/shared/MigrationNotice';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
@@ -15,8 +16,12 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-export async function generateMetadata() {
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
   const t = await getTranslations('HomePage');
+  const localeUrls = Object.fromEntries(
+    routing.locales.map((item) => [item, `${CONFIG.baseUrl}/${item}`])
+  );
 
   const metadata: Metadata = {
     title: {
@@ -24,6 +29,24 @@ export async function generateMetadata() {
       template: `%s — ${CONFIG.appName}`,
     },
     description: t('description'),
+    metadataBase: new URL(CONFIG.baseUrl),
+    alternates: {
+      canonical: `/${locale}`,
+      languages: localeUrls,
+    },
+    openGraph: {
+      type: 'website',
+      siteName: CONFIG.appName,
+      title: `${CONFIG.appName} — ${t('title')}`,
+      description: t('description'),
+      url: `/${locale}`,
+      locale,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${CONFIG.appName} — ${t('title')}`,
+      description: t('description'),
+    },
     keywords: [
       'Arknights Endfield',
       'Arknights Endfield pity',
@@ -80,6 +103,7 @@ export default async function HomeLayout({ children, params }: Props) {
               <Footer />
             </div>
             <ImportStatus />
+            <MigrationNotice />
             <ScrollToTop />
           </div>
         </div>

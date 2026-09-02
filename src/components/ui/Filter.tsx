@@ -43,7 +43,7 @@ const getDisplayValue = (id: string) =>
 
 export const Filter = ({ data, value, onChange }: FilterProps) => {
   return (
-    <div className="grow rounded-xl">
+    <div className="grow rounded-xl border border-white/10 bg-white/5 p-1">
       <div className="flex flex-wrap items-center justify-evenly gap-1">
         {data.map((item) => (
           <FilterCard
@@ -68,9 +68,9 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
         type="button"
         onClick={() => onClick(item.id)}
         className={clsx(
-          'relative flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 p-1 select-none',
-          selected ? 'border-white' : 'border-transparent',
-          'hover:border-white/60'
+          'relative flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 p-1 text-sm select-none',
+          selected ? 'border-white shadow-sm' : 'border-transparent',
+          'hover:border-white/60 focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900'
         )}
         style={{ backgroundColor: item.color }}
       >

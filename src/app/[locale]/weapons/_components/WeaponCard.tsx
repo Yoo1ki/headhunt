@@ -38,7 +38,7 @@ export const WeaponCard = ({
   const t = useTranslations('WeaponsPage');
 
   return (
-    <div className="group relative flex flex-col gap-2 overflow-hidden rounded-xl bg-neutral-800 px-2 py-1">
+    <div className="group relative flex flex-col gap-2 overflow-hidden rounded-xl border border-white/10 bg-neutral-800/80 px-3 py-2 shadow-lg shadow-black/10">
       <div className="pointer-events-none absolute inset-0 transition duration-300 group-hover:bg-white/5" />
       <div className="flex gap-2">
         <div
