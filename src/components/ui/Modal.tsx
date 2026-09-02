@@ -40,7 +40,7 @@ export const Modal = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px]"
       onClick={() => {
         if (!disableClose) onClose();
       }}
@@ -50,11 +50,13 @@ export const Modal = ({
       <div className="absolute inset-0 flex flex-col items-center justify-center-safe overflow-y-auto p-2 lg:p-4">
         <div className="flex w-full max-w-xl flex-col">
           <div
-            className="relative overflow-hidden rounded-xl bg-neutral-800/90 p-4"
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-neutral-900/98 p-4 shadow-2xl shadow-black/60"
             onClick={(e) => e.stopPropagation()}
           >
             <button
-              className="absolute top-0 right-0 cursor-pointer rounded-bl-xl bg-neutral-300 px-2 py-1 text-sm font-semibold text-neutral-700 hover:bg-neutral-200 hover:text-red-500 active:bg-neutral-400 active:text-red-500/60"
+              type="button"
+              aria-label="Close dialog"
+              className="absolute top-2 right-2 flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg border border-white/10 bg-white/5 text-sm font-semibold text-white/55 transition-colors hover:bg-white/10 hover:text-white active:bg-white/15 active:text-white/70"
               onClick={() => {
                 if (!disableClose) onClose();
               }}

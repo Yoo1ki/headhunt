@@ -1,51 +1,190 @@
-import React from 'react';
+'use client';
+
+import clsx from 'clsx';
+import {
+  cloneElement,
+  isValidElement,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactElement,
+  type ReactNode,
+} from 'react';
+import { createPortal } from 'react-dom';
+
+type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 
 type TooltipProps = {
   title: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
-  position?: 'top' | 'right' | 'bottom' | 'left';
+  position?: TooltipPosition;
 };
+
+type Coordinates = {
+  left: number;
+  top: number;
+  position: TooltipPosition;
+};
+
+const GAP = 10;
+const VIEWPORT_PADDING = 8;
 
 export const Tooltip = ({
   title,
   children,
   className,
-  position = 'right',
+  position = 'top',
 }: TooltipProps) => {
-  const positionClasses = {
-    top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-    right: 'left-full top-1/2 -translate-y-1/2 ml-2',
-    bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-    left: 'right-full top-1/2 -translate-y-1/2 mr-2',
+  const generatedId = useId();
+  const tooltipId = `tooltip-${generatedId.replaceAll(':', '')}`;
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const openTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [isOpen, setIsOpen] = useState(false);
+  const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
+
+  const updatePosition = useCallback(() => {
+    const trigger = triggerRef.current?.getBoundingClientRect();
+    const tooltip = tooltipRef.current?.getBoundingClientRect();
+    if (!trigger || !tooltip) return;
+
+    const spaces: Record<TooltipPosition, number> = {
+      top: trigger.top,
+      right: window.innerWidth - trigger.right,
+      bottom: window.innerHeight - trigger.bottom,
+      left: trigger.left,
+    };
+    const required: Record<TooltipPosition, number> = {
+      top: tooltip.height + GAP,
+      right: tooltip.width + GAP,
+      bottom: tooltip.height + GAP,
+      left: tooltip.width + GAP,
+    };
+    const fallbackOrder: TooltipPosition[] = [
+      position,
+      position === 'top' ? 'bottom' : 'top',
+      position === 'left' ? 'right' : 'left',
+      position === 'right' ? 'left' : 'right',
+    ];
+    const resolvedPosition =
+      fallbackOrder.find((side) => spaces[side] >= required[side]) ?? position;
+
+    let left = trigger.left + trigger.width / 2 - tooltip.width / 2;
+    let top = trigger.top - tooltip.height - GAP;
+
+    if (resolvedPosition === 'bottom') top = trigger.bottom + GAP;
+    if (resolvedPosition === 'left') {
+      left = trigger.left - tooltip.width - GAP;
+      top = trigger.top + trigger.height / 2 - tooltip.height / 2;
+    }
+    if (resolvedPosition === 'right') {
+      left = trigger.right + GAP;
+      top = trigger.top + trigger.height / 2 - tooltip.height / 2;
+    }
+
+    left = Math.min(
+      Math.max(left, VIEWPORT_PADDING),
+      window.innerWidth - tooltip.width - VIEWPORT_PADDING
+    );
+    top = Math.min(
+      Math.max(top, VIEWPORT_PADDING),
+      window.innerHeight - tooltip.height - VIEWPORT_PADDING
+    );
+    setCoordinates({ left, top, position: resolvedPosition });
+  }, [position]);
+
+  const show = () => {
+    clearTimeout(openTimerRef.current);
+    openTimerRef.current = setTimeout(() => setIsOpen(true), 120);
   };
 
-  const arrowClasses = {
-    top: 'absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-600',
-    right:
-      'absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-neutral-600',
-    bottom:
-      'absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-neutral-600',
-    left: 'absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-neutral-600',
-  };
+  const hide = useCallback(() => {
+    clearTimeout(openTimerRef.current);
+    setIsOpen(false);
+    setCoordinates(null);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') hide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [hide, isOpen, updatePosition]);
+
+  useEffect(
+    () => () => {
+      clearTimeout(openTimerRef.current);
+    },
+    []
+  );
+
+  const accessibleChild = isValidElement(children)
+    ? cloneElement(children as ReactElement<{ 'aria-describedby'?: string }>, {
+        'aria-describedby': tooltipId,
+      })
+    : children;
 
   return (
-    <div
-      className={`group/tooltip relative ${className}`}
-      aria-describedby={`tooltip-${title}`}
-    >
-      {children}
-
+    <>
       <div
-        id={`tooltip-${title}`}
-        role="tooltip"
-        className={`pointer-events-none absolute ${positionClasses[position]} z-50 scale-95 opacity-0 transition-all duration-150 ease-out group-hover/tooltip:scale-100 group-hover/tooltip:opacity-100`}
+        ref={triggerRef}
+        className={clsx('relative', className)}
+        onMouseEnter={show}
+        onMouseLeave={hide}
+        onFocusCapture={show}
+        onBlurCapture={hide}
       >
-        <div className="relative max-w-xs rounded-md bg-neutral-600 px-2 py-1 text-center text-xs wrap-break-word text-white shadow">
-          {title}
-          <div className={arrowClasses[position]}></div>
-        </div>
+        {accessibleChild}
       </div>
-    </div>
+
+      {isOpen &&
+        createPortal(
+          <div
+            ref={tooltipRef}
+            id={tooltipId}
+            role="tooltip"
+            className={clsx(
+              'pointer-events-none fixed z-100 max-w-64 rounded-lg border border-white/10 bg-neutral-950/95 px-2.5 py-1.5 text-center text-xs leading-relaxed font-medium text-white shadow-xl shadow-black/40 backdrop-blur-md transition duration-150',
+              coordinates
+                ? 'translate-y-0 scale-100 opacity-100'
+                : 'translate-y-1 scale-95 opacity-0'
+            )}
+            style={{
+              left: coordinates?.left ?? 0,
+              top: coordinates?.top ?? 0,
+            }}
+          >
+            {title}
+            <span
+              className={clsx(
+                'absolute h-2 w-2 rotate-45 border-white/10 bg-neutral-950',
+                coordinates?.position === 'top' &&
+                  '-bottom-1 left-1/2 -translate-x-1/2 border-r border-b',
+                coordinates?.position === 'bottom' &&
+                  '-top-1 left-1/2 -translate-x-1/2 border-t border-l',
+                coordinates?.position === 'left' &&
+                  'top-1/2 -right-1 -translate-y-1/2 border-t border-r',
+                coordinates?.position === 'right' &&
+                  'top-1/2 -left-1 -translate-y-1/2 border-b border-l'
+              )}
+            />
+          </div>,
+          document.body
+        )}
+    </>
   );
 };

@@ -2,6 +2,8 @@ import { CONFIG } from '@/config';
 import type { BannerItem, TypeItem } from '@/types/profile';
 import { useLocale, useTranslations } from 'next-intl';
 import { useMemo } from 'react';
+import { Tooltip } from '@/components/ui/Tooltip';
+import { FaCircleInfo } from 'react-icons/fa6';
 
 type DetailRecordsProps = {
   label?: string;
@@ -35,26 +37,34 @@ export const DetailRecords = ({
     const base = [
       {
         label: isWeapon ? t('totalIssue') : t('totalHeadhunt'),
+        description: t('totalPullsDescription'),
         value: totalPulls,
       },
       {
         label: isWeapon ? t('totalArsenalTicket') : t('totalOroberyl'),
+        description: isWeapon
+          ? t('totalArsenalTicketDescription')
+          : t('totalOroberylDescription'),
         value: (totalPulls * currencyMultiplier).toLocaleString(localeValue),
       },
       {
         label: isWeapon ? t('r4Issue') : t('r4Headhunt'),
+        description: t('rarityCountDescription', { rarity: 4 }),
         value: r4,
       },
       {
         label: isWeapon ? t('r5Issue') : t('r5Headhunt'),
+        description: t('rarityCountDescription', { rarity: 5 }),
         value: r5,
       },
       {
         label: isWeapon ? t('r6Issue') : t('r6Headhunt'),
+        description: t('rarityCountDescription', { rarity: 6 }),
         value: r6,
       },
       {
         label: t('r6AvgPity'),
+        description: t('r6AvgPityDescription'),
         value: hasR6 ? Math.round(stats?.r6AvgPity ?? 0) : '-',
       },
     ];
@@ -68,6 +78,7 @@ export const DetailRecords = ({
         ? [
             {
               label: t('rotateWinRate'),
+              description: t('rotateWinRateDescription'),
               value: hasR6
                 ? `${Math.round((stats?.rotateWin ?? 0) * 100)}%`
                 : '-',
@@ -76,6 +87,7 @@ export const DetailRecords = ({
         : []),
       {
         label: t('rateupWinRate'),
+        description: t('rateupWinRateDescription'),
         value: hasR6 ? `${Math.round((stats?.rateupWin ?? 0) * 100)}%` : '-',
       },
     ];
@@ -95,8 +107,17 @@ export const DetailRecords = ({
             key={detail.label}
             className="flex flex-col items-center justify-center gap-1 rounded-xl bg-neutral-900/80 px-2 py-1"
           >
-            <span className="line-clamp-1 text-center text-sm font-semibold text-white">
-              {detail.label}
+            <span className="flex max-w-full items-center justify-center gap-1.5 text-center text-sm font-semibold text-white">
+              <span className="line-clamp-1">{detail.label}</span>
+              <Tooltip title={detail.description} position="top">
+                <button
+                  type="button"
+                  className="shrink-0 cursor-help rounded-full text-white/35 transition-colors hover:text-yellow-300 focus-visible:text-yellow-300 focus-visible:outline-none"
+                  aria-label={t('showDescription', { label: detail.label })}
+                >
+                  <FaCircleInfo className="text-xs" />
+                </button>
+              </Tooltip>
             </span>
             <span className="line-clamp-1 font-semibold text-white/80">
               {detail.value}

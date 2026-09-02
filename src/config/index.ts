@@ -8,6 +8,9 @@ export const CONFIG = {
   since: 2026,
   endfieldBaseUrl: 'https://ef-webview.gryphline.com',
   discordUrl: 'https://discord.gg/jBNxtSstEa',
+  googleClientId:
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ??
+    '907562393809-e275d60o81dkhs9adom0hdb9l4tsiopc.apps.googleusercontent.com',
   locales: [
     {
       id: 'cn',

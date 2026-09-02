@@ -5,7 +5,7 @@ import { PageTitle } from '@/components/ui/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useHash } from '@/hooks/useHash';
-import { FaFileImport, FaGear } from 'react-icons/fa6';
+import { FaDownload, FaFileImport, FaGear } from 'react-icons/fa6';
 import { FaSyncAlt } from 'react-icons/fa';
 import type { Banners } from '@/types/banner';
 import { Button } from '@/components/ui/Button';
@@ -21,6 +21,7 @@ import type { Catalogs } from '@/types/catalog';
 import type { Enums } from '@/types/enums';
 import type { RecordItem } from '@/types/profile';
 import { SettingsMenu } from './SettingsMenu';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 type TrackerPageContentProps = {
   types: Types;
@@ -55,6 +56,9 @@ export const TrackerPageContent = ({
   rarities,
 }: TrackerPageContentProps) => {
   const t = useTranslations('TrackerPage');
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const hasHydrated = useStorageStore((s) => s.hasHydrated);
   const profile = useStorageStore((s) => s.getCurrentProfile());
@@ -66,6 +70,12 @@ export const TrackerPageContent = ({
 
   const [isOpenImport, setIsOpenImport] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get('settings') !== 'google-drive') return;
+    setIsOpenSettings(true);
+    router.replace(pathname, { scroll: false });
+  }, [pathname, router, searchParams]);
 
   const combinedHeadhuntTypes = useMemo(
     () => [...types.operatorTypes, ...types.weaponTypes],
@@ -153,7 +163,7 @@ export const TrackerPageContent = ({
 
   const handleSync = async () => {
     if (!profile?.stores?.headhunt?.url || isImporting) return;
-    importRecords(profile?.stores?.headhunt?.url, 'sync');
+    importRecords(profile.stores.headhunt.url, 'sync', profile.id);
   };
 
   const handleOpenImport = () => {
@@ -203,13 +213,12 @@ export const TrackerPageContent = ({
           <Button
             onClick={handleOpenSettings}
             variant="secondary"
-            isNew={true}
-            disabled={
-              // !hasHydrated || isImporting
-              true
-            }
+            isNew
+            disabled={!hasHydrated || isImporting}
+            aria-label={t('SettingsMenu.openSettings')}
           >
             <FaGear />
+            <span>{t('SettingsMenu.title')}</span>
           </Button>
         </div>
       </PageTitle>
@@ -347,6 +356,7 @@ export const TrackerPageContent = ({
                   disabled={!profile.stores.headhunt.url || isImporting}
                   isSyncing={isImporting && processType === 'sync'}
                   onSync={handleSync}
+                  onRestore={handleOpenSettings}
                 />
               </>
             ) : (
@@ -356,37 +366,43 @@ export const TrackerPageContent = ({
                     ? t('noGachaRecords')
                     : t('noRecordImported')}
                 </div>
-                {profile?.stores?.headhunt ? (
-                  <Button
-                    onClick={handleSync}
-                    variant="secondary"
-                    disabled={!profile.stores.headhunt?.url || isImporting}
-                  >
-                    {isImporting && processType === 'sync' ? (
-                      <>
-                        <FaSyncAlt className="animate-spin" />
-                        <span>{t('syncing')}</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaSyncAlt />
-                        <span>{t('sync')}</span>
-                      </>
-                    )}
+                <div className="flex flex-wrap justify-center gap-2">
+                  {profile?.stores?.headhunt ? (
+                    <Button
+                      onClick={handleSync}
+                      variant="secondary"
+                      disabled={!profile.stores.headhunt?.url || isImporting}
+                    >
+                      {isImporting && processType === 'sync' ? (
+                        <>
+                          <FaSyncAlt className="animate-spin" />
+                          <span>{t('syncing')}</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaSyncAlt />
+                          <span>{t('sync')}</span>
+                        </>
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => setIsOpenImport(true)}
+                      disabled={isImporting && processType === 'sync'}
+                    >
+                      <FaFileImport />
+                      {isImporting && processType === 'import' ? (
+                        <span>{t('importing')}</span>
+                      ) : (
+                        <span>{t('import')}</span>
+                      )}
+                    </Button>
+                  )}
+                  <Button variant="secondary" onClick={handleOpenSettings}>
+                    <FaDownload />
+                    <span>{t('SettingsMenu.restore')}</span>
                   </Button>
-                ) : (
-                  <Button
-                    onClick={() => setIsOpenImport(true)}
-                    disabled={isImporting && processType === 'sync'}
-                  >
-                    <FaFileImport />
-                    {isImporting && processType === 'import' ? (
-                      <span>{t('importing')}</span>
-                    ) : (
-                      <span>{t('import')}</span>
-                    )}
-                  </Button>
-                )}
+                </div>
               </div>
             )}
           </div>

@@ -7,16 +7,18 @@ import type {
   GameRecordWeapon,
   ResGameRecord,
 } from '@/types/import';
-import { fetchJsonWithRetry } from '@/lib/fetch-json-with-retry';
-import { importPayloadSchema } from '@/lib/validators/import-payload';
 import { jsonError, jsonSuccess } from '@/lib/api-response';
+import { fetchJsonWithRetry } from '@/lib/fetch-json-with-retry';
 import { parseJsonRequest } from '@/lib/parse-json-request';
+import { importPayloadSchema } from '@/lib/validators/import-payload';
 
-function isOperator(
-  record: GameRecordOperator | GameRecordWeapon | GameRecordOther
-): record is GameRecordOperator {
-  return 'charId' in record;
-}
+type GameRecord = GameRecordOperator | GameRecordWeapon | GameRecordOther;
+
+const isOperatorDraw = (record: GameRecord): record is GameRecordOperator =>
+  record.kind === 'draw' && 'charId' in record;
+
+const isWeaponDraw = (record: GameRecord): record is GameRecordWeapon =>
+  record.kind === 'draw' && 'weaponId' in record;
 
 export async function POST(req: Request) {
   const body = await parseJsonRequest(req);
@@ -38,36 +40,44 @@ export async function POST(req: Request) {
   recordUrl.search = params.toString();
 
   const res = await fetchJsonWithRetry<ResGameRecord>(recordUrl, {
-    context: 'tracker.import.v1',
+    context: 'tracker.import.v2',
   });
   if (res?.code === 40100) return jsonError('Invalid Token', 401);
   if (res?.code !== 0) return jsonError('Unknown Error', 500);
 
   const data: DataImportRecord = {
-    list: res.data.list.map((record) => {
-      if (isOperator(record)) {
-        return {
-          id: Number(record.seqId),
-          bannerId: record.poolId,
-          itemId: record.charId,
-          rarity: record.rarity,
-          isFree: record.isFree,
-          isNew: record.isNew,
-          timestamp: Number(record.gachaTs),
-        };
+    list: res.data.list.flatMap((record) => {
+      if (isOperatorDraw(record)) {
+        return [
+          {
+            id: Number(record.seqId),
+            bannerId: record.poolId,
+            itemId: record.charId,
+            rarity: record.rarity,
+            isFree: record.isFree,
+            isNew: record.isNew,
+            timestamp: Number(record.gachaTs),
+          },
+        ];
       }
 
-      const weaponRecord = record as GameRecordWeapon;
-      return {
-        id: Number(weaponRecord.seqId),
-        bannerId: weaponRecord.poolId,
-        itemId: weaponRecord.weaponId,
-        rarity: weaponRecord.rarity,
-        isNew: weaponRecord.isNew,
-        timestamp: Number(weaponRecord.gachaTs),
-      };
+      if (isWeaponDraw(record)) {
+        return [
+          {
+            id: Number(record.seqId),
+            bannerId: record.poolId,
+            itemId: record.weaponId,
+            rarity: record.rarity,
+            isNew: record.isNew,
+            timestamp: Number(record.gachaTs),
+          },
+        ];
+      }
+
+      return [];
     }),
     hasMore: res.data.hasMore,
+    nextId: Number(res.data.list.at(-1)?.seqId) || undefined,
   };
 
   return jsonSuccess(data);

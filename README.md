@@ -72,6 +72,28 @@ published tracker UI downloads it through its stable GitHub raw URL.
 Puppeteer scripts use the existing local defaults for Chrome. Override them on
 another machine with `CHROME_EXECUTABLE_PATH` and `PUPPETEER_USER_DATA_DIR`.
 
+## Google Drive backups
+
+Create a Google OAuth 2.0 Web client, add the application's origins to its
+authorized JavaScript origins, enable the Google Drive API, and set:
+
+```bash
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-google-oauth-client-secret
+```
+
+Add these authorized redirect URIs to the Google OAuth web client:
+
+```text
+http://localhost:3000/api/auth/google/callback
+https://headhunt.cc/api/auth/google/callback
+```
+
+Google Drive backups use the restricted `drive.appdata` scope. The refresh token
+is kept in a secure HttpOnly cookie and is never exposed to client JavaScript or
+included in backup files. Configure `GOOGLE_CLIENT_SECRET` as a Cloudflare secret
+in production; never commit the downloaded Google client-secret JSON file.
+
 ## Cloudflare preview and deployment
 
 ```bash

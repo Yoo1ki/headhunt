@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Filter } from '@/components/ui/Filter';
 import { Button } from '@/components/ui/Button';
-import { FaSyncAlt } from 'react-icons/fa';
+import { FaDownload, FaSyncAlt } from 'react-icons/fa';
 import type { Enums } from '@/types/enums';
 import { CONFIG } from '@/config';
 import type { RecordItem } from '@/types/profile';
@@ -21,6 +21,7 @@ type HeadhuntRecordsProps = {
   isSyncing: boolean;
   disabled: boolean;
   onSync: () => void;
+  onRestore: () => void;
 };
 
 const formatTimestamp = ({ ts, locale }: { ts: number; locale: string }) => {
@@ -52,6 +53,7 @@ export const HeadhuntRecords = ({
   isSyncing,
   disabled,
   onSync,
+  onRestore,
 }: HeadhuntRecordsProps) => {
   const t = useTranslations('TrackerPage');
   const locale = useLocale();
@@ -232,19 +234,29 @@ export const HeadhuntRecords = ({
           ) : (
             <div className="flex flex-col items-center gap-2 py-10">
               <p>{t('noRecordFound')}</p>
-              <Button onClick={onSync} variant="secondary" disabled={disabled}>
-                {isSyncing ? (
-                  <>
-                    <FaSyncAlt className="animate-spin" />
-                    <span> {t('syncing')}</span>
-                  </>
-                ) : (
-                  <>
-                    <FaSyncAlt />
-                    <span>{t('sync')}</span>
-                  </>
-                )}
-              </Button>
+              <div className="flex flex-wrap justify-center gap-2">
+                <Button
+                  onClick={onSync}
+                  variant="secondary"
+                  disabled={disabled}
+                >
+                  {isSyncing ? (
+                    <>
+                      <FaSyncAlt className="animate-spin" />
+                      <span> {t('syncing')}</span>
+                    </>
+                  ) : (
+                    <>
+                      <FaSyncAlt />
+                      <span>{t('sync')}</span>
+                    </>
+                  )}
+                </Button>
+                <Button onClick={onRestore}>
+                  <FaDownload />
+                  <span>{t('SettingsMenu.restore')}</span>
+                </Button>
+              </div>
             </div>
           )}
         </div>

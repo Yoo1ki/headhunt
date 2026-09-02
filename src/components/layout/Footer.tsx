@@ -20,7 +20,14 @@ export const Footer = () => {
                 href="/privacy-policy"
                 className="duration-300 hover:text-yellow-500"
               >
-                Privacy Policy
+                {t('privacyPolicy')}
+              </Link>
+              <span aria-hidden="true">•</span>
+              <Link
+                href="/terms-of-service"
+                className="duration-300 hover:text-yellow-500"
+              >
+                {t('termsOfService')}
               </Link>
               {/* •
               <Link

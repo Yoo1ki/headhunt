@@ -3,17 +3,32 @@
 import LZString from 'lz-string';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { migrateProfilesToV2 } from '@/lib/tracker-migration';
 import type { Profile } from '@/types/profile';
 
 type StorageState = {
   profiles: Record<string, Profile>;
   currentProfileId: string;
+  googleDriveAutoBackup: boolean;
+  googleDriveConnected: boolean;
+  googleDriveLastBackupSignature: string;
+  localDataUpdatedAt: number;
   hasHydrated: boolean;
 
   getCurrentProfile: () => Profile | null;
-  setProfile: (profile: Omit<Profile, 'id'> & { id?: string }) => void;
+  setProfile: (
+    profile: Omit<Profile, 'id'> & { id?: string },
+    options?: { makeActive?: boolean }
+  ) => void;
   setCurrentProfileId: (id: string) => void;
   removeProfile: (id: string) => void;
+  restoreProfiles: (
+    profiles: Record<string, Profile>,
+    currentProfileId: string
+  ) => void;
+  setGoogleDriveAutoBackup: (enabled: boolean) => void;
+  setGoogleDriveConnected: (connected: boolean) => void;
+  setGoogleDriveLastBackupSignature: (signature: string) => void;
 };
 
 const storage = {
@@ -39,6 +54,10 @@ export const useStorageStore = create<StorageState>()(
     (set, get) => ({
       profiles: {},
       currentProfileId: '',
+      googleDriveAutoBackup: false,
+      googleDriveConnected: false,
+      googleDriveLastBackupSignature: '',
+      localDataUpdatedAt: 0,
       hasHydrated: false,
 
       getCurrentProfile: () => {
@@ -46,7 +65,7 @@ export const useStorageStore = create<StorageState>()(
         return profiles[currentProfileId] || null;
       },
 
-      setProfile: (profile) => {
+      setProfile: (profile, options) => {
         set((state) => {
           const maxId = Object.keys(state.profiles)
             .map((k) => parseInt(k, 10))
@@ -59,7 +78,9 @@ export const useStorageStore = create<StorageState>()(
               ...state.profiles,
               [id]: { ...profile, id },
             },
-            currentProfileId: id,
+            currentProfileId:
+              options?.makeActive === false ? state.currentProfileId : id,
+            localDataUpdatedAt: Date.now(),
           };
         });
       },
@@ -70,6 +91,10 @@ export const useStorageStore = create<StorageState>()(
 
       removeProfile: (id) => {
         set((state) => {
+          if (Object.keys(state.profiles).length <= 1 || !state.profiles[id]) {
+            return state;
+          }
+
           const profiles = Object.fromEntries(
             Object.entries(state.profiles).filter(
               ([profileId]) => profileId !== id
@@ -86,17 +111,60 @@ export const useStorageStore = create<StorageState>()(
           return {
             profiles,
             currentProfileId: newCurrentId,
+            localDataUpdatedAt: Date.now(),
           };
         });
+      },
+
+      restoreProfiles: (profiles, currentProfileId) => {
+        const profileIds = Object.keys(profiles);
+        const nextCurrentProfileId = profiles[currentProfileId]
+          ? currentProfileId
+          : (profileIds[0] ?? '');
+
+        set({
+          profiles,
+          currentProfileId: nextCurrentProfileId,
+          localDataUpdatedAt: Date.now(),
+        });
+      },
+
+      setGoogleDriveAutoBackup: (enabled) => {
+        set({ googleDriveAutoBackup: enabled });
+      },
+
+      setGoogleDriveConnected: (connected) => {
+        set({ googleDriveConnected: connected });
+      },
+
+      setGoogleDriveLastBackupSignature: (signature) => {
+        set({ googleDriveLastBackupSignature: signature });
       },
     }),
     {
       name: 'storage',
+      version: 2,
       storage: createJSONStorage(() => storage),
+
+      migrate: (persistedState, version) => {
+        if (version >= 2 || !persistedState) return persistedState;
+
+        const state = persistedState as Partial<StorageState>;
+        if (!state.profiles) return persistedState;
+
+        return {
+          ...state,
+          profiles: migrateProfilesToV2(state.profiles),
+        } as StorageState;
+      },
 
       partialize: (state) => ({
         profiles: state.profiles,
         currentProfileId: state.currentProfileId,
+        googleDriveAutoBackup: state.googleDriveAutoBackup,
+        googleDriveConnected: state.googleDriveConnected,
+        googleDriveLastBackupSignature: state.googleDriveLastBackupSignature,
+        localDataUpdatedAt: state.localDataUpdatedAt,
       }),
 
       onRehydrateStorage: () => (state) => {

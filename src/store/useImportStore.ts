@@ -15,6 +15,7 @@ import banners from '@/data/tracker/banners/en.json';
 import type { Banners } from '@/types/banner';
 import { fetchWithRetry } from '@/lib/fetch-with-retry';
 import { delay } from '@/lib/delay';
+import { summarizeTrackerRecords } from '@/lib/tracker-stats';
 
 type ImportProcessType = 'import' | 'sync';
 
@@ -26,7 +27,8 @@ type ImportState = {
 
   importRecords: (
     url: string,
-    processType?: ImportProcessType
+    processType?: ImportProcessType,
+    profileId?: string
   ) => Promise<void>;
 };
 
@@ -81,74 +83,30 @@ function getStats({
   records: RecordItem[];
   oldData: BannerItem | TypeItem | undefined;
 }) {
-  const newStats = records.reduce(
-    (acc, record) => {
-      if (record.pity === 0) acc.free++;
+  const newStats = summarizeTrackerRecords(records);
 
-      switch (record.rarity) {
-        case 4:
-          acc.r4++;
-          break;
-        case 5:
-          acc.r5++;
-          acc.r5Pity += record.pity;
-          break;
-        case 6:
-          acc.r6++;
-          acc.r6Pity += record.pity;
-          break;
-      }
-
-      switch (record.result) {
-        case GachaResult.Rotate:
-          acc.rotateWin++;
-          break;
-        case GachaResult.Rateup:
-          acc.rotateWin++;
-          acc.rateupWin++;
-          break;
-        case GachaResult.Guarantee:
-          acc.guarantee++;
-          break;
-      }
-
-      return acc;
-    },
-    {
-      r4: 0,
-      r5: 0,
-      r6: 0,
-      free: 0,
-      r5Pity: 0,
-      r6Pity: 0,
-      rotateWin: 0,
-      rateupWin: 0,
-      guarantee: 0,
-    }
-  );
-
-  const r4Count = (oldData?.r4Count ?? 0) + newStats.r4;
-  const r5Count = (oldData?.r5Count ?? 0) + newStats.r5;
-  const r6Count = (oldData?.r6Count ?? 0) + newStats.r6;
-  const freeCount = (oldData?.freeCount ?? 0) + newStats.free;
+  const r4Count = (oldData?.r4Count ?? 0) + newStats.r4Count;
+  const r5Count = (oldData?.r5Count ?? 0) + newStats.r5Count;
+  const r6Count = (oldData?.r6Count ?? 0) + newStats.r6Count;
+  const freeCount = (oldData?.freeCount ?? 0) + newStats.freeCount;
 
   const oldAttempt = (oldData?.r6Count ?? 0) - (oldData?.guarantee ?? 0);
   const oldRotateWinCount = (oldData?.rotateWin ?? 0) * oldAttempt;
   const oldRateupWinCount = (oldData?.rateupWin ?? 0) * oldAttempt;
-  const rotateWinCount = oldRotateWinCount + newStats.rotateWin;
-  const rateupWinCount = oldRateupWinCount + newStats.rateupWin;
+  const rotateWinCount = oldRotateWinCount + newStats.rotateWinCount;
+  const rateupWinCount = oldRateupWinCount + newStats.rateupWinCount;
 
-  const guarantee = (oldData?.guarantee ?? 0) + newStats.guarantee;
+  const guarantee = (oldData?.guarantee ?? 0) + newStats.guaranteeCount;
   const attempt = r6Count - guarantee;
 
   const r5AvgPity = combineAverage(
     { avg: oldData?.r5AvgPity, count: oldData?.r5Count },
-    { pityCount: newStats.r5Pity, count: newStats.r5 }
+    { pityCount: newStats.r5PityTotal, count: newStats.r5Count }
   );
 
   const r6AvgPity = combineAverage(
     { avg: oldData?.r6AvgPity, count: oldData?.r6Count },
-    { pityCount: newStats.r6Pity, count: newStats.r6 }
+    { pityCount: newStats.r6PityTotal, count: newStats.r6Count }
   );
 
   const rotateWin = attempt > 0 ? rotateWinCount / attempt : 0;
@@ -173,10 +131,12 @@ export const useImportStore = create<ImportState>((set) => ({
   totalRecord: 0,
   errorType: null,
 
-  importRecords: async (url, processType = 'import') => {
-    const { getCurrentProfile, setProfile } = useStorageStore.getState();
+  importRecords: async (url, processType = 'import', profileId) => {
+    const { profiles, currentProfileId, setProfile } =
+      useStorageStore.getState();
 
-    const profile = getCurrentProfile();
+    const targetProfileId = profileId ?? currentProfileId;
+    const profile = profiles[targetProfileId];
     if (!profile) return;
 
     const headhuntBanners: HeadhuntBanners = Object.fromEntries(
@@ -214,20 +174,19 @@ export const useImportStore = create<ImportState>((set) => ({
 
       const fetchedRecords: ImportRecordItem[] = [];
       let hasMore = true;
+      let nextId: number | undefined;
 
       while (hasMore) {
         try {
           // Metode ini harus diganti jika trafik banyak
           // karena ini multiple request
-          const response = await fetchWithRetry('/api/v1/tracker/import', {
+          const response = await fetchWithRetry('/api/v2/tracker/import', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               type_id: type.id,
               url: parsedUrl,
-              ...(fetchedRecords.at(-1)?.id
-                ? { last_id: fetchedRecords.at(-1)?.id }
-                : {}),
+              ...(nextId ? { last_id: nextId } : {}),
             }),
           });
 
@@ -242,6 +201,7 @@ export const useImportStore = create<ImportState>((set) => ({
           }
 
           const json = (await response.json()) as ResImportRecord;
+          nextId = json.data.nextId;
 
           const newRecords = json.data.list.filter(
             (record) => record.id > lastRecordId
@@ -254,6 +214,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
           if (newRecords.length !== json.data.list.length) break;
           hasMore = json.data.hasMore;
+          if (hasMore && !nextId) break;
         } catch (err: unknown) {
           // Kasih delay minimal 300ms biar notif muncul
           await delay(300);
@@ -511,24 +472,27 @@ export const useImportStore = create<ImportState>((set) => ({
     }
 
     if (!isError) {
-      setProfile({
-        ...profile,
-        stores: {
-          ...(profile?.stores ?? {}),
-          headhunt: {
-            url: newHeadhunt.url,
-            types: {
-              ...(oldHeadhunt?.types ?? {}),
-              ...newHeadhunt.types,
+      setProfile(
+        {
+          ...profile,
+          stores: {
+            ...(profile?.stores ?? {}),
+            headhunt: {
+              url: newHeadhunt.url,
+              types: {
+                ...(oldHeadhunt?.types ?? {}),
+                ...newHeadhunt.types,
+              },
+              banners: {
+                ...(oldHeadhunt?.banners ?? {}),
+                ...newHeadhunt.banners,
+              },
+              records: mergedRecords,
             },
-            banners: {
-              ...(oldHeadhunt?.banners ?? {}),
-              ...newHeadhunt.banners,
-            },
-            records: mergedRecords,
           },
         },
-      });
+        { makeActive: false }
+      );
     }
 
     set({ isImporting: false });

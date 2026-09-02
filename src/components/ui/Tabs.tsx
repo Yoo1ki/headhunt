@@ -1,7 +1,12 @@
 'use client';
 
-import type { ReactNode } from 'react';
-import { useState, useRef, useLayoutEffect } from 'react';
+import {
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 
 type TabsProps = {
   tabs: string[];
@@ -10,84 +15,68 @@ type TabsProps = {
 
 export const Tabs = ({ tabs, children }: TabsProps) => {
   const [active, setActive] = useState(0);
-  const [width, setWidth] = useState(0);
-  const [style, setStyle] = useState({
-    width: 0,
-    height: 0,
-    left: 0,
-  });
+  const baseId = useId();
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const refs = useRef<(HTMLButtonElement | null)[]>([]);
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+    event.preventDefault();
 
-  useLayoutEffect(() => {
-    const calculate = () => {
-      const el = refs.current;
-      if (!el.length) return;
-
-      const totalWidth = el.reduce((sum, e) => sum + (e?.offsetWidth ?? 0), 0);
-      const parentWidth = el[0]?.parentElement?.offsetWidth ?? 0;
-      const newWidth = totalWidth > parentWidth ? totalWidth : parentWidth;
-
-      setWidth((prev) => (prev !== newWidth ? newWidth : prev));
-
-      const activeEl = el[active];
-      if (!activeEl) return;
-
-      const newStyle = {
-        width: activeEl.offsetWidth,
-        height: activeEl.offsetHeight,
-        left: activeEl.offsetLeft,
-      };
-
-      setStyle((prev) =>
-        prev.width !== newStyle.width ||
-        prev.height !== newStyle.height ||
-        prev.left !== newStyle.left
-          ? newStyle
-          : prev
-      );
-    };
-
-    calculate();
-
-    window.addEventListener('resize', calculate);
-    return () => window.removeEventListener('resize', calculate);
-  }, [active]);
+    let next = active;
+    if (event.key === 'Home') next = 0;
+    if (event.key === 'End') next = tabs.length - 1;
+    if (event.key === 'ArrowLeft')
+      next = (active - 1 + tabs.length) % tabs.length;
+    if (event.key === 'ArrowRight') next = (active + 1) % tabs.length;
+    setActive(next);
+    tabRefs.current[next]?.focus();
+  };
 
   return (
     <div className="w-full">
-      <div className="scrollbar-hide relative my-2 flex overflow-auto">
-        {tabs.map((tab, i) => (
+      <div
+        role="tablist"
+        aria-label="Platform"
+        onKeyDown={handleKeyDown}
+        className="mb-4 grid grid-cols-3 gap-1 rounded-xl border border-white/10 bg-neutral-950/50 p-1"
+      >
+        {tabs.map((tab, index) => (
           <button
             key={tab}
-            ref={(el) => {
-              refs.current[i] = el;
+            ref={(element) => {
+              tabRefs.current[index] = element;
             }}
-            onClick={() => setActive(i)}
-            className={`cursor-pointer px-4 py-2 font-semibold transition-colors ${
-              active === i ? 'text-yellow-500' : 'text-white/80'
+            id={`${baseId}-tab-${index}`}
+            type="button"
+            role="tab"
+            aria-selected={active === index}
+            aria-controls={`${baseId}-panel-${index}`}
+            tabIndex={active === index ? 0 : -1}
+            onClick={() => setActive(index)}
+            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-all outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/70 ${
+              active === index
+                ? 'bg-yellow-500 text-neutral-950 shadow-sm shadow-yellow-950/30'
+                : 'text-white/55 hover:bg-white/7 hover:text-white'
             }`}
           >
             {tab}
           </button>
         ))}
-
-        <span
-          className="absolute bottom-0 h-0.5 rounded-xl bg-white/50"
-          style={{ width }}
-        />
-
-        <span
-          className="absolute bottom-0 rounded-t-xl border-b-2 border-yellow-500 bg-white/10 transition-all duration-300"
-          style={{
-            width: style.width,
-            height: style.height,
-            left: style.left,
-          }}
-        />
       </div>
 
-      {children[active]}
+      {children.map((child, index) => (
+        <div
+          key={tabs[index]}
+          id={`${baseId}-panel-${index}`}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-tab-${index}`}
+          hidden={active !== index}
+          tabIndex={0}
+          className="outline-none"
+        >
+          {child}
+        </div>
+      ))}
     </div>
   );
 };

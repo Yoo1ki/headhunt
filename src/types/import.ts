@@ -5,6 +5,7 @@ export type ResImportRecord = {
 export type DataImportRecord = {
   list: ImportRecordItem[];
   hasMore: boolean;
+  nextId?: number;
 };
 
 export type ImportRecordItem = {
@@ -24,28 +25,37 @@ export type ResGameRecord = {
 };
 
 type DataGameRecord = {
-  list: (GameRecordOperator | GameRecordWeapon)[];
+  list: (GameRecordOperator | GameRecordWeapon | GameRecordOther)[];
   hasMore: boolean;
 };
 
-export type GameRecordOperator = GameRecordItem & {
+export type GameRecordOperator = GameRecordDraw & {
   charId: string;
   charName: string;
   isFree: boolean;
 };
 
-export type GameRecordWeapon = GameRecordItem & {
+export type GameRecordWeapon = GameRecordDraw & {
   weaponId: string;
   weaponName: string;
   weaponType: string;
 };
 
-type GameRecordItem = {
-  poolId: string;
-  poolName: string;
+export type GameRecordOther = GameRecordBase & {
+  kind: Exclude<string, 'draw'>;
+};
+
+type GameRecordDraw = GameRecordBase & {
+  kind: 'draw';
   rarity: number;
   isFree: boolean;
   isNew: boolean;
+};
+
+type GameRecordBase = {
+  kind: string;
+  poolId: string;
+  poolName: string;
   gachaTs: string;
   seqId: string;
 };
