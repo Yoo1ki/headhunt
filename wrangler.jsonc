@@ -64,4 +64,7 @@
    * https://developers.cloudflare.com/workers/configuration/secrets/
    */
   // "vars": {  "MY_VARIABLE": "production_value" }
+  "vars": {
+    "NEXT_PUBLIC_GOOGLE_CLIENT_ID": "907562393809-e275d60o81dkhs9adom0hdb9l4tsiopc.apps.googleusercontent.com",
+  },
 }

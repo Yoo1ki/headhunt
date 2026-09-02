@@ -390,6 +390,7 @@ export const useImportStore = create<ImportState>((set) => ({
           itemId: record.itemId,
           rarity: record.rarity,
           pity,
+          isFree: record.isFree,
           isNew: record.isNew,
           result,
           timestamp: record.timestamp,

@@ -1,9 +1,15 @@
-import { HeadhuntTypeId } from '@/data/tracker/headhunt-types';
+import { headhuntTypes, HeadhuntTypeId } from '@/data/tracker/headhunt-types';
+import bannerCatalog from '@/data/tracker/banners/en.json';
+import type { Banners } from '@/types/banner';
 import type { Headhunt, Profile, RecordItem } from '@/types/profile';
+import { GachaResult } from '@/types/profile';
 import { summarizeTrackerRecords } from './tracker-stats';
 
 const usesBannerPity = (typeId: string) =>
   typeId === HeadhuntTypeId.Weponbox || typeId === HeadhuntTypeId.Joint;
+
+const typeConfig = new Map(headhuntTypes.map((type) => [type.id, type]));
+const banners = bannerCatalog as Banners;
 
 const isRecord = (value: unknown): value is RecordItem => {
   if (!value || typeof value !== 'object') return false;
@@ -55,49 +61,108 @@ const calculateStats = (records: RecordItem[]) => {
   };
 };
 
-const calculatePity = (records: RecordItem[]) => {
-  let pity5 = 0;
-  let pity6 = 0;
+type PityState = { pity5: number; pity6: number };
+type GuaranteeState = { pullCount: number; hasRateup: boolean };
 
-  const chronologicalRecords = [...records].sort(
-    (a, b) => a.timestamp - b.timestamp || a.id - b.id
-  );
+const rebuildRecords = (headhunt: Headhunt) => {
+  const chronologicalRecords = Object.entries(headhunt.records)
+    .flatMap(([typeId, records]) =>
+      (records ?? []).filter(isRecord).map((record) => ({ ...record, typeId }))
+    )
+    .sort((a, b) => a.timestamp - b.timestamp || a.id - b.id);
+
+  const pityStates = new Map<string, PityState>();
+  const guaranteeStates = new Map<string, GuaranteeState>();
+  const rebuiltRecords: Record<string, RecordItem[]> = {};
 
   for (const record of chronologicalRecords) {
-    if (record.isFree || record.pity === 0) continue;
+    const type = typeConfig.get(record.typeId as HeadhuntTypeId);
+    const banner = banners[record.bannerId];
+    const isFree = record.isFree === true || record.pity === 0;
+    const pityKey = usesBannerPity(record.typeId)
+      ? record.bannerId
+      : record.typeId;
+    const pityState = pityStates.get(pityKey) ?? { pity5: 0, pity6: 0 };
+    let pity = 0;
+    let result =
+      record.itemId === banner?.rateup
+        ? GachaResult.Rateup
+        : banner?.rotate?.includes(record.itemId)
+          ? GachaResult.Rotate
+          : GachaResult.Lose;
 
-    pity5++;
-    pity6++;
-    if (record.rarity === 5) pity5 = 0;
-    if (record.rarity === 6) pity6 = 0;
+    if (!isFree) {
+      pity = 1;
+      pityState.pity5++;
+      pityState.pity6++;
+
+      if (record.rarity === 5) {
+        pity = Math.min(pityState.pity5, pityState.pity6);
+        pityState.pity5 = 0;
+      }
+      if (record.rarity === 6) {
+        pity = pityState.pity6;
+        pityState.pity6 = 0;
+      }
+      pityStates.set(pityKey, pityState);
+
+      const guaranteeState = guaranteeStates.get(record.bannerId) ?? {
+        pullCount: 0,
+        hasRateup: false,
+      };
+      guaranteeState.pullCount++;
+      const isRateup = record.itemId === banner?.rateup;
+      if (
+        isRateup &&
+        guaranteeState.pullCount === (type?.guaranteeAt ?? Infinity) &&
+        !guaranteeState.hasRateup
+      ) {
+        result = GachaResult.Guarantee;
+      }
+      if (isRateup) guaranteeState.hasRateup = true;
+      guaranteeStates.set(record.bannerId, guaranteeState);
+    }
+
+    const rebuiltRecord: RecordItem = {
+      id: record.id,
+      typeId: record.typeId,
+      bannerId: record.bannerId,
+      itemId: record.itemId,
+      rarity: record.rarity,
+      pity,
+      isFree,
+      isNew: record.isNew,
+      result,
+      timestamp: record.timestamp,
+    };
+    rebuiltRecords[record.typeId] = [
+      rebuiltRecord,
+      ...(rebuiltRecords[record.typeId] ?? []),
+    ];
   }
 
-  return { r5Pity: Math.min(pity5, pity6), r6Pity: pity6 };
+  return { records: rebuiltRecords, pityStates };
 };
 
 export const rebuildHeadhuntForV2 = (headhunt: Headhunt): Headhunt => {
-  const records = Object.fromEntries(
-    Object.entries(headhunt.records).map(([typeId, items]) => [
-      typeId,
-      (items ?? []).filter(isRecord),
-    ])
-  );
-
-  const typeIds = new Set([
-    ...Object.keys(headhunt.types),
-    ...Object.keys(records),
-  ]);
+  const { records, pityStates } = rebuildRecords(headhunt);
   const types: Headhunt['types'] = {};
 
-  for (const typeId of typeIds) {
+  for (const typeId of Object.keys(records)) {
     const typeRecords = records[typeId] ?? [];
+    const pity = pityStates.get(typeId);
     types[typeId] = {
       id: typeId,
       lastRecordId: typeRecords.reduce(
         (latest, record) => Math.max(latest, record.id),
         0
       ),
-      ...(!usesBannerPity(typeId) ? calculatePity(typeRecords) : {}),
+      ...(!usesBannerPity(typeId)
+        ? {
+            r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
+            r6Pity: pity?.pity6 ?? 0,
+          }
+        : {}),
       ...calculateStats(typeRecords),
     };
   }
@@ -111,22 +176,23 @@ export const rebuildHeadhuntForV2 = (headhunt: Headhunt): Headhunt => {
     }
   }
 
-  const bannerIds = new Set([
-    ...Object.keys(headhunt.banners),
-    ...recordsByBanner.keys(),
-  ]);
   const banners: Headhunt['banners'] = {};
 
-  for (const bannerId of bannerIds) {
+  for (const bannerId of recordsByBanner.keys()) {
     const bannerRecords = recordsByBanner.get(bannerId) ?? [];
-    const typeId =
-      bannerRecords[0]?.typeId ?? headhunt.banners[bannerId]?.typeId;
+    const typeId = bannerRecords[0]?.typeId;
     if (!typeId) continue;
+    const pity = pityStates.get(bannerId);
 
     banners[bannerId] = {
       id: bannerId,
       typeId,
-      ...(usesBannerPity(typeId) ? calculatePity(bannerRecords) : {}),
+      ...(usesBannerPity(typeId)
+        ? {
+            r5Pity: Math.min(pity?.pity5 ?? 0, pity?.pity6 ?? 0),
+            r6Pity: pity?.pity6 ?? 0,
+          }
+        : {}),
       ...calculateStats(bannerRecords),
     };
   }
