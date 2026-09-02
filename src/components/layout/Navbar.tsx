@@ -70,8 +70,8 @@ export const Navbar = ({ onClick }: NavbarProps) => {
                 <div key={item.key} className={`${baseClass} ${disabledClass}`}>
                   {item.icon}
                   <span className="truncate">{t(item.key)}</span>
-                  <span className="rounded-sm bg-neutral-900 px-1 py-0.5 text-xs">
-                    Coming soon
+                  <span className="ml-auto rounded-md bg-neutral-900 px-1.5 py-0.5 text-[10px] font-semibold text-white/50 uppercase">
+                    {t('comingSoon')}
                   </span>
                 </div>
               );
@@ -83,8 +83,8 @@ export const Navbar = ({ onClick }: NavbarProps) => {
                 href={item.href}
                 onClick={
                   isActive
-                    ? (e) => {
-                        e.preventDefault();
+                    ? (event) => {
+                        event.preventDefault();
                         scrollToTop();
                       }
                     : onClick
@@ -101,10 +101,10 @@ export const Navbar = ({ onClick }: NavbarProps) => {
       <Link
         href={CONFIG.discordUrl}
         target="_blank"
-        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 transition duration-300 hover:bg-[#5865F2] active:bg-[#5865F2]/90"
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-transparent px-4 py-3 transition duration-300 hover:border-[#8d96ff]/30 hover:bg-[#5865F2] active:bg-[#5865F2]/90"
       >
         <FaDiscord size={24} />
-        <span className="truncate">Join Discord</span>
+        <span className="truncate">{t('joinDiscord')}</span>
       </Link>
     </div>
   );

@@ -66,6 +66,7 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
     <Tooltip title={item.name} className="grow rounded-xl" position="top">
       <button
         type="button"
+        aria-pressed={selected}
         onClick={() => onClick(item.id)}
         className={clsx(
           'relative flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 p-1 text-sm select-none',

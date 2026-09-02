@@ -44,7 +44,9 @@
     "operators": "Operator",
     "tracker": "HH Tracker",
     "weapons": "Senjata",
-    "gear": "Gear"
+    "gear": "Gear",
+    "comingSoon": "Segera hadir",
+    "joinDiscord": "Gabung Discord"
   },
   "HomePage": {
     "title": "Tracker Pity Arknights: Endfield (Rill Coy)",
@@ -53,6 +55,7 @@
     "limitedBanners": "Banner Terbatas",
     "loading": "Memuat...",
     "longTime": "Masih lama kok",
+    "ended": "Berakhir",
     "countdown": "{days, plural, =0 {} other {{days}h }}{hours, plural, =0 {} other {{hours}j }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}d}}"
   },
   "OperatorsPage": {

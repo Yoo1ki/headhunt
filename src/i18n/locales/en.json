@@ -44,7 +44,9 @@
     "operators": "Operators",
     "tracker": "HH Tracker",
     "weapons": "Weapons",
-    "gear": "Gear"
+    "gear": "Gear",
+    "comingSoon": "Coming soon",
+    "joinDiscord": "Join Discord"
   },
   "HomePage": {
     "title": "Arknights: Endfield Pity Tracker (For Real)",
@@ -53,6 +55,7 @@
     "limitedBanners": "Limited Banners",
     "loading": "Loading...",
     "longTime": "Still a long time",
+    "ended": "Ended",
     "countdown": "{days, plural, =0 {} other {{days}d }}{hours, plural, =0 {} other {{hours}h }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}s}}"
   },
   "OperatorsPage": {

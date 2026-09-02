@@ -54,12 +54,14 @@ export const RecentBanners = ({
           gridTemplateColumns: 'repeat(auto-fill, minmax(6rem, 1fr))',
         }}
       >
-        <div
+        <button
+          type="button"
+          aria-pressed={selectedId === null}
           className={`${getColor(selectedId === null)} flex h-full w-full cursor-pointer items-center justify-center rounded-md px-3 py-1`}
           onClick={() => onSelected(null)}
         >
           <span className="line-clamp-1 text-xs font-semibold">{t('all')}</span>
-        </div>
+        </button>
         {fBannerIds.map((bannerId) => {
           const banner = banners[bannerId];
 
@@ -67,13 +69,15 @@ export const RecentBanners = ({
           const colorClass = getColor(isSelected);
 
           return (
-            <div
+            <button
+              type="button"
               key={bannerId}
               onClick={
                 banner
                   ? () => (isSelected ? onSelected(null) : onSelected(bannerId))
                   : undefined
               }
+              aria-pressed={isSelected}
               className={`${colorClass} relative h-full w-full overflow-hidden rounded-md ${banner ? 'cursor-pointer' : 'select-none'}`}
             >
               {banner ? (
@@ -90,7 +94,7 @@ export const RecentBanners = ({
                   Unknown
                 </div>
               )}
-            </div>
+            </button>
           );
         })}
         {hasMore && (

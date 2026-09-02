@@ -19,10 +19,10 @@ type WeaponsPageContentProps = {
 const searchByName = <T extends { name: string }>(
   arr: T[],
   keyword: string
-): T[] => {
-  const regex = new RegExp(keyword, 'i');
-  return arr.filter((obj) => regex.test(obj.name));
-};
+): T[] =>
+  arr.filter((obj) =>
+    obj.name.toLocaleLowerCase().includes(keyword.toLocaleLowerCase())
+  );
 
 const isIncluded = <T,>(filter: T[], value: T) =>
   filter.length === 0 || filter.includes(value);
@@ -114,6 +114,7 @@ export const WeaponsPageContent = ({
         title={t('pageTitle')}
         search={{
           placeholder: `${t('searchLabel')}...`,
+          ariaLabel: t('searchLabel'),
           onChange: handleSearch,
           value: filters.search,
         }}

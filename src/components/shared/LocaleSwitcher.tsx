@@ -39,13 +39,17 @@ export const LocaleSwitcher = () => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setOpen(!open)}
-        className="flex w-36 cursor-pointer items-center justify-between gap-2 rounded-xl bg-white/5 px-3 py-1.5 duration-300 hover:bg-white/10"
+        aria-expanded={open}
+        aria-haspopup="listbox"
+        aria-label="Select language"
+        className="flex w-36 cursor-pointer items-center justify-between gap-2 rounded-xl bg-white/5 px-3 py-1.5 shadow-sm shadow-black/10 duration-300 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-yellow-400"
       >
-        <div className="flex items-center gap-2">
+        <span className="flex items-center gap-2">
           <FaGlobeAsia />
           {CONFIG.locales.find((e) => e.id === locale)?.name}
-        </div>
+        </span>
 
         <TiArrowSortedDown
           className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
@@ -53,17 +57,23 @@ export const LocaleSwitcher = () => {
       </button>
 
       {open && (
-        <div className="absolute z-50 mt-2 flex max-h-100 w-full flex-col gap-1 overflow-auto rounded-xl bg-neutral-800/80 p-1 shadow-xl backdrop-blur-sm">
+        <div
+          className="absolute z-50 mt-2 flex max-h-100 w-full flex-col gap-1 overflow-auto rounded-xl bg-neutral-800/80 p-1 shadow-xl backdrop-blur-sm"
+          role="listbox"
+        >
           {CONFIG.locales
-            .filter((e) => e.enable)
-            .map((e) => (
-              <div
-                key={e.id}
-                onClick={() => handleChange(e.id)}
-                className={`cursor-pointer rounded-lg px-3 py-2 text-sm duration-300 hover:bg-neutral-600/80 hover:text-white ${locale === e.id ? 'bg-neutral-700/80 text-white' : 'text-white/80'} `}
+            .filter((item) => item.enable)
+            .map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                onClick={() => handleChange(item.id)}
+                role="option"
+                aria-selected={locale === item.id}
+                className={`cursor-pointer rounded-lg px-3 py-2 text-left text-sm duration-300 hover:bg-neutral-600/80 hover:text-white ${locale === item.id ? 'bg-neutral-700/80 text-white' : 'text-white/80'}`}
               >
-                {e.name}
-              </div>
+                {item.name}
+              </button>
             ))}
         </div>
       )}

@@ -2,6 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
+import { FaXmark } from 'react-icons/fa6';
 
 type ModalProps = {
   title: string;
@@ -38,6 +39,8 @@ export const Modal = ({
 
   if (!isOpen) return null;
 
+  const titleId = `modal-title-${title.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`;
+
   return (
     <div
       className="fixed inset-0 z-50 bg-black/75 backdrop-blur-[2px]"
@@ -46,6 +49,7 @@ export const Modal = ({
       }}
       role="dialog"
       aria-modal="true"
+      aria-labelledby={titleId}
     >
       <div className="absolute inset-0 flex flex-col items-center justify-center-safe overflow-y-auto p-2 lg:p-4">
         <div className="flex w-full max-w-xl flex-col">
@@ -61,10 +65,12 @@ export const Modal = ({
                 if (!disableClose) onClose();
               }}
             >
-              ✕
+              <FaXmark />
             </button>
             <div className="flex flex-col gap-2">
-              <h2 className="mr-8 text-xl font-bold">{title}</h2>
+              <h2 id={titleId} className="mr-8 text-xl font-bold">
+                {title}
+              </h2>
               {children}
             </div>
           </div>

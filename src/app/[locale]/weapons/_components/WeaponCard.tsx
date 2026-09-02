@@ -68,7 +68,7 @@ export const WeaponCard = ({
             </div>
           )}
         </div>
-        <div className="flex flex-col justify-between gap-1">
+        <div className="flex min-w-0 flex-col justify-between gap-1">
           <p className="font-bold">{name}</p>
           <div>
             <div className="flex h-3.5 gap-1">

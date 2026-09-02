@@ -4,6 +4,7 @@ type PageTitleProps = {
   title: string;
   search?: {
     placeholder?: string;
+    ariaLabel?: string;
     value: string;
     onChange: (value: string) => void;
   };

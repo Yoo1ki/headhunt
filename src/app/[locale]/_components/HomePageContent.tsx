@@ -44,10 +44,14 @@ export const HomePageContent = ({ banners }: Props) => {
   const tNav = useTranslations('Navbar');
 
   return (
-    <div className="flex h-full flex-col gap-8">
-      <div className="flex flex-col items-center gap-4">
-        <h1 className="text-5xl font-bold text-white">{CONFIG.appName}</h1>
-        <div className="text-center text-xl">{t('description')}</div>
+    <div className="flex h-full flex-col gap-8 py-2 sm:gap-10">
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-yellow-400/15 bg-linear-to-br from-yellow-400/10 via-neutral-800/70 to-neutral-900/60 px-5 py-8 text-center shadow-xl shadow-black/10 sm:px-8 sm:py-10">
+        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+          {CONFIG.appName}
+        </h1>
+        <p className="max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl">
+          {t('description')}
+        </p>
       </div>
       <div className="flex grow flex-col items-center justify-center gap-8">
         <div className="flex w-full flex-col items-center gap-4">
@@ -60,7 +64,7 @@ export const HomePageContent = ({ banners }: Props) => {
                 <Link
                   key={page.key}
                   href={page.href}
-                  className="flex items-center rounded-xl border-2 border-yellow-400 bg-neutral-800 p-2 text-yellow-400 duration-150 hover:border-yellow-300 hover:bg-neutral-700 hover:text-yellow-300 active:border-yellow-200 active:bg-neutral-600 active:text-yellow-200"
+                  className="flex items-center rounded-xl border border-yellow-400/40 bg-neutral-800/80 px-3 py-2 text-yellow-300 shadow-sm shadow-black/10 duration-150 hover:border-yellow-300 hover:bg-neutral-700 hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-400 active:bg-neutral-600"
                 >
                   {page.icon}
                   <p className="ml-2 truncate">{tNav(page.key)}</p>
@@ -118,7 +122,7 @@ export const BannerItem = ({
   const endTimeText =
     mounted && endTime
       ? countdown?.expired
-        ? 'Ended'
+        ? t('ended')
         : t('countdown', {
             days: countdown?.time?.days || 0,
             hours: countdown?.time?.hours || 0,

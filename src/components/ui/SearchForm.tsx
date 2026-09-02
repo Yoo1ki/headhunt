@@ -4,12 +4,14 @@ import { FaSearch, FaTimes } from 'react-icons/fa';
 
 type SearchFormProps = {
   placeholder?: string;
+  ariaLabel?: string;
   value: string;
   onChange: (value: string) => void;
 };
 
 export const SearchForm = ({
   placeholder = 'Cari Karakter...',
+  ariaLabel = 'Search',
   value,
   onChange,
 }: SearchFormProps) => {
@@ -21,6 +23,7 @@ export const SearchForm = ({
     <div className="group relative w-full sm:min-w-64 lg:w-72">
       <input
         type="text"
+        aria-label={ariaLabel}
         className="w-full rounded-xl border border-white/10 bg-white/5 px-10 py-2.5 text-sm text-white placeholder-white/40 transition-colors outline-none hover:border-white/20 hover:bg-white/10 focus:border-yellow-400/70 focus:bg-white/10 focus:ring-2 focus:ring-yellow-400/20"
         placeholder={placeholder}
         value={value}
