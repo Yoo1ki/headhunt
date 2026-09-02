@@ -3,6 +3,7 @@ import { jsonError, jsonSuccess } from '@/lib/api-response';
 import { fetchJsonWithRetry } from '@/lib/fetch-json-with-retry';
 import { bannerPayloadSchema } from '@/lib/validators/banner-payload';
 import { parseJsonRequest } from '@/lib/parse-json-request';
+import { logger } from '@/lib/logger';
 import type { GamePool, GamePoolOperator } from '@/types/api/game-pool';
 
 type Banner = {
@@ -53,7 +54,10 @@ export async function POST(req: Request) {
 
     const rateup = data.all.find((item) => item.name === data.up6_name);
     if (!rateup) {
-      console.warn('[tracker.banner] Rate-up item not found', { bannerId: id });
+      logger.warn('Rate-up item not found', {
+        context: 'tracker.banner',
+        bannerId: id,
+      });
       return jsonError('Unknown Error', 500);
     }
 

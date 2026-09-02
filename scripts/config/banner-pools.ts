@@ -201,16 +201,16 @@ export const bannerPoolConfig = {
     //!------------
 
     //? Typhoeus
-    // {
-    //   id: 'special_1_5_1',
-    //   img: '',
-    //   startAt: '2026-09-02T06:00:00+08:00',
-    //   endAt: '2026-09-30T11:59:59+08:00',
-    // },
-    // {
-    //   id: 'weponbox_1_5_1',
-    //   img: '',
-    //   startAt: '2026-09-02T06:00:00+08:00',
-    // },
+    {
+      id: 'special_1_5_1',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260831/df41f7d53706c1e02d2f0a673fef37e9.jpg',
+      startAt: '2026-09-02T06:00:00+08:00',
+      endAt: '2026-09-30T11:59:59+08:00',
+    },
+    {
+      id: 'weponbox_1_5_1',
+      img: 'https://web-static.hg-cdn.com/upload/image/20260831/1fa64d6d6c246d14746eae5817dec485.jpg',
+      startAt: '2026-09-02T06:00:00+08:00',
+    },
   ],
 } as const;

@@ -1,4 +1,5 @@
 import { delay as wait } from './delay';
+import { logger } from './logger';
 
 type FetchJsonWithRetryOptions = {
   attempts?: number;
@@ -22,16 +23,18 @@ export async function fetchJsonWithRetry<T>(
         return (await response.json()) as T;
       }
 
-      console.warn(`[${context}] Request failed`, {
+      logger.warn('External request failed', {
+        context,
         attempt,
         attempts,
         status: response.status,
       });
     } catch (error) {
-      console.warn(`[${context}] Request failed`, {
+      logger.warn('External request failed', {
+        context,
         attempt,
         attempts,
-        error: error instanceof Error ? error.message : String(error),
+        error,
       });
     }
 
