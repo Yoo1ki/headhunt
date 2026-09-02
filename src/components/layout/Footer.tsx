@@ -17,6 +17,16 @@ export const Footer = () => {
           <div className="text-center lg:text-right">
             <div className="flex justify-center gap-2 lg:justify-end">
               <Link
+                href="/changelog"
+                className="flex items-center gap-1.5 duration-300 hover:text-yellow-500"
+              >
+                {t('changelog')}
+                <span className="rounded-full bg-yellow-400 px-1.5 py-0.5 text-[9px] leading-none font-bold text-neutral-950">
+                  {t('new')}
+                </span>
+              </Link>
+              <span aria-hidden="true">•</span>
+              <Link
                 href="/privacy-policy"
                 className="duration-300 hover:text-yellow-500"
               >

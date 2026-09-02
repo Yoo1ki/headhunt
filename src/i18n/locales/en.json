@@ -3,7 +3,41 @@
     "disclaimerP1": "is an independent platform and is not affiliated with GRYPHLINE.",
     "disclaimerP2": "All trademarks, logos, and copyrights are the property of GRYPHLINE.",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "changelog": "Changelog",
+    "new": "New"
+  },
+  "ChangelogPage": {
+    "title": "Changelog",
+    "description": "See the latest features, improvements, and fixes on Headhunt.cc.",
+    "releaseTitle": "Better Backups, Profiles, and Imports",
+    "latest": "Latest",
+    "changes": {
+      "cloudBackup": {
+        "title": "Google Drive Backup",
+        "description": "Automatic backups, cross-device synchronization, version history, restore, and a persistent Google session."
+      },
+      "localBackup": {
+        "title": "Local Backup",
+        "description": "Download and restore all data through JSON, with validation and data comparison before restoring."
+      },
+      "profiles": {
+        "title": "Profile Management",
+        "description": "Add, rename, select, and delete profiles with a safer and clearer confirmation flow."
+      },
+      "importV2": {
+        "title": "Tracker Import V2",
+        "description": "More reliable imports with legacy data migration, destination profile selection, and profile-safe synchronization."
+      },
+      "statistics": {
+        "title": "Clearer Statistics",
+        "description": "Statistics now share one calculation source and every value includes an explanation, including AVG Pity, Guaranteed, and free pull rules."
+      },
+      "interface": {
+        "title": "Interface Refresh",
+        "description": "Settings and Import menus, modals, tabs, tooltips, buttons, and empty states are now more consistent and comfortable to use."
+      }
+    }
   },
   "Navbar": {
     "home": "Home",

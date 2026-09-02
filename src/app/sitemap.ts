@@ -7,6 +7,7 @@ const pages = [
   'operators',
   'tracker',
   'weapons',
+  'changelog',
   'privacy-policy',
   'terms-of-service',
 ];

@@ -3,7 +3,41 @@
     "disclaimerP1": "merupakan platform independen dan tidak berafiliasi dengan GRYPHLINE.",
     "disclaimerP2": "Semua merek dagang, logo, dan hak cipta adalah milik GRYPHLINE.",
     "privacyPolicy": "Kebijakan Privasi",
-    "termsOfService": "Ketentuan Layanan"
+    "termsOfService": "Ketentuan Layanan",
+    "changelog": "Log Perubahan",
+    "new": "Baru"
+  },
+  "ChangelogPage": {
+    "title": "Log Perubahan",
+    "description": "Lihat fitur baru, peningkatan, dan perbaikan terbaru di Headhunt.cc.",
+    "releaseTitle": "Backup, Profil, dan Import yang Lebih Baik",
+    "latest": "Terbaru",
+    "changes": {
+      "cloudBackup": {
+        "title": "Backup Google Drive",
+        "description": "Backup otomatis, sinkronisasi lintas perangkat, riwayat versi, restore, serta login Google yang tetap terhubung."
+      },
+      "localBackup": {
+        "title": "Backup Lokal",
+        "description": "Download dan restore seluruh data melalui JSON, lengkap dengan validasi serta perbandingan data sebelum dipulihkan."
+      },
+      "profiles": {
+        "title": "Pengelolaan Profil",
+        "description": "Tambah, ubah nama, pilih, dan hapus profil dengan alur konfirmasi yang lebih aman dan jelas."
+      },
+      "importV2": {
+        "title": "Import Tracker V2",
+        "description": "Import lebih andal dengan migrasi data lama, pemilihan profil tujuan, dan sinkronisasi yang tidak salah profil."
+      },
+      "statistics": {
+        "title": "Statistik Lebih Jelas",
+        "description": "Perhitungan statistik disatukan dan setiap angka kini memiliki penjelasan, termasuk aturan AVG Pity, Guaranteed, dan free pull."
+      },
+      "interface": {
+        "title": "Penyegaran Tampilan",
+        "description": "Menu Pengaturan dan Import, modal, tab, tooltip, tombol, serta tampilan kosong dibuat lebih konsisten dan nyaman digunakan."
+      }
+    }
   },
   "Navbar": {
     "home": "Beranda",
