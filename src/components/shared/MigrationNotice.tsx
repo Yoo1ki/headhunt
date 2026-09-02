@@ -22,7 +22,7 @@ export const MigrationNotice = () => {
       <div className="flex flex-col gap-5 border-t border-white/10 pt-4">
         <div className="flex items-center gap-3 rounded-xl border border-green-400/20 bg-green-400/10 p-3">
           <FaCircleCheck className="shrink-0 text-2xl text-green-300" />
-          <p className="text-sm font-semibold leading-relaxed text-green-50">
+          <p className="text-sm leading-relaxed font-semibold text-green-50">
             {t('fixedLabel')}
           </p>
         </div>

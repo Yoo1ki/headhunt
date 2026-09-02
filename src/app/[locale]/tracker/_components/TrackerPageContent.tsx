@@ -5,11 +5,7 @@ import { PageTitle } from '@/components/ui/PageTitle';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { useHash } from '@/hooks/useHash';
-import {
-  FaDownload,
-  FaFileImport,
-  FaGear,
-} from 'react-icons/fa6';
+import { FaDownload, FaFileImport, FaGear } from 'react-icons/fa6';
 import { FaSyncAlt } from 'react-icons/fa';
 import type { Banners } from '@/types/banner';
 import { Button } from '@/components/ui/Button';
@@ -183,7 +179,7 @@ export const TrackerPageContent = ({
   return (
     <>
       <PageTitle title={t('pageTitle')}>
-        <div className="flex items-stretch justify-end gap-2">
+        <div className="flex w-full flex-wrap items-stretch justify-center gap-2 lg:w-auto lg:justify-end">
           <Button
             onClick={handleSync}
             variant="secondary"
