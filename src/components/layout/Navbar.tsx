@@ -30,7 +30,7 @@ const menu: MenuItem[] = [
   { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'tracker', href: '/tracker', icon: <GiHypersonicBolt /> },
   { key: 'weapons', href: '/weapons', icon: <GiSaberAndPistol /> },
-  { key: 'gear', href: '/gear', icon: <GiShorts /> },
+  { key: 'gear', href: '/gear', icon: <GiShorts />, disabled: true },
 ];
 
 export const Navbar = ({ onClick }: NavbarProps) => {

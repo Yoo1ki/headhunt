@@ -10,6 +10,25 @@
   "ChangelogPage": {
     "title": "Changelog",
     "description": "See the latest features, improvements, and fixes on Headhunt.cc.",
+    "newReleaseTitle": "A More Reliable and Focused Tracker",
+    "newChanges": {
+      "trackerNavigation": {
+        "title": "Banner Navigation",
+        "description": "All banner types are now grouped in a scrollable sidebar, with permanent banners placed after the active banners."
+      },
+      "trackerStatistics": {
+        "title": "Contextual Statistics",
+        "description": "Statistic explanations now adapt to each banner's free pull, Guaranteed, Rate-Up, and Rotate rules."
+      },
+      "driveRestore": {
+        "title": "Safer Google Drive Restore",
+        "description": "Restoring a Drive backup no longer creates an unnecessary new backup, and completion appears as a global notification."
+      },
+      "interface": {
+        "title": "Interface Improvements",
+        "description": "Home, Tracker, Changelog, Privacy Policy, Terms of Service, modals, and mobile navigation received consistency and usability improvements."
+      }
+    },
     "releaseTitle": "Better Backups, Profiles, and Imports",
     "latest": "Latest",
     "changes": {

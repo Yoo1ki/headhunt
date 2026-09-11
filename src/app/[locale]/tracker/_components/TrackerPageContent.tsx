@@ -82,6 +82,15 @@ export const TrackerPageContent = ({
     [types]
   );
 
+  const sidebarTypes = useMemo(() => {
+    const bottomTypeIds = new Set(['joint', 'standard', 'beginner']);
+    return [
+      ...types.operatorTypes.filter((type) => !bottomTypeIds.has(type.id)),
+      ...types.weaponTypes,
+      ...types.operatorTypes.filter((type) => bottomTypeIds.has(type.id)),
+    ];
+  }, [types.operatorTypes, types.weaponTypes]);
+
   const hashList = useMemo(
     () => combinedHeadhuntTypes.map((e) => e.id),
     [combinedHeadhuntTypes]
@@ -179,239 +188,199 @@ export const TrackerPageContent = ({
 
   return (
     <>
-      <PageTitle title={t('pageTitle')}>
-        <div className="flex w-full flex-wrap items-stretch justify-center gap-2 lg:w-auto lg:justify-end">
-          <Button
-            onClick={handleSync}
-            variant="secondary"
-            disabled={
-              !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
-            }
-          >
-            {isImporting && processType === 'sync' ? (
-              <>
-                <FaSyncAlt className="animate-spin" />
-                <span>{t('syncing')}</span>
-              </>
-            ) : (
-              <>
-                <FaSyncAlt />
-                <span>{t('sync')}</span>
-              </>
-            )}
-          </Button>
-          <Button
-            onClick={handleOpenImport}
-            disabled={!hasHydrated || (isImporting && processType === 'sync')}
-          >
-            <FaFileImport />
-            {isImporting && processType === 'import' ? (
-              <span>{t('importing')}</span>
-            ) : (
-              <span>{t('import')}</span>
-            )}
-          </Button>
-          <Button
-            onClick={handleOpenSettings}
-            variant="secondary"
-            isNew
-            disabled={!hasHydrated || isImporting}
-            aria-label={t('SettingsMenu.openSettings')}
-          >
-            <FaGear />
-            <span>{t('SettingsMenu.title')}</span>
-          </Button>
-        </div>
-      </PageTitle>
-
-      <div className="flex flex-1 flex-col gap-2 xl:gap-4">
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
-          {types.operatorTypes
-            .filter((type) => type.id !== 'weponbox')
-            .map((type) => {
-              const types = hasHydrated
-                ? profile?.stores?.headhunt?.types[type.id]
-                : undefined;
-
-              let pity5 = types?.r5Pity ?? 0;
-              let pity6 = types?.r6Pity ?? 0;
-
-              if (type.id === 'joint' && hasHydrated) {
-                const banners =
-                  profile?.stores?.headhunt?.banners['joint_1_2_2'];
-                pity5 = banners?.r5Pity ?? 0;
-                pity6 = banners?.r6Pity ?? 0;
+      <div className="z-30 -mx-4 -mt-4 flow-root bg-neutral-900/80 px-4 pt-4 backdrop-blur-sm lg:sticky lg:top-0 lg:mx-0 lg:px-0">
+        <PageTitle title={t('pageTitle')}>
+          <div className="flex w-full flex-wrap items-stretch justify-center gap-2 lg:w-auto lg:justify-end">
+            <Button
+              onClick={handleSync}
+              variant="secondary"
+              disabled={
+                !hasHydrated || !profile?.stores?.headhunt?.url || isImporting
               }
+            >
+              {isImporting && processType === 'sync' ? (
+                <>
+                  <FaSyncAlt className="animate-spin" />
+                  <span>{t('syncing')}</span>
+                </>
+              ) : (
+                <>
+                  <FaSyncAlt />
+                  <span>{t('sync')}</span>
+                </>
+              )}
+            </Button>
+            <Button
+              onClick={handleOpenImport}
+              disabled={!hasHydrated || (isImporting && processType === 'sync')}
+            >
+              <FaFileImport />
+              {isImporting && processType === 'import' ? (
+                <span>{t('importing')}</span>
+              ) : (
+                <span>{t('import')}</span>
+              )}
+            </Button>
+            <Button
+              onClick={handleOpenSettings}
+              variant="secondary"
+              isNew
+              disabled={!hasHydrated || isImporting}
+              aria-label={t('SettingsMenu.openSettings')}
+            >
+              <FaGear />
+              <span>{t('SettingsMenu.title')}</span>
+            </Button>
+          </div>
+        </PageTitle>
+      </div>
 
-              return (
-                <TypeCard
-                  key={type.id}
-                  hash={type.id}
-                  name={type.name}
-                  icons={type.icons}
-                  pity5={pity5}
-                  pity6={pity6}
-                  pity5Limit={type.r5PityLimit}
-                  pity6Limit={type.r6PityLimit}
-                  isSelected={type.id === hash}
-                />
-              );
-            })}
-        </div>
+      <div className="grid w-full flex-1 gap-2 xl:grid-cols-[minmax(17rem,1fr)_minmax(0,2fr)]">
+        <aside className="min-w-0 xl:sticky xl:top-20 xl:h-fit">
+          <div className="overflow-hidden rounded-xl xl:bg-neutral-900/35">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:flex xl:max-h-[calc(100dvh-9rem)] xl:flex-col xl:overflow-y-auto xl:overscroll-contain xl:pr-1.5">
+              {sidebarTypes.map((type) => {
+                const isWeaponBanner = type.id.startsWith('weponbox_');
+                const typeStats = hasHydrated
+                  ? isWeaponBanner
+                    ? profile?.stores?.headhunt?.banners[type.id]
+                    : profile?.stores?.headhunt?.types[type.id]
+                  : undefined;
 
-        <div className="flex w-full flex-1 flex-col gap-4 xl:flex-row">
-          <div className="flex flex-1 flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              {types.operatorTypes
-                .filter((type) => type.id === 'weponbox')
-                .map((type) => {
-                  return (
+                let pity5 = typeStats?.r5Pity ?? 0;
+                let pity6 = typeStats?.r6Pity ?? 0;
+
+                if (type.id === 'weponbox') {
+                  pity5 = 0;
+                  pity6 = 0;
+                } else if (type.id === 'joint' && hasHydrated) {
+                  const bannerStats =
+                    profile?.stores?.headhunt?.banners['joint_1_2_2'];
+                  pity5 = bannerStats?.r5Pity ?? 0;
+                  pity6 = bannerStats?.r6Pity ?? 0;
+                }
+
+                return (
+                  <div key={type.id} className="w-full">
                     <TypeCard
-                      key={type.id}
                       hash={type.id}
                       name={type.name}
                       icons={type.icons}
-                      pity5={0}
-                      pity6={0}
+                      pity5={pity5}
+                      pity6={pity6}
                       pity5Limit={type.r5PityLimit}
                       pity6Limit={type.r6PityLimit}
                       isSelected={type.id === hash}
                     />
-                  );
-                })}
-              {types.weaponTypes.map((type) => {
-                const banners = hasHydrated
-                  ? profile?.stores?.headhunt?.banners[type.id]
-                  : undefined;
-
-                const pity5 = banners?.r5Pity ?? 0;
-                const pity6 = banners?.r6Pity ?? 0;
-
-                return (
-                  <TypeCard
-                    key={type.id}
-                    hash={type.id}
-                    name={type.name}
-                    icons={type.icons}
-                    pity5={pity5}
-                    pity6={pity6}
-                    pity5Limit={type.r5PityLimit}
-                    pity6Limit={type.r6PityLimit}
-                    isSelected={type.id === hash}
-                  />
+                  </div>
                 );
               })}
             </div>
-            {/* <div className="flex flex-col gap-4 top-4 xl:sticky xl:z-50">
-              ADS
-            </div> */}
           </div>
-          <div className="flex flex-2 flex-col gap-4">
-            {!hasHydrated ? (
-              <div className="flex flex-1 items-center justify-center rounded-xl bg-neutral-800/80 py-4">
-                <Loading label={t('loading')} />
-              </div>
-            ) : profile?.stores?.headhunt?.records ? (
-              <>
-                {bannerIds.size > 0 && (
-                  <RecentBanners
-                    key={`wp-types-${hash}`}
-                    banners={banners}
-                    bannerIds={bannerIds}
-                    selectedId={selectedBannerId}
-                    onSelected={handleSelectBanner}
-                  />
-                )}
-                {selectedBannerId ? (
-                  <DetailRecords
-                    label={banners[selectedBannerId].name ?? selectedBannerId}
-                    stats={profile.stores.headhunt.banners[selectedBannerId]}
-                    hash={hash}
-                  />
-                ) : (
-                  <DetailRecords
-                    label={headhuntTypesMap.get(hash)?.name}
-                    stats={
-                      isBannerType
-                        ? profile.stores.headhunt.types[hash]
-                        : profile.stores.headhunt.banners[hash]
-                    }
-                    hash={hash}
-                  />
-                )}
-                <RecentHeadhunts
-                  key={`recent-${resetKey}`}
-                  hash={hash}
-                  records={records}
-                  catalogs={catalogs}
-                  rarities={rarities}
-                  guaranteedLimit={guaranteeLimit}
-                />
-                <HeadhuntRecords
-                  key={`record-${resetKey}`}
-                  hash={hash}
-                  records={records}
-                  catalogs={catalogs}
+        </aside>
+        <div className="flex min-w-0 flex-col gap-4">
+          {!hasHydrated ? (
+            <div className="flex flex-1 items-center justify-center rounded-xl bg-neutral-800/80 py-4">
+              <Loading label={t('loading')} />
+            </div>
+          ) : profile?.stores?.headhunt?.records ? (
+            <>
+              {bannerIds.size > 0 && (
+                <RecentBanners
+                  key={`wp-types-${hash}`}
                   banners={banners}
-                  rarities={rarities}
-                  disabled={!profile.stores.headhunt.url || isImporting}
-                  isSyncing={isImporting && processType === 'sync'}
-                  onSync={handleSync}
-                  onRestore={handleOpenSettings}
-                  restoreDisabled={isImporting}
+                  bannerIds={bannerIds}
+                  selectedId={selectedBannerId}
+                  onSelected={handleSelectBanner}
                 />
-              </>
-            ) : (
-              <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-xl bg-neutral-800/80 px-3 py-2">
-                <div>
-                  {profile?.stores?.headhunt?.records
-                    ? t('noGachaRecords')
-                    : t('noRecordImported')}
-                </div>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {profile?.stores?.headhunt ? (
-                    <Button
-                      onClick={handleSync}
-                      variant="secondary"
-                      disabled={!profile.stores.headhunt?.url || isImporting}
-                    >
-                      {isImporting && processType === 'sync' ? (
-                        <>
-                          <FaSyncAlt className="animate-spin" />
-                          <span>{t('syncing')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <FaSyncAlt />
-                          <span>{t('sync')}</span>
-                        </>
-                      )}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={() => setIsOpenImport(true)}
-                      disabled={isImporting && processType === 'sync'}
-                    >
-                      <FaFileImport />
-                      {isImporting && processType === 'import' ? (
-                        <span>{t('importing')}</span>
-                      ) : (
-                        <span>{t('import')}</span>
-                      )}
-                    </Button>
-                  )}
-                  <Button
-                    variant="secondary"
-                    onClick={handleOpenSettings}
-                    disabled={isImporting}
-                  >
-                    <FaDownload />
-                    <span>{t('SettingsMenu.restore')}</span>
-                  </Button>
-                </div>
+              )}
+              {selectedBannerId ? (
+                <DetailRecords
+                  label={banners[selectedBannerId].name ?? selectedBannerId}
+                  stats={profile.stores.headhunt.banners[selectedBannerId]}
+                  hash={hash}
+                />
+              ) : (
+                <DetailRecords
+                  label={headhuntTypesMap.get(hash)?.name}
+                  stats={
+                    isBannerType
+                      ? profile.stores.headhunt.types[hash]
+                      : profile.stores.headhunt.banners[hash]
+                  }
+                  hash={hash}
+                />
+              )}
+              <RecentHeadhunts
+                key={`recent-${resetKey}`}
+                hash={hash}
+                records={records}
+                catalogs={catalogs}
+                rarities={rarities}
+                guaranteedLimit={guaranteeLimit}
+              />
+              <HeadhuntRecords
+                key={`record-${resetKey}`}
+                hash={hash}
+                records={records}
+                catalogs={catalogs}
+                banners={banners}
+                rarities={rarities}
+                disabled={!profile.stores.headhunt.url || isImporting}
+                isSyncing={isImporting && processType === 'sync'}
+                onSync={handleSync}
+              />
+            </>
+          ) : (
+            <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-xl bg-neutral-800/80 px-3 py-2">
+              <div>
+                {profile?.stores?.headhunt?.records
+                  ? t('noGachaRecords')
+                  : t('noRecordImported')}
               </div>
-            )}
-          </div>
+              <div className="flex flex-wrap justify-center gap-2">
+                {profile?.stores?.headhunt ? (
+                  <Button
+                    onClick={handleSync}
+                    variant="secondary"
+                    disabled={!profile.stores.headhunt?.url || isImporting}
+                  >
+                    {isImporting && processType === 'sync' ? (
+                      <>
+                        <FaSyncAlt className="animate-spin" />
+                        <span>{t('syncing')}</span>
+                      </>
+                    ) : (
+                      <>
+                        <FaSyncAlt />
+                        <span>{t('sync')}</span>
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => setIsOpenImport(true)}
+                    disabled={isImporting && processType === 'sync'}
+                  >
+                    <FaFileImport />
+                    {isImporting && processType === 'import' ? (
+                      <span>{t('importing')}</span>
+                    ) : (
+                      <span>{t('import')}</span>
+                    )}
+                  </Button>
+                )}
+                <Button
+                  variant="secondary"
+                  onClick={handleOpenSettings}
+                  disabled={isImporting}
+                >
+                  <FaDownload />
+                  <span>{t('SettingsMenu.restore')}</span>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

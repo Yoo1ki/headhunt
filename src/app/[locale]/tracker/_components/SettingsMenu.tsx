@@ -24,6 +24,7 @@ import {
 } from '@/lib/google-drive-backup';
 import { useStorageStore } from '@/store/useStorageStore';
 import { useGoogleDriveStore } from '@/store/useGoogleDriveStore';
+import { useNotificationStore } from '@/store/useNotificationStore';
 import { useLocale, useTranslations } from 'next-intl';
 import { FaGoogleDrive, FaSave } from 'react-icons/fa';
 import {
@@ -82,8 +83,9 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<
-    'backedUp' | 'restored' | 'identical' | 'invalid' | null
+    'backedUp' | 'identical' | 'invalid' | null
   >(null);
+  const notify = useNotificationStore((state) => state.notify);
   const [pendingBackup, setPendingBackup] = useState<TrackerBackup | null>(
     null
   );
@@ -328,13 +330,13 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         currentProfileId: backup.currentProfileId,
         profiles: backup.profiles,
       });
-      restoreProfiles(backup.profiles, backup.currentProfileId);
       setLastBackupSignature(backupSignature);
       lastSyncedDataRef.current = backupSignature;
+      restoreProfiles(backup.profiles, backup.currentProfileId);
       setInitialDriveBackup(null);
       setInitialDriveBackupData(null);
       setDriveStatus('driveBackedUp');
-      setStatus('restored');
+      notify(t('restored'));
     } catch {
       setDriveStatus('driveError');
     }
@@ -370,11 +372,11 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
             currentProfileId: backup.currentProfileId,
             profiles: backup.profiles,
           });
-          restoreProfiles(backup.profiles, backup.currentProfileId);
           setLastBackupSignature(backupSignature);
           lastSyncedDataRef.current = backupSignature;
+          restoreProfiles(backup.profiles, backup.currentProfileId);
           setDriveStatus('driveBackedUp');
-          setStatus('restored');
+          notify(t('restored'));
           syncResolved = true;
         };
 
@@ -440,6 +442,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     hasLocalImportedData,
     currentProfileId,
     lastBackupSignature,
+    notify,
     profiles,
     resolvedLocalUpdatedAt,
     restoreProfiles,
@@ -451,6 +454,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     setInitialDriveBackupData,
     sessionCheckAttempted,
     setSessionCheckAttempted,
+    t,
   ]);
 
   useEffect(() => {
@@ -520,13 +524,26 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   const handleConfirmRestore = () => {
     if (!pendingBackup) return;
 
+    const restoredDataSignature = JSON.stringify({
+      currentProfileId: pendingBackup.currentProfileId,
+      profiles: pendingBackup.profiles,
+    });
+    const isGoogleDriveRestore = pendingBackupDetails?.source === 'googleDrive';
+
+    if (isGoogleDriveRestore) {
+      lastSyncedDataRef.current = restoredDataSignature;
+      setLastBackupSignature(restoredDataSignature);
+      setDriveStatus('driveBackedUp');
+    } else {
+      lastSyncedDataRef.current = null;
+      setLastBackupSignature('');
+      if (driveSession) setDriveStatus('driveOutdated');
+    }
+
     restoreProfiles(pendingBackup.profiles, pendingBackup.currentProfileId);
-    lastSyncedDataRef.current = null;
-    setLastBackupSignature('');
-    if (driveSession) setDriveStatus('driveOutdated');
     setPendingBackup(null);
     setPendingBackupDetails(null);
-    setStatus('restored');
+    notify(t('restored'));
   };
 
   const handleAddProfile = () => {

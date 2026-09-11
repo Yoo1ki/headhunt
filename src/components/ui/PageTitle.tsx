@@ -9,6 +9,7 @@ type PageTitleProps = {
     onChange: (value: string) => void;
   };
   desc?: string;
+  descPosition?: 'below' | 'right';
   children?: React.ReactNode;
 };
 
@@ -16,6 +17,7 @@ export const PageTitle = ({
   title,
   search,
   desc,
+  descPosition = 'below',
   children,
 }: PageTitleProps) => {
   return (
@@ -24,12 +26,17 @@ export const PageTitle = ({
         <h1 className="text-center text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-left">
           {title}
         </h1>
-        {desc && (
+        {desc && descPosition === 'below' && (
           <span className="max-w-2xl text-center text-sm leading-relaxed text-white/55 lg:text-left">
             {desc}
           </span>
         )}
       </div>
+      {desc && descPosition === 'right' && (
+        <span className="max-w-2xl text-center text-sm leading-relaxed text-white/55 lg:max-w-xl lg:text-right">
+          {desc}
+        </span>
+      )}
       {(search || children) && (
         <div className="flex w-full flex-col gap-2 sm:flex-row lg:w-auto">
           {search && <SearchForm {...search} />}

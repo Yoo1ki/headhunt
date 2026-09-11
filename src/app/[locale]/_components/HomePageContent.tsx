@@ -42,7 +42,7 @@ const pages: MenuItem[] = [
   { key: 'tracker', href: '/tracker', icon: <GiHypersonicBolt /> },
   { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'weapons', href: '/weapons', icon: <GiSaberAndPistol /> },
-  { key: 'gear', href: '/gear', icon: <GiShorts /> },
+  { key: 'gear', href: '/gear', icon: <GiShorts />, disabled: true },
 ];
 
 export const HomePageContent = ({ banners, initialNow }: Props) => {
@@ -65,6 +65,33 @@ export const HomePageContent = ({ banners, initialNow }: Props) => {
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {pages.map((page) => {
+              if (page.disabled) {
+                return (
+                  <div
+                    key={page.key}
+                    aria-disabled="true"
+                    className="flex min-w-0 cursor-not-allowed flex-col gap-4 rounded-xl bg-neutral-800/50 p-4 text-white/40 sm:p-5"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span aria-hidden="true" className="text-2xl">
+                        {page.icon}
+                      </span>
+                      <span className="rounded-md bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold uppercase">
+                        {tNav('comingSoon')}
+                      </span>
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">
+                        {tNav(page.key)}
+                      </h3>
+                      <p className="mt-1 text-xs leading-relaxed text-white/35">
+                        {t(`shortcuts.${page.key}`)}
+                      </p>
+                    </div>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={page.key}

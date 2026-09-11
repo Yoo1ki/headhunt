@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Footer } from '@/components/layout/Footer';
 import { ImportStatus } from '@/components/shared/ImportStatus';
+import { NotificationStatus } from '@/components/shared/NotificationStatus';
 import { MigrationNotice } from '@/components/shared/MigrationNotice';
 import { ScrollToTop } from '@/components/shared/ScrollToTop';
 import { getTranslations } from 'next-intl/server';
@@ -103,6 +104,7 @@ export default async function HomeLayout({ children, params }: Props) {
               <Footer />
             </div>
             <ImportStatus />
+            <NotificationStatus />
             <MigrationNotice />
             <ScrollToTop />
           </div>

@@ -10,6 +10,25 @@
   "ChangelogPage": {
     "title": "Log Perubahan",
     "description": "Lihat fitur baru, peningkatan, dan perbaikan terbaru di Headhunt.cc.",
+    "newReleaseTitle": "Tracker yang Lebih Andal dan Terarah",
+    "newChanges": {
+      "trackerNavigation": {
+        "title": "Navigasi Banner",
+        "description": "Semua jenis banner kini dikelompokkan dalam sidebar yang dapat di-scroll, dengan banner permanen ditempatkan setelah banner aktif."
+      },
+      "trackerStatistics": {
+        "title": "Statistik Kontekstual",
+        "description": "Penjelasan statistik kini menyesuaikan aturan free pull, Guaranteed, Rate-Up, dan Rotate pada setiap banner."
+      },
+      "driveRestore": {
+        "title": "Restore Google Drive Lebih Aman",
+        "description": "Restore backup Drive tidak lagi membuat backup baru yang tidak diperlukan, dan status selesai tampil sebagai notifikasi global."
+      },
+      "interface": {
+        "title": "Peningkatan Antarmuka",
+        "description": "Home, Tracker, Log Perubahan, Kebijakan Privasi, Ketentuan Layanan, modal, dan navigasi mobile diperbaiki agar lebih konsisten dan nyaman."
+      }
+    },
     "releaseTitle": "Backup, Profil, dan Import yang Lebih Baik",
     "latest": "Terbaru",
     "changes": {

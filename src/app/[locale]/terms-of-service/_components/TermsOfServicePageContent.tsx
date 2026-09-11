@@ -8,9 +8,9 @@ const Section = ({
   title: string;
   children: React.ReactNode;
 }) => (
-  <section className="flex flex-col gap-2">
-    <h2 className="text-xl font-semibold text-white sm:text-2xl">{title}</h2>
-    <div className="flex flex-col gap-2 leading-relaxed text-white/80">
+  <section className="rounded-lg bg-neutral-900/45 px-4 py-4 sm:px-5">
+    <h2 className="text-lg font-semibold text-white sm:text-xl">{title}</h2>
+    <div className="mt-2 flex flex-col gap-2 text-sm leading-relaxed text-white/70 sm:text-base">
       {children}
     </div>
   </section>
@@ -22,9 +22,10 @@ export const TermsOfServicePageContent = () => {
       <PageTitle
         title="Terms of Service"
         desc="Last updated: 2 September 2026"
+        descPosition="right"
       />
 
-      <div className="flex flex-1 flex-col gap-6 rounded-xl bg-neutral-800/80 p-5">
+      <article className="flex flex-1 flex-col gap-2 rounded-xl bg-neutral-800/80 p-3 sm:p-4">
         <Section title="1. Acceptance of Terms">
           <p>
             By accessing or using {CONFIG.appName}, you agree to these Terms of
@@ -57,7 +58,7 @@ export const TermsOfServicePageContent = () => {
         </Section>
 
         <Section title="4. User Responsibilities">
-          <ul className="list-disc space-y-1 pl-6">
+          <ul className="list-disc space-y-1 pl-6 marker:text-white/35">
             <li>Use the service only for lawful, personal purposes.</li>
             <li>Do not abuse, disrupt, or attempt to bypass the service.</li>
             <li>
@@ -119,7 +120,7 @@ export const TermsOfServicePageContent = () => {
             .
           </p>
         </Section>
-      </div>
+      </article>
     </>
   );
 };

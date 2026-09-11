@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { Filter } from '@/components/ui/Filter';
 import { Button } from '@/components/ui/Button';
-import { FaDownload, FaSyncAlt } from 'react-icons/fa';
+import { FaSyncAlt } from 'react-icons/fa';
 import type { Enums } from '@/types/enums';
 import { CONFIG } from '@/config';
 import type { RecordItem } from '@/types/profile';
@@ -21,8 +21,6 @@ type HeadhuntRecordsProps = {
   isSyncing: boolean;
   disabled: boolean;
   onSync: () => void;
-  onRestore: () => void;
-  restoreDisabled: boolean;
 };
 
 const formatTimestamp = ({ ts, locale }: { ts: number; locale: string }) => {
@@ -54,8 +52,6 @@ export const HeadhuntRecords = ({
   isSyncing,
   disabled,
   onSync,
-  onRestore,
-  restoreDisabled,
 }: HeadhuntRecordsProps) => {
   const t = useTranslations('TrackerPage');
   const locale = useLocale();
@@ -253,10 +249,6 @@ export const HeadhuntRecords = ({
                       <span>{t('sync')}</span>
                     </>
                   )}
-                </Button>
-                <Button onClick={onRestore} disabled={restoreDisabled}>
-                  <FaDownload />
-                  <span>{t('SettingsMenu.restore')}</span>
                 </Button>
               </div>
             </div>
