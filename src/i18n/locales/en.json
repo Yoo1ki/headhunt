@@ -56,7 +56,17 @@
     "loading": "Loading...",
     "longTime": "Still a long time",
     "ended": "Ended",
-    "countdown": "{days, plural, =0 {} other {{days}d }}{hours, plural, =0 {} other {{hours}h }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}s}}"
+    "countdown": "{days}d {hours}h {minutes}m {seconds}s",
+    "shortcuts": {
+      "tracker": "Import pulls and check your pity.",
+      "operators": "Browse operators and their classes.",
+      "weapons": "Compare weapon stats and skills.",
+      "gear": "Find gear, attributes, and sets."
+    },
+    "openTracker": "Open tracker",
+    "noBanners": "No limited banners are currently active.",
+    "timeRemaining": "Time remaining",
+    "rotation": "Rotation characters"
   },
   "OperatorsPage": {
     "title": "Operators - Arknights: Endfield",
@@ -148,11 +158,18 @@
       "rotateWinRate": "Rotate Win Rate",
       "rateupWinRate": "Rateup Win Rate",
       "showDescription": "Show the description for {label}",
-      "totalPullsDescription": "The number of all recorded results, including free pulls.",
+      "totalPullsDescription": "The number of all results recorded on this banner.",
+      "totalPullsWithFreeDescription": "The number of all results recorded on this banner, including free pulls.",
       "totalArsenalTicketDescription": "The estimated value of all issues at 198 Arsenal Tickets each. This is not the amount actually spent.",
+      "totalArsenalTicketWithFreeDescription": "The estimated value of all issues at 198 Arsenal Tickets each, including free issues. This is not the amount actually spent.",
       "totalOroberylDescription": "The estimated value of all headhunts at 500 Oroberyl each. This is not the amount actually spent.",
-      "rarityCountDescription": "The number of all {rarity}★ results, including results from free pulls.",
-      "r6AvgPityDescription": "The average pity when obtaining a 6★. Guaranteed results are included, while a 6★ from a free pull is counted with 0 pity.",
+      "totalOroberylWithFreeDescription": "The estimated value of all headhunts at 500 Oroberyl each, including free pulls. This is not the amount actually spent.",
+      "rarityCountDescription": "The number of {rarity}★ results recorded on this banner.",
+      "rarityCountWithFreeDescription": "The number of {rarity}★ results recorded on this banner, including results from free pulls.",
+      "r6AvgPityDescription": "The average pity when obtaining a 6★.",
+      "r6AvgPityWithFreeDescription": "The average pity when obtaining a 6★. A 6★ from a free pull is counted with 0 pity.",
+      "r6AvgPityGuaranteedDescription": "The average pity when obtaining a 6★. Guaranteed results remain included in the calculation.",
+      "r6AvgPityGuaranteedWithFreeDescription": "The average pity when obtaining a 6★. Guaranteed results remain included, while a 6★ from a free pull is counted with 0 pity.",
       "rotateWinRateDescription": "The percentage of Rotate or Rate-Up wins among all non-Guaranteed 6★ results.",
       "rateupWinRateDescription": "The percentage of direct Rate-Up wins among all non-Guaranteed 6★ results. Guaranteed results are not counted as Rate-Up wins."
     },

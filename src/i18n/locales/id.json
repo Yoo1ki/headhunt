@@ -56,7 +56,17 @@
     "loading": "Memuat...",
     "longTime": "Masih lama kok",
     "ended": "Berakhir",
-    "countdown": "{days, plural, =0 {} other {{days}h }}{hours, plural, =0 {} other {{hours}j }}{minutes, plural, =0 {} other {{minutes}m }}{seconds, plural, =0 {} other {{seconds}d}}"
+    "countdown": "{days}h {hours}j {minutes}m {seconds}d",
+    "shortcuts": {
+      "tracker": "Import riwayat pull dan cek pity.",
+      "operators": "Jelajahi operator dan class-nya.",
+      "weapons": "Bandingkan statistik dan skill senjata.",
+      "gear": "Cari gear, atribut, dan set."
+    },
+    "openTracker": "Buka tracker",
+    "noBanners": "Belum ada banner terbatas yang aktif.",
+    "timeRemaining": "Sisa waktu",
+    "rotation": "Karakter rotasi"
   },
   "OperatorsPage": {
     "title": "List Operator - Arknights: Endfield",
@@ -148,11 +158,18 @@
       "rotateWinRate": "Rotate Win Rate",
       "rateupWinRate": "Rateup Win Rate",
       "showDescription": "Lihat penjelasan {label}",
-      "totalPullsDescription": "Jumlah seluruh hasil yang tercatat, termasuk pull gratis.",
+      "totalPullsDescription": "Jumlah seluruh hasil yang tercatat pada banner ini.",
+      "totalPullsWithFreeDescription": "Jumlah seluruh hasil yang tercatat pada banner ini, termasuk pull gratis.",
       "totalArsenalTicketDescription": "Estimasi nilai seluruh edisi jika masing-masing dihitung 198 Tiket Senjata. Ini bukan jumlah yang benar-benar digunakan.",
+      "totalArsenalTicketWithFreeDescription": "Estimasi nilai seluruh edisi jika masing-masing dihitung 198 Tiket Senjata, termasuk edisi gratis. Ini bukan jumlah yang benar-benar digunakan.",
       "totalOroberylDescription": "Estimasi nilai seluruh headhunt jika masing-masing dihitung 500 Oroberyl. Ini bukan jumlah yang benar-benar digunakan.",
-      "rarityCountDescription": "Jumlah seluruh hasil ★{rarity}, termasuk hasil dari pull gratis.",
-      "r6AvgPityDescription": "Rata-rata pity saat memperoleh ★6. Hasil Guaranteed tetap dihitung, sedangkan ★6 dari pull gratis dihitung dengan pity 0.",
+      "totalOroberylWithFreeDescription": "Estimasi nilai seluruh headhunt jika masing-masing dihitung 500 Oroberyl, termasuk pull gratis. Ini bukan jumlah yang benar-benar digunakan.",
+      "rarityCountDescription": "Jumlah hasil ★{rarity} yang tercatat pada banner ini.",
+      "rarityCountWithFreeDescription": "Jumlah hasil ★{rarity} yang tercatat pada banner ini, termasuk hasil dari pull gratis.",
+      "r6AvgPityDescription": "Rata-rata pity saat memperoleh ★6.",
+      "r6AvgPityWithFreeDescription": "Rata-rata pity saat memperoleh ★6. Hasil ★6 dari pull gratis dihitung dengan pity 0.",
+      "r6AvgPityGuaranteedDescription": "Rata-rata pity saat memperoleh ★6. Hasil Guaranteed tetap disertakan dalam perhitungan.",
+      "r6AvgPityGuaranteedWithFreeDescription": "Rata-rata pity saat memperoleh ★6. Hasil Guaranteed tetap disertakan, sedangkan ★6 dari pull gratis dihitung dengan pity 0.",
       "rotateWinRateDescription": "Persentase kemenangan hasil Rotate atau Rate-Up dari seluruh ★6 non-Guaranteed.",
       "rateupWinRateDescription": "Persentase kemenangan Rate-Up langsung dari seluruh ★6 non-Guaranteed. Hasil Guaranteed tidak dihitung sebagai kemenangan Rate-Up."
     },

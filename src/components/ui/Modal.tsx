@@ -56,7 +56,7 @@ export const Modal = ({
         className="modal-panel flex max-h-[calc(100dvh-1.5rem)] w-full max-w-xl flex-col overflow-hidden rounded-xl bg-neutral-900 sm:max-h-[calc(100dvh-3rem)]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between gap-4 bg-neutral-800/70 px-4 py-3 sm:px-5 sm:py-4">
+        <div className="flex shrink-0 items-center justify-between gap-4 bg-neutral-800/70 px-4 py-2 sm:px-5">
           <h2
             id={titleId}
             className="min-w-0 text-lg leading-snug font-semibold break-words text-white sm:text-xl"

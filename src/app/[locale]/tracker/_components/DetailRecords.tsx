@@ -31,40 +31,71 @@ export const DetailRecords = ({
 
     const totalPulls = r4 + r5 + r6;
     const hasR6 = r6 > 0;
+    const hasFreePulls = (stats?.freeCount ?? 0) > 0;
+    const hasGuaranteed = hash === 'special' || isWeapon;
+
+    const averagePityDescription = hasGuaranteed
+      ? hasFreePulls
+        ? t('r6AvgPityGuaranteedWithFreeDescription')
+        : t('r6AvgPityGuaranteedDescription')
+      : hasFreePulls
+        ? t('r6AvgPityWithFreeDescription')
+        : t('r6AvgPityDescription');
 
     const currencyMultiplier = isWeapon ? 198 : 500;
 
     const base = [
       {
         label: isWeapon ? t('totalIssue') : t('totalHeadhunt'),
-        description: t('totalPullsDescription'),
+        description: hasFreePulls
+          ? t('totalPullsWithFreeDescription')
+          : t('totalPullsDescription'),
         value: totalPulls,
       },
       {
         label: isWeapon ? t('totalArsenalTicket') : t('totalOroberyl'),
         description: isWeapon
-          ? t('totalArsenalTicketDescription')
-          : t('totalOroberylDescription'),
+          ? hasFreePulls
+            ? t('totalArsenalTicketWithFreeDescription')
+            : t('totalArsenalTicketDescription')
+          : hasFreePulls
+            ? t('totalOroberylWithFreeDescription')
+            : t('totalOroberylDescription'),
         value: (totalPulls * currencyMultiplier).toLocaleString(localeValue),
       },
       {
         label: isWeapon ? t('r4Issue') : t('r4Headhunt'),
-        description: t('rarityCountDescription', { rarity: 4 }),
+        description: t(
+          hasFreePulls
+            ? 'rarityCountWithFreeDescription'
+            : 'rarityCountDescription',
+          { rarity: 4 }
+        ),
         value: r4,
       },
       {
         label: isWeapon ? t('r5Issue') : t('r5Headhunt'),
-        description: t('rarityCountDescription', { rarity: 5 }),
+        description: t(
+          hasFreePulls
+            ? 'rarityCountWithFreeDescription'
+            : 'rarityCountDescription',
+          { rarity: 5 }
+        ),
         value: r5,
       },
       {
         label: isWeapon ? t('r6Issue') : t('r6Headhunt'),
-        description: t('rarityCountDescription', { rarity: 6 }),
+        description: t(
+          hasFreePulls
+            ? 'rarityCountWithFreeDescription'
+            : 'rarityCountDescription',
+          { rarity: 6 }
+        ),
         value: r6,
       },
       {
         label: t('r6AvgPity'),
-        description: t('r6AvgPityDescription'),
+        description: averagePityDescription,
         value: hasR6 ? Math.round(stats?.r6AvgPity ?? 0) : '-',
       },
     ];
@@ -96,8 +127,8 @@ export const DetailRecords = ({
   }, [stats, hash, locale, t]);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 px-3 py-2">
-      <h2 className="text-xl font-bold">{label}</h2>
+    <section className="flex flex-col gap-3 rounded-xl bg-neutral-800/80 p-3 sm:p-4">
+      <h2 className="text-lg leading-tight font-bold sm:text-xl">{label}</h2>
       <div
         className="grid gap-2"
         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(8rem, 1fr))' }}
@@ -105,11 +136,21 @@ export const DetailRecords = ({
         {details.map((detail) => (
           <div
             key={detail.label}
-            className="flex flex-col items-center justify-center gap-1 rounded-xl bg-neutral-900/80 px-2 py-1"
+            className="flex min-h-18 flex-col justify-center gap-1 rounded-lg bg-neutral-900/70 px-3 py-2"
           >
-            <span className="flex max-w-full items-center justify-center gap-1.5 text-center text-sm font-semibold text-white">
+            <span className="flex max-w-full items-center gap-1.5 text-sm font-medium text-white/65">
               <span className="line-clamp-1">{detail.label}</span>
-              <Tooltip title={detail.description} position="top">
+              <Tooltip
+                title={
+                  <span className="flex flex-col gap-1">
+                    <span className="font-bold text-white">{detail.label}</span>
+                    <span className="font-normal text-white/70">
+                      {detail.description}
+                    </span>
+                  </span>
+                }
+                position="top"
+              >
                 <button
                   type="button"
                   className="shrink-0 cursor-help rounded-full text-white/35 transition-colors hover:text-yellow-300 focus-visible:text-yellow-300 focus-visible:outline-none"
@@ -119,12 +160,12 @@ export const DetailRecords = ({
                 </button>
               </Tooltip>
             </span>
-            <span className="line-clamp-1 font-semibold text-white/80">
+            <span className="line-clamp-1 text-lg font-bold text-white tabular-nums">
               {detail.value}
             </span>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };

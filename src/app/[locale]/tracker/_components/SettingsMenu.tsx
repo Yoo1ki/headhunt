@@ -774,7 +774,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
           </div>
         ) : (
           <>
-            <div className="overflow-hidden rounded-xl bg-linear-to-br from-yellow-500/15 via-neutral-900/60 to-neutral-900/60 p-4">
+            <div className="overflow-hidden rounded-xl bg-linear-to-br from-neutral-700/60 via-neutral-800 to-neutral-800/60 p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-xl bg-yellow-400/15 p-3 text-yellow-300">
                   <FaDatabase className="text-xl" />

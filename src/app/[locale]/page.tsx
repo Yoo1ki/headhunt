@@ -36,7 +36,8 @@ export default async function HomePage() {
       let itemName = catalogs[banner.rateup]?.name ?? banner.rateup;
       if (banner.id.startsWith('joint')) {
         itemName =
-          banner.rotate?.map((id) => catalogs[id].name).join(', ') ?? itemName;
+          banner.rotate?.map((id) => catalogs[id]?.name ?? id).join(', ') ??
+          itemName;
       }
       return {
         id: banner.id,
@@ -44,6 +45,13 @@ export default async function HomePage() {
         endTime: banner.endTime,
         itemName,
         icon: catalogs[banner.rateup]?.icon ?? '',
+        rotation: [...new Set(banner.rotate ?? [])].flatMap((id) => {
+          if (id === banner.rateup) return [];
+          const character = catalogs[id];
+          return character?.icon
+            ? [{ id, name: character.name, icon: character.icon }]
+            : [];
+        }),
       };
     });
 

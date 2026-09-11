@@ -17,7 +17,7 @@ import { createPortal } from 'react-dom';
 type TooltipPosition = 'top' | 'right' | 'bottom' | 'left';
 
 type TooltipProps = {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
   className?: string;
   position?: TooltipPosition;

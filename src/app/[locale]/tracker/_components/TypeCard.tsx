@@ -33,7 +33,7 @@ export const TypeCard = ({
 
   const content = (
     <>
-      <div className="flex items-end">
+      <div className="flex shrink-0 items-end bg-neutral-900/35">
         {hash !== 'weponbox' ? (
           hash === 'joint' ? (
             <div className="relative grid h-25 w-25 grid-cols-2">
@@ -79,11 +79,11 @@ export const TypeCard = ({
           <></>
         )}
       </div>
-      <div className="flex flex-1 py-2 pr-3 pl-1">
+      <div className="flex min-w-0 flex-1 py-2.5 pr-3 pl-2">
         <div
           className={`flex flex-1 flex-col justify-between gap-1 ${hash === 'weponbox' ? 'items-center' : ''}`}
         >
-          <p className="font-bold">{name}</p>
+          <p className="line-clamp-2 leading-tight font-bold">{name}</p>
           {hash === 'weponbox' ? (
             <div className="flex gap-1">
               {icons.map((icon, index) => (
@@ -99,7 +99,7 @@ export const TypeCard = ({
             </div>
           ) : (
             <div className="flex flex-col">
-              <div className="flex items-center justify-between rounded-lg text-[#FF7100]">
+              <div className="flex items-center justify-between gap-3 text-[#FF8A32]">
                 <CloudflareImage
                   src="rarity_6"
                   alt={'6★'}
@@ -109,11 +109,11 @@ export const TypeCard = ({
                   className="w-8"
                   isIcon={true}
                 />
-                <div>
+                <div className="text-sm font-semibold tabular-nums">
                   {pity6}/{pity6Limit}
                 </div>
               </div>
-              <div className="flex items-center justify-between rounded-lg text-[#FFC000]">
+              <div className="flex items-center justify-between gap-3 text-[#FFD036]">
                 <CloudflareImage
                   src="rarity_5"
                   alt={'5★'}
@@ -123,7 +123,7 @@ export const TypeCard = ({
                   className="w-8"
                   isIcon={true}
                 />
-                <div>
+                <div className="text-sm font-semibold tabular-nums">
                   {pity5}/{pity5Limit}
                 </div>
               </div>
@@ -136,7 +136,7 @@ export const TypeCard = ({
 
   if (hash === 'rerun') {
     return (
-      <div className="flex overflow-hidden rounded-xl bg-neutral-800/80">
+      <div className="flex min-h-25 overflow-hidden rounded-xl bg-neutral-800/80">
         {content}
       </div>
     );
@@ -145,10 +145,11 @@ export const TypeCard = ({
   return (
     <a
       className={clsx(
-        'flex overflow-hidden rounded-xl border-2 transition duration-300 hover:bg-neutral-700/80',
+        'relative flex min-h-25 overflow-hidden rounded-xl border-2 transition-colors duration-200 hover:bg-neutral-700/80 focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:outline-none',
         borderColor
       )}
       href={`#${hash}`}
+      aria-current={isSelected ? 'page' : undefined}
     >
       {content}
     </a>
