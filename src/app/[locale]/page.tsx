@@ -15,7 +15,8 @@ export default async function HomePage() {
     ),
   ]);
 
-  const now = Date.now() / 1000;
+  const initialNow = Date.now();
+  const now = initialNow / 1000;
 
   const sortedBanners = Object.values(banners).sort((a, b) => {
     const aStart = a.startTime ?? 0;
@@ -46,5 +47,5 @@ export default async function HomePage() {
       };
     });
 
-  return <HomePageContent banners={limitedBanners} />;
+  return <HomePageContent banners={limitedBanners} initialNow={initialNow} />;
 }

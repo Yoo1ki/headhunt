@@ -21,6 +21,8 @@ interface Equip {
   suit: Suit | null;
   function: string;
   pkg: string;
+  baseAttrValue: number;
+  canEnhance: boolean;
 }
 
 interface Suit {

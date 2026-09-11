@@ -158,7 +158,7 @@ export const Tooltip = ({
             id={tooltipId}
             role="tooltip"
             className={clsx(
-              'pointer-events-none fixed z-100 max-w-64 rounded-lg border border-white/10 bg-neutral-950/95 px-2.5 py-1.5 text-center text-xs leading-relaxed font-medium text-white shadow-xl shadow-black/40 backdrop-blur-md transition duration-150',
+              'pointer-events-none fixed z-100 max-w-64 rounded-lg bg-neutral-950/95 px-2.5 py-1.5 text-center text-xs leading-relaxed font-medium text-white shadow-xl shadow-black/40 backdrop-blur-md transition duration-150',
               coordinates
                 ? 'translate-y-0 scale-100 opacity-100'
                 : 'translate-y-1 scale-95 opacity-0'
@@ -171,15 +171,15 @@ export const Tooltip = ({
             {title}
             <span
               className={clsx(
-                'absolute h-2 w-2 rotate-45 border-white/10 bg-neutral-950',
+                'absolute h-2 w-2 rotate-45 bg-neutral-950',
                 coordinates?.position === 'top' &&
-                  '-bottom-1 left-1/2 -translate-x-1/2 border-r border-b',
+                  '-bottom-1 left-1/2 -translate-x-1/2',
                 coordinates?.position === 'bottom' &&
-                  '-top-1 left-1/2 -translate-x-1/2 border-t border-l',
+                  '-top-1 left-1/2 -translate-x-1/2',
                 coordinates?.position === 'left' &&
-                  'top-1/2 -right-1 -translate-y-1/2 border-t border-r',
+                  'top-1/2 -right-1 -translate-y-1/2',
                 coordinates?.position === 'right' &&
-                  'top-1/2 -left-1 -translate-y-1/2 border-b border-l'
+                  'top-1/2 -left-1 -translate-y-1/2'
               )}
             />
           </div>,

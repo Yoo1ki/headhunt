@@ -30,7 +30,7 @@ const menu: MenuItem[] = [
   { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'tracker', href: '/tracker', icon: <GiHypersonicBolt /> },
   { key: 'weapons', href: '/weapons', icon: <GiSaberAndPistol /> },
-  { key: 'gear', href: '/gear', icon: <GiShorts />, disabled: true },
+  { key: 'gear', href: '/gear', icon: <GiShorts /> },
 ];
 
 export const Navbar = ({ onClick }: NavbarProps) => {
@@ -86,6 +86,7 @@ export const Navbar = ({ onClick }: NavbarProps) => {
                     ? (event) => {
                         event.preventDefault();
                         scrollToTop();
+                        onClick?.();
                       }
                     : onClick
                 }
@@ -101,7 +102,7 @@ export const Navbar = ({ onClick }: NavbarProps) => {
       <Link
         href={CONFIG.discordUrl}
         target="_blank"
-        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-transparent px-4 py-3 transition duration-300 hover:border-[#8d96ff]/30 hover:bg-[#5865F2] active:bg-[#5865F2]/90"
+        className="flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-3 transition duration-300 hover:bg-[#5865F2] active:bg-[#5865F2]/90"
       >
         <FaDiscord size={24} />
         <span className="truncate">{t('joinDiscord')}</span>

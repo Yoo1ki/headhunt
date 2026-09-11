@@ -130,10 +130,9 @@ export const OperatorsPageContent = ({
           onChange: handleSearch,
           value: filters.search,
         }}
-        desc={t('count', { count: filteredOperators.length })}
       />
       {
-        <div className="mb-4 flex flex-wrap gap-4">
+        <div className="mb-4 flex flex-wrap gap-4 rounded-xl bg-neutral-800/40 p-3 sm:p-4">
           <Filter
             data={rarities
               .filter((r) =>
@@ -168,7 +167,17 @@ export const OperatorsPageContent = ({
             value={filters.opClass}
             onChange={handleChangeOpClass}
           />
-          <ResetButton onClick={handleReset} disabled={isDisableResetButton} />
+          <div className="flex w-full items-center justify-between gap-3">
+            <p role="status" className="text-xs text-white/55">
+              {t('count', { count: filteredOperators.length })}
+            </p>
+            <div className="flex shrink-0">
+              <ResetButton
+                onClick={handleReset}
+                disabled={isDisableResetButton}
+              />
+            </div>
+          </div>
         </div>
       }
       {filteredOperators.length === 0 ? (

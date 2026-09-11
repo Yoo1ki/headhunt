@@ -75,6 +75,26 @@
     "count": "Showing {count} Weapons",
     "baseATK": "Base ATK"
   },
+  "GearPage": {
+    "title": "Gear - Arknights: Endfield",
+    "description": "Browse Arknights: Endfield gear by rarity, type, level, attributes, and set.",
+    "pageTitle": "Gear",
+    "searchLabel": "Search Gear",
+    "count": "Showing {count} gear items",
+    "notFound": "No gear found.",
+    "accessory": "Accessory",
+    "baseAttr": "Base value",
+    "type": "Type",
+    "stats": "Stats",
+    "filters": {
+      "rarity": "Rarity",
+      "type": "Gear type",
+      "level": "Level",
+      "property": "Attribute",
+      "suit": "Gear set",
+      "options": "Options"
+    }
+  },
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
     "description": "Track your Arknights: Endfield pity and gacha history with Headhunt.cc.",

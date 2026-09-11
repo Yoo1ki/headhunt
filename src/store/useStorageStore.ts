@@ -70,11 +70,9 @@ export const useStorageStore = create<StorageState>()(
 
       setProfile: (profile, options) => {
         set((state) => {
-          const maxId = Object.keys(state.profiles)
-            .map((k) => parseInt(k, 10))
-            .reduce((a, b) => Math.max(a, b), 0);
-
-          const id = profile.id || (maxId + 1).toString();
+          let nextId = 1;
+          while (Object.hasOwn(state.profiles, String(nextId))) nextId++;
+          const id = profile.id || String(nextId);
 
           return {
             profiles: {

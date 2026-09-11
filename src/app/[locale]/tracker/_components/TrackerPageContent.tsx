@@ -171,6 +171,7 @@ export const TrackerPageContent = ({
   };
 
   const handleOpenSettings = () => {
+    if (isImporting) return;
     setIsOpenSettings(true);
   };
 
@@ -357,6 +358,7 @@ export const TrackerPageContent = ({
                   isSyncing={isImporting && processType === 'sync'}
                   onSync={handleSync}
                   onRestore={handleOpenSettings}
+                  restoreDisabled={isImporting}
                 />
               </>
             ) : (
@@ -398,7 +400,11 @@ export const TrackerPageContent = ({
                       )}
                     </Button>
                   )}
-                  <Button variant="secondary" onClick={handleOpenSettings}>
+                  <Button
+                    variant="secondary"
+                    onClick={handleOpenSettings}
+                    disabled={isImporting}
+                  >
                     <FaDownload />
                     <span>{t('SettingsMenu.restore')}</span>
                   </Button>

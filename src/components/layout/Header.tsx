@@ -16,14 +16,23 @@ export const Header = ({ className }: HeaderProps) => {
   const onClick = () => setIsOpen((prev) => !prev);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    if (!isOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const handleResize = () => {
+      if (desktop.matches) setIsOpen(false);
+    };
+    window.addEventListener('keydown', handleKey);
+    desktop.addEventListener('change', handleResize);
 
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKey);
+      desktop.removeEventListener('change', handleResize);
     };
   }, [isOpen]);
 
@@ -46,6 +55,8 @@ export const Header = ({ className }: HeaderProps) => {
                 type="button"
                 onClick={onClick}
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isOpen}
+                aria-controls="mobile-navigation"
                 className="cursor-pointer rounded-lg p-1 text-white transition-colors hover:bg-white/10 lg:hidden"
               >
                 {isOpen ? (
@@ -58,9 +69,7 @@ export const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
       </header>
-      <div className={`${!isOpen && 'hidden'} transition-all duration-300`}>
-        <MobileNavbar onClick={onClick} />
-      </div>
+      <MobileNavbar isOpen={isOpen} onClick={() => setIsOpen(false)} />
     </>
   );
 };

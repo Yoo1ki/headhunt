@@ -1,21 +1,23 @@
 'use client';
 
 import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { PageTitle } from '@/components/ui/PageTitle';
 import { CONFIG } from '@/config';
 import { useTranslations } from 'next-intl';
 import { useCountdown } from '@/hooks/useCountdown';
 import type { JSX } from 'react';
-import { useEffect, useState } from 'react';
 import { PiClockCountdownBold } from 'react-icons/pi';
 import { Link } from '@/i18n/navigation';
 import {
   GiTwoShadows,
   GiHypersonicBolt,
   GiSaberAndPistol,
+  GiShorts,
 } from 'react-icons/gi';
 
 type Props = {
   banners: BannerItemProps[];
+  initialNow: number;
 };
 
 type BannerItemProps = {
@@ -37,68 +39,60 @@ const pages: MenuItem[] = [
   { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'tracker', href: '/tracker', icon: <GiHypersonicBolt /> },
   { key: 'weapons', href: '/weapons', icon: <GiSaberAndPistol /> },
+  { key: 'gear', href: '/gear', icon: <GiShorts /> },
 ];
 
-export const HomePageContent = ({ banners }: Props) => {
+export const HomePageContent = ({ banners, initialNow }: Props) => {
   const t = useTranslations('HomePage');
   const tNav = useTranslations('Navbar');
 
   return (
-    <div className="flex h-full flex-col gap-8 py-2 sm:gap-10">
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-yellow-400/15 bg-linear-to-br from-yellow-400/10 via-neutral-800/70 to-neutral-900/60 px-5 py-8 text-center shadow-xl shadow-black/10 sm:px-8 sm:py-10">
-        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-          {CONFIG.appName}
-        </h1>
-        <p className="max-w-2xl text-base leading-relaxed text-white/70 sm:text-xl">
-          {t('description')}
-        </p>
-      </div>
-      <div className="flex grow flex-col items-center justify-center gap-8">
-        <div className="flex w-full flex-col items-center gap-4">
-          <h2 className="text-xl font-bold text-yellow-400">
+    <div className="mx-auto flex w-full max-w-5xl flex-col">
+      <PageTitle title={CONFIG.appName} desc={t('description')} />
+      <div className="flex flex-col gap-8">
+        <section
+          aria-labelledby="home-shortcuts"
+          className="flex flex-col gap-3"
+        >
+          <h2
+            id="home-shortcuts"
+            className="text-base font-semibold text-white/85"
+          >
             {t('shortcutMenu')}
           </h2>
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             {pages.map((page) => {
               return (
                 <Link
                   key={page.key}
                   href={page.href}
-                  className="flex items-center rounded-xl border border-yellow-400/40 bg-neutral-800/80 px-3 py-2 text-yellow-300 shadow-sm shadow-black/10 duration-150 hover:border-yellow-300 hover:bg-neutral-700 hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-400 active:bg-neutral-600"
+                  className="flex min-w-0 items-center gap-3 rounded-xl bg-neutral-800/80 p-4 text-sm font-semibold text-white/80 transition-colors hover:bg-neutral-700 hover:text-yellow-300 focus-visible:ring-2 focus-visible:ring-yellow-400 active:bg-neutral-600"
                 >
-                  {page.icon}
-                  <p className="ml-2 truncate">{tNav(page.key)}</p>
+                  <span
+                    aria-hidden="true"
+                    className="shrink-0 text-xl text-yellow-400"
+                  >
+                    {page.icon}
+                  </span>
+                  <span className="truncate">{tNav(page.key)}</span>
                 </Link>
               );
             })}
           </div>
-        </div>
-        <div className="flex w-full flex-col items-center gap-4">
-          <h2 className="text-xl font-bold text-yellow-400">
+        </section>
+        <section aria-labelledby="home-banners" className="flex flex-col gap-3">
+          <h2
+            id="home-banners"
+            className="text-base font-semibold text-white/85"
+          >
             {t('limitedBanners')}
           </h2>
-          <div className="grid w-full max-w-4xl grid-cols-1 gap-4 md:grid-cols-2">
-            {banners.map((banner, i) => {
-              const isLast = i === banners.length - 1;
-              const isOdd = banners.length % 2 === 1;
-
-              return (
-                <div
-                  key={banner.id}
-                  className={`${isOdd && isLast ? 'w-full md:col-span-2 md:max-w-md md:justify-self-center' : ''}`}
-                >
-                  <BannerItem
-                    id={banner.id}
-                    name={banner.name}
-                    itemName={banner.itemName}
-                    icon={banner.icon}
-                    endTime={banner.endTime}
-                  />
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            {banners.map((banner) => (
+              <BannerItem key={banner.id} {...banner} initialNow={initialNow} />
+            ))}
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );
@@ -110,17 +104,13 @@ export const BannerItem = ({
   endTime,
   itemName,
   icon,
-}: BannerItemProps) => {
+  initialNow,
+}: BannerItemProps & { initialNow: number }) => {
   const t = useTranslations('HomePage');
-  const countdown = useCountdown(endTime);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const countdown = useCountdown(endTime, initialNow);
 
   const endTimeText =
-    mounted && endTime
+    endTime !== undefined
       ? countdown?.expired
         ? t('ended')
         : t('countdown', {
@@ -135,33 +125,36 @@ export const BannerItem = ({
   return (
     <Link
       href={`/tracker#${hash}`}
-      className="group flex w-full gap-4 overflow-hidden rounded-xl bg-neutral-800 ring-2 ring-neutral-700/80 duration-300 hover:bg-neutral-700 hover:ring-yellow-500/80"
+      className="group flex min-w-0 items-center gap-3 rounded-xl bg-neutral-800/80 p-3 transition-colors hover:bg-neutral-700 focus-visible:ring-2 focus-visible:ring-yellow-400 sm:gap-4 sm:p-4"
     >
-      <div className="flex w-fit items-center justify-center bg-neutral-900 p-1 duration-300 group-hover:bg-neutral-800">
+      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-900/60 sm:h-24 sm:w-24">
+        <div className="pointer-events-none absolute inset-1 rounded-lg border border-white/10" />
         <CloudflareImage
           src={icon}
           alt={itemName}
           width={100}
           height={100}
           draggable={false}
-          className="transition duration-300 group-hover:scale-110 group-hover:transform"
+          className="h-full w-full object-contain transition duration-300 motion-safe:group-hover:scale-105"
         />
       </div>
-      <div className="relative flex flex-1 flex-col">
-        <div className="absolute top-0 right-0 flex w-fit items-center justify-center gap-1 rounded-bl-xl bg-neutral-700/80 px-2 py-0.5 duration-300 group-hover:bg-neutral-600/80">
-          <div className="flex items-center gap-1 text-xs font-semibold text-green-500">
-            <PiClockCountdownBold />
-            {mounted ? endTimeText || t('longTime') : t('loading')}
-          </div>
-        </div>
-        <div className="flex flex-1 flex-col justify-center">
-          <div className="font-bold">{name}</div>
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <div>
+          <h3 className="text-sm leading-snug font-semibold break-words text-white/90">
+            {name}
+          </h3>
           <div
-            className="text-sm font-semibold"
+            className="mt-1 text-sm leading-snug font-medium break-words"
             style={{ color: CONFIG.enumColors.rarities.rarity_6 }}
           >
             {itemName}
           </div>
+        </div>
+        <div
+          className={`flex min-h-5 items-center gap-1.5 text-xs tabular-nums ${countdown?.expired ? 'text-white/40' : 'text-white/60'}`}
+        >
+          <PiClockCountdownBold aria-hidden="true" className="shrink-0" />
+          <span>{endTimeText || t('longTime')}</span>
         </div>
       </div>
     </Link>

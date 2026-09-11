@@ -28,10 +28,10 @@ export const OperatorCard = ({
 }: OperatorCardProps) => {
   return (
     <div
-      className={`group relative aspect-7/10 overflow-hidden rounded-xl border border-b-4 border-white/10 bg-neutral-800/80 shadow-lg shadow-black/10`}
+      className={`group relative aspect-7/10 overflow-hidden rounded-xl border-b-4 bg-neutral-800/80`}
       style={{ borderColor: rarityColor }}
     >
-      <div className={`absolute inset-1 rounded-xl border border-white/10`} />
+      <div className="pointer-events-none absolute inset-1 rounded-xl border border-white/10" />
       <div className="absolute inset-0 transition duration-300 group-hover:bg-white/5" />
 
       <CloudflareImage

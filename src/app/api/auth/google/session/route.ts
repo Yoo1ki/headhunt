@@ -20,8 +20,15 @@ export const GET = async (request: NextRequest) => {
   const token = (await tokenResponse.json()) as {
     access_token?: string;
     expires_in?: number;
+    error?: string;
   };
   if (!tokenResponse.ok || !token.access_token) {
+    if (tokenResponse.status !== 400 || token.error !== 'invalid_grant') {
+      return NextResponse.json(
+        { error: 'Failed to refresh Google session' },
+        { status: 503 }
+      );
+    }
     const response = NextResponse.json({ connected: false });
     response.cookies.delete(GOOGLE_TOKEN_COOKIE);
     return response;

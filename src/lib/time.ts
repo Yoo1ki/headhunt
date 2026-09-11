@@ -1,6 +1,7 @@
-export function getRemainingTime(endTime: number | string | Date) {
-  const now = Date.now();
-
+export function getRemainingTime(
+  endTime: number | string | Date,
+  now = Date.now()
+) {
   let end: number;
 
   if (typeof endTime === 'number') {

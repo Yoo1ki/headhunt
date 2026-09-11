@@ -44,7 +44,7 @@ export const Button = ({
       {...props}
     >
       {isNew && (
-        <span className="absolute -top-2 -right-2 rounded-full border border-red-300/40 bg-red-500 px-1.5 py-0.5 text-[10px] leading-none font-bold tracking-wide text-white shadow-md shadow-red-950/30">
+        <span className="absolute -top-2 -right-2 rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] leading-none font-bold tracking-wide text-white shadow-md shadow-red-950/30">
           NEW
         </span>
       )}

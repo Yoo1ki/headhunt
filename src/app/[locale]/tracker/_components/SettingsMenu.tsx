@@ -606,10 +606,10 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
       }
       onClose={handleClose}
     >
-      <div className="flex flex-col gap-4 border-t border-white/10 pt-4">
+      <div className="flex flex-col gap-4">
         {initialDriveBackup ? (
           <div className="flex flex-col gap-4">
-            <div className="rounded-xl border border-blue-400/25 bg-linear-to-br from-blue-500/12 to-neutral-900/50 p-4">
+            <div className="rounded-xl bg-linear-to-br from-blue-500/12 to-neutral-900/50 p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-xl bg-blue-500/15 p-3 text-blue-300">
                   <FaGoogleDrive className="text-xl" />
@@ -625,7 +625,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
               </div>
 
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div className="rounded-xl bg-white/5 p-3">
                   <span className="block text-xs text-white/45">
                     {t('browserData')}
                   </span>
@@ -643,7 +643,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     })}
                   </span>
                 </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div className="rounded-xl bg-white/5 p-3">
                   <span className="block text-xs text-white/45">
                     {t('googleDriveData')}
                   </span>
@@ -690,7 +690,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
           </div>
         ) : pendingBackup ? (
           <div className="flex flex-col gap-4">
-            <div className="rounded-xl border border-yellow-400/25 bg-linear-to-br from-yellow-500/12 to-neutral-900/50 p-4">
+            <div className="rounded-xl bg-linear-to-br from-yellow-500/12 to-neutral-900/50 p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-xl bg-yellow-400/15 p-3 text-yellow-300">
                   <FaUpload className="text-xl" />
@@ -706,7 +706,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
               </div>
 
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div className="rounded-xl bg-white/5 p-3">
                   <span className="block text-xs text-white/45">
                     {t('browserData')}
                   </span>
@@ -724,7 +724,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     })}
                   </span>
                 </div>
-                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div className="rounded-xl bg-white/5 p-3">
                   <span className="block text-xs text-white/45">
                     {t(
                       pendingBackupDetails?.source === 'googleDrive'
@@ -774,7 +774,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
           </div>
         ) : (
           <>
-            <div className="overflow-hidden rounded-xl border border-yellow-400/20 bg-linear-to-br from-yellow-500/15 via-neutral-900/60 to-neutral-900/60 p-4">
+            <div className="overflow-hidden rounded-xl bg-linear-to-br from-yellow-500/15 via-neutral-900/60 to-neutral-900/60 p-4">
               <div className="flex items-start gap-3">
                 <div className="rounded-xl bg-yellow-400/15 p-3 text-yellow-300">
                   <FaDatabase className="text-xl" />
@@ -797,6 +797,8 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                 </span>
               </div>
             </div>
+
+            <div className="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
 
             <section
               className="flex flex-col gap-3"
@@ -831,7 +833,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
               {isAddingProfile && (
                 <form
-                  className="rounded-xl border border-yellow-400/25 bg-linear-to-br from-yellow-500/12 to-neutral-900/50 p-4"
+                  className="rounded-xl bg-linear-to-br from-yellow-500/12 to-neutral-900/50 p-4"
                   onSubmit={(event) => {
                     event.preventDefault();
                     handleAddProfile();
@@ -896,18 +898,20 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                 </form>
               )}
 
-              <div className="overflow-hidden rounded-xl border border-white/10 bg-white/5">
+              <div className="overflow-hidden rounded-xl bg-white/5">
                 {Object.values(profiles).map((profile, index, profileList) => (
                   <div
                     key={profile.id}
-                    className={`flex items-center gap-3 p-3 transition-colors ${index ? 'border-t border-white/10' : ''} ${profileList.length === 1 ? 'rounded-xl' : index === 0 ? 'rounded-t-xl' : index === profileList.length - 1 ? 'rounded-b-xl' : ''} ${profile.id === currentProfileId ? 'bg-yellow-400/8 ring-1 ring-yellow-400/25 ring-inset' : 'hover:bg-white/3'}`}
+                    className={`flex items-stretch transition-colors ${index ? 'border-t border-white/5' : ''} ${profileList.length === 1 ? 'rounded-xl' : index === 0 ? 'rounded-t-xl' : index === profileList.length - 1 ? 'rounded-b-xl' : ''} ${profile.id === currentProfileId ? 'bg-yellow-400/8' : 'hover:bg-white/3'}`}
                   >
                     <button
                       type="button"
-                      className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 text-left"
+                      className={`flex min-w-0 flex-1 cursor-pointer items-center gap-3 p-3 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-yellow-400 ${index === 0 ? 'rounded-tl-xl' : ''} ${index === profileList.length - 1 ? 'rounded-bl-xl' : ''}`}
+                      aria-pressed={profile.id === currentProfileId}
                       onClick={() => setCurrentProfileId(profile.id)}
                     >
                       <span
+                        aria-hidden="true"
                         className={`relative rounded-lg p-2 ${profile.id === currentProfileId ? 'bg-yellow-400/20 text-yellow-300' : 'bg-white/5 text-white/50'}`}
                       >
                         {profile.id === currentProfileId ? (
@@ -933,7 +937,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                       </span>
                     </button>
 
-                    <div className="flex shrink-0 items-center gap-1">
+                    <div className="flex shrink-0 items-center gap-1 pr-3">
                       <Tooltip
                         position="top"
                         title={t('editProfile', {
@@ -984,7 +988,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
               {editingProfile && (
                 <form
-                  className="rounded-xl border border-blue-400/25 bg-linear-to-br from-blue-500/12 to-neutral-900/50 p-4"
+                  className="rounded-xl bg-linear-to-br from-blue-500/12 to-neutral-900/50 p-4"
                   onSubmit={(event) => {
                     event.preventDefault();
                     handleEditProfile();
@@ -1055,7 +1059,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
               {pendingDeleteProfile && (
                 <div
-                  className="rounded-xl border border-red-400/25 bg-linear-to-br from-red-500/12 to-neutral-900/50 p-4"
+                  className="rounded-xl bg-linear-to-br from-red-500/12 to-neutral-900/50 p-4"
                   role="alertdialog"
                   aria-labelledby="delete-profile-title"
                 >
@@ -1114,7 +1118,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="flex flex-col rounded-xl border border-white/10 bg-white/5 p-4">
+                  <div className="flex flex-col rounded-xl bg-white/5 p-4">
                     <div className="flex items-start gap-3">
                       <FaDownload className="mb-3 text-xl text-sky-300" />
                       <h3 className="font-semibold">{t('backup')}</h3>
@@ -1132,7 +1136,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     </Button>
                   </div>
 
-                  <div className="flex flex-col rounded-xl border border-white/10 bg-white/5 p-4">
+                  <div className="flex flex-col rounded-xl bg-white/5 p-4">
                     <div className="flex items-start gap-3">
                       <FaUpload className="mb-3 text-xl text-yellow-300" />
                       <h3 className="font-semibold">{t('restore')}</h3>
@@ -1166,7 +1170,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                   </p>
                 </div>
 
-                <div className="rounded-xl border border-blue-400/20 bg-linear-to-br from-blue-500/10 to-white/3 p-4">
+                <div className="rounded-xl bg-linear-to-br from-blue-500/10 to-white/3 p-4">
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-blue-400/15 p-3 text-blue-300">
                       <FaGoogleDrive className="text-xl" />
@@ -1194,7 +1198,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
                       {driveSession ? (
                         <div className="mt-4 -ml-14 flex w-[calc(100%+3.5rem)] flex-col gap-3">
-                          <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5">
+                          <div className="flex items-center justify-between gap-3 rounded-xl bg-white/5 px-3 py-2.5">
                             <span className="min-w-0">
                               <span className="block text-xs text-white/45">
                                 {t('connectedEmail')}
@@ -1224,7 +1228,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                             </Tooltip>
                           </div>
 
-                          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-neutral-900/30 px-3 py-2.5">
+                          <div className="flex items-center gap-3 rounded-xl bg-neutral-900/30 px-3 py-2.5">
                             <span
                               className={`h-2.5 w-2.5 shrink-0 rounded-full ${driveStatus === 'driveBackedUp' ? 'bg-green-400 shadow-[0_0_10px_rgba(74,222,128,0.6)]' : driveStatus === 'backingUp' || driveStatus === 'connecting' ? 'animate-pulse bg-blue-400' : driveStatus === 'driveOutdated' ? 'bg-yellow-400' : 'bg-red-400'}`}
                             />
@@ -1292,7 +1296,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
                 {driveSession && isUnlinkConfirmationOpen && (
                   <div
-                    className="rounded-xl border border-red-400/25 bg-linear-to-br from-red-500/12 to-neutral-900/50 p-4"
+                    className="rounded-xl bg-linear-to-br from-red-500/12 to-neutral-900/50 p-4"
                     role="alertdialog"
                     aria-labelledby="unlink-google-drive-title"
                   >
@@ -1337,7 +1341,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                 )}
 
                 {driveSession && isHistoryOpen && (
-                  <div className="overflow-hidden rounded-xl border border-white/10 bg-neutral-900/40">
+                  <div className="overflow-hidden rounded-xl bg-neutral-900/40">
                     <div className="border-b border-white/10 px-4 py-3">
                       <h4 className="font-semibold text-white">
                         {t('dataHistory')}
@@ -1434,7 +1438,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
               onChange={handleFileChange}
             />
 
-            <div className="flex items-start gap-3 rounded-xl border border-yellow-400/20 bg-yellow-500/10 p-3 text-yellow-200">
+            <div className="flex items-start gap-3 rounded-xl bg-yellow-500/10 p-3 text-yellow-200">
               <FaShieldHalved className="mt-0.5 shrink-0" />
               <p className="text-sm leading-relaxed">{t('securityWarning')}</p>
             </div>

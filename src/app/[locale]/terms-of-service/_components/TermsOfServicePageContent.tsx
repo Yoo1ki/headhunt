@@ -19,11 +19,10 @@ const Section = ({
 export const TermsOfServicePageContent = () => {
   return (
     <>
-      <PageTitle title="Terms of Service">
-        <p>
-          <span className="font-semibold">Last updated:</span> 2 September 2026
-        </p>
-      </PageTitle>
+      <PageTitle
+        title="Terms of Service"
+        desc="Last updated: 2 September 2026"
+      />
 
       <div className="flex flex-1 flex-col gap-6 rounded-xl bg-neutral-800/80 p-5">
         <Section title="1. Acceptance of Terms">

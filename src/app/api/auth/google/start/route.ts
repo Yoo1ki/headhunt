@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import {
   getGoogleOAuthConfig,
   getGoogleRedirectUri,
+  getGoogleReturnTo,
   GOOGLE_OAUTH_SCOPE,
   GOOGLE_RETURN_COOKIE,
   GOOGLE_STATE_COOKIE,
@@ -19,10 +20,7 @@ export const GET = (request: NextRequest) => {
 
   const state = crypto.randomUUID();
   const requestedReturnTo = request.nextUrl.searchParams.get('returnTo') ?? '/';
-  const returnTo =
-    requestedReturnTo.startsWith('/') && !requestedReturnTo.startsWith('//')
-      ? requestedReturnTo
-      : '/';
+  const returnTo = getGoogleReturnTo(requestedReturnTo, request.nextUrl.origin);
   const params = new URLSearchParams({
     client_id: config.clientId,
     redirect_uri: getGoogleRedirectUri(request.nextUrl.origin),

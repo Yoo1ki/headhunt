@@ -30,21 +30,17 @@ export const ChangelogPageContent = () => {
 
   return (
     <>
-      <PageTitle title={t('title')}>
-        <p className="max-w-2xl text-sm leading-relaxed text-white/65 sm:text-base">
-          {t('description')}
-        </p>
-      </PageTitle>
+      <PageTitle title={t('title')} desc={t('description')} />
 
       <div className="flex flex-1 flex-col gap-4">
-        <article className="overflow-hidden rounded-2xl border border-yellow-400/20 bg-linear-to-br from-yellow-500/10 via-neutral-800/90 to-neutral-900/90 shadow-xl shadow-black/10">
+        <article className="overflow-hidden rounded-2xl bg-linear-to-br from-yellow-500/10 via-neutral-800/90 to-neutral-900/90 shadow-xl shadow-black/10">
           <header className="flex flex-col gap-3 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-xl font-bold text-white sm:text-2xl">
                   {t('releaseTitle')}
                 </h2>
-                <span className="rounded-full border border-yellow-300/30 bg-yellow-400/15 px-2.5 py-1 text-xs font-bold tracking-wide text-yellow-200 uppercase">
+                <span className="rounded-full bg-yellow-400/15 px-2.5 py-1 text-xs font-bold tracking-wide text-yellow-200 uppercase">
                   {t('latest')}
                 </span>
               </div>
@@ -59,7 +55,7 @@ export const ChangelogPageContent = () => {
             {changes.map(({ key, icon: Icon }) => (
               <section
                 key={key}
-                className="group rounded-xl border border-white/10 bg-neutral-950/35 p-4 transition-colors hover:border-yellow-400/25 hover:bg-neutral-950/50"
+                className="group rounded-xl bg-neutral-950/35 p-4 transition-colors hover:bg-neutral-950/50"
               >
                 <div className="flex items-start gap-3">
                   <span className="rounded-xl bg-yellow-400/12 p-2.5 text-yellow-300 transition-colors group-hover:bg-yellow-400/18">

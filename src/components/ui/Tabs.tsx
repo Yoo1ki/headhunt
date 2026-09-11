@@ -38,7 +38,7 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
         role="tablist"
         aria-label="Platform"
         onKeyDown={handleKeyDown}
-        className="mb-4 grid grid-cols-3 gap-1 rounded-xl border border-white/10 bg-neutral-950/50 p-1"
+        className="mb-4 grid grid-cols-3 gap-1 rounded-xl bg-neutral-950/50 p-1"
       >
         {tabs.map((tab, index) => (
           <button

@@ -38,24 +38,20 @@ export const WeaponCard = ({
   const t = useTranslations('WeaponsPage');
 
   return (
-    <div className="group relative flex flex-col gap-2 overflow-hidden rounded-xl border border-white/10 bg-neutral-800/80 px-3 py-2 shadow-lg shadow-black/10">
-      <div className="pointer-events-none absolute inset-0 transition duration-300 group-hover:bg-white/5" />
-      <div className="flex gap-2">
+    <article className="group flex min-w-0 flex-col overflow-hidden rounded-xl bg-neutral-800/80">
+      <div className="flex items-start gap-3 bg-neutral-950/30 p-3 sm:gap-4 sm:p-4">
         <div
-          className={`relative aspect-square h-24 shrink-0 overflow-hidden rounded-xl border-b-4`}
+          className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl border-b-4 bg-neutral-900/60"
           style={{ borderColor: rarity.color }}
         >
-          <div
-            className={`absolute inset-1 rounded-xl border border-white/10`}
-          />
-
+          <div className="pointer-events-none absolute inset-1 rounded-xl border border-white/10" />
           <CloudflareImage
             src={avatar}
             alt={name}
             width={128}
             height={128}
             draggable={false}
-            className="absolute inset-0 transition duration-300 group-hover:scale-110 group-hover:transform"
+            className="h-full w-full object-contain transition duration-300 motion-safe:group-hover:scale-105"
           />
 
           {label && (
@@ -68,25 +64,18 @@ export const WeaponCard = ({
             </div>
           )}
         </div>
-        <div className="flex min-w-0 flex-col justify-between gap-1">
-          <p className="font-bold">{name}</p>
-          <div>
-            <div className="flex h-3.5 gap-1">
-              {Array.from({ length: Number(rarity.id.split('_').pop()) }).map(
-                (_, i) => (
-                  <CloudflareImage
-                    key={i}
-                    alt="★"
-                    width={35}
-                    height={37}
-                    src={'rarity'}
-                    className="w-fit object-contain"
-                    isIcon={true}
-                  />
-                )
-              )}
-            </div>
-            <div className="flex items-center gap-1 text-sm">
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <h2 className="text-base leading-snug font-semibold break-words text-white">
+            {name}
+          </h2>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span
+              style={{ color: rarity.color }}
+              className="rounded-md bg-white/5 px-2 py-1 text-[11px] font-semibold"
+            >
+              {rarity.id.replace('rarity_', '')}★
+            </span>
+            <div className="flex items-center gap-1.5 text-xs text-white/60">
               <CloudflareImage
                 alt={type.name}
                 width={24}
@@ -95,33 +84,37 @@ export const WeaponCard = ({
                 className="h-3.5 w-fit object-contain"
                 isIcon={true}
               />{' '}
-              <span className="font-semibold">{type.name}</span>
+              <span>{type.name}</span>
             </div>
           </div>
           <div>
-            <p className="text-sm">
+            <p className="text-xs text-white/55">
               {t('baseATK')}:{' '}
               <span
-                className="font-semibold"
+                className="ml-1 text-sm font-semibold tabular-nums"
                 style={{ color: CONFIG.contentColors.light_function_blueness }}
               >
-                {detail?.baseATK || '-'}
+                {detail?.baseATK ?? '-'}
               </span>
             </p>
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-1 text-xs">
+      <div className="flex flex-col gap-3 p-3 text-xs sm:p-4">
         {skillLabels.map((e, i) => {
           const skills = detail?.skills[i];
           return (
-            <div key={e} className="flex gap-1">
-              <div>•</div>
+            <section
+              key={`${e}-${i}`}
+              className="min-w-0 rounded-lg bg-neutral-900/50 p-3"
+            >
               <div>
-                <div className="font-semibold">{e}</div>
+                <h3 className="text-sm leading-snug font-semibold text-white/85">
+                  {e}
+                </h3>
                 {skills && (
-                  <div className="my-1">
-                    <span className="h-fit w-fit rounded-sm bg-neutral-900 px-1 py-0.5 font-semibold">
+                  <div className="mt-2 leading-relaxed break-words text-white/65">
+                    <span className="mr-1 inline-block rounded bg-white/5 px-1.5 py-0.5 font-medium text-white/80">
                       {skills.label}
                     </span>{' '}
                     {skills.content.map((skill, i) => {
@@ -154,10 +147,10 @@ export const WeaponCard = ({
                   </div>
                 )}
               </div>
-            </div>
+            </section>
           );
         })}
       </div>
-    </div>
+    </article>
   );
 };

@@ -4,11 +4,7 @@ import { CONFIG } from '@/config';
 export const PrivacyPolicyPageContent = () => {
   return (
     <>
-      <PageTitle title={'Privacy Policy'}>
-        <p>
-          <span className="font-semibold">Last updated:</span> 2 September 2026
-        </p>
-      </PageTitle>
+      <PageTitle title="Privacy Policy" desc="Last updated: 2 September 2026" />
 
       <div className="flex flex-1 flex-col gap-5 rounded-xl bg-neutral-800/80 p-5">
         {/* 1 */}

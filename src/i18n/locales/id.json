@@ -75,6 +75,26 @@
     "count": "Menampilkan {count} Senjata",
     "baseATK": "ATK Dasar"
   },
+  "GearPage": {
+    "title": "Gear - Arknights: Endfield",
+    "description": "Jelajahi gear Arknights: Endfield berdasarkan rarity, tipe, level, atribut, dan set.",
+    "pageTitle": "Gear",
+    "searchLabel": "Cari Gear",
+    "count": "Menampilkan {count} gear",
+    "notFound": "Gear tidak ditemukan.",
+    "accessory": "Aksesori",
+    "baseAttr": "Nilai dasar",
+    "type": "Tipe",
+    "stats": "Statistik",
+    "filters": {
+      "rarity": "Rarity",
+      "type": "Tipe Gear",
+      "level": "Level",
+      "property": "Atribut",
+      "suit": "Set Gear",
+      "options": "Opsi"
+    }
+  },
   "TrackerPage": {
     "title": "Headhunt Tracker - Arknights: Endfield",
     "description": "Lacak pity dan riwayat gacha Arknights: Endfield dengan mudah menggunakan Headhunt.cc.",

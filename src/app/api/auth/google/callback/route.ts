@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import {
   getGoogleOAuthConfig,
   getGoogleRedirectUri,
+  getGoogleReturnTo,
   GOOGLE_RETURN_COOKIE,
   GOOGLE_STATE_COOKIE,
   GOOGLE_TOKEN_COOKIE,
@@ -12,7 +13,10 @@ export const GET = async (request: NextRequest) => {
   const config = getGoogleOAuthConfig();
   const state = request.nextUrl.searchParams.get('state');
   const storedState = request.cookies.get(GOOGLE_STATE_COOKIE)?.value;
-  const returnTo = request.cookies.get(GOOGLE_RETURN_COOKIE)?.value ?? '/';
+  const returnTo = getGoogleReturnTo(
+    request.cookies.get(GOOGLE_RETURN_COOKIE)?.value,
+    request.nextUrl.origin
+  );
   if (!config || !state || state !== storedState) {
     return NextResponse.redirect(new URL(returnTo, request.nextUrl.origin));
   }

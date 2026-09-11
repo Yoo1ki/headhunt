@@ -92,28 +92,38 @@ export const listGoogleDriveBackups = async (
   const params = new URLSearchParams({
     spaces: 'appDataFolder',
     q: `(name contains '${BACKUP_FILE_PREFIX}' or name = '${LEGACY_BACKUP_FILE_NAME}') and trashed = false`,
-    fields: 'files(id,name,createdTime,modifiedTime,size,appProperties)',
+    fields:
+      'nextPageToken,files(id,name,createdTime,modifiedTime,size,appProperties)',
     orderBy: 'modifiedTime desc',
     pageSize: '100',
   });
-  const response = await driveFetch(
-    session.accessToken,
-    `${DRIVE_API_URL}/files?${params}`
-  );
-  const data = (await response.json()) as {
-    files?: Array<
-      Omit<GoogleDriveBackupFile, 'size' | 'contentHash'> & {
-        size?: string;
-        appProperties?: { contentHash?: string };
-      }
-    >;
-  };
-
-  return (data.files ?? []).map((file) => ({
-    ...file,
-    size: Number(file.size ?? 0),
-    contentHash: file.appProperties?.contentHash,
-  }));
+  const backups: GoogleDriveBackupFile[] = [];
+  let nextPageToken: string | undefined;
+  do {
+    if (nextPageToken) params.set('pageToken', nextPageToken);
+    const response = await driveFetch(
+      session.accessToken,
+      `${DRIVE_API_URL}/files?${params}`
+    );
+    const data = (await response.json()) as {
+      nextPageToken?: string;
+      files?: Array<
+        Omit<GoogleDriveBackupFile, 'size' | 'contentHash'> & {
+          size?: string;
+          appProperties?: { contentHash?: string };
+        }
+      >;
+    };
+    backups.push(
+      ...(data.files ?? []).map((file) => ({
+        ...file,
+        size: Number(file.size ?? 0),
+        contentHash: file.appProperties?.contentHash,
+      }))
+    );
+    nextPageToken = data.nextPageToken;
+  } while (nextPageToken);
+  return backups;
 };
 
 export const setGoogleDriveBackupHash = async (

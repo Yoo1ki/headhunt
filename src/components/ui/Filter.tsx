@@ -8,7 +8,7 @@ import { CloudflareImage } from '../shared/CloudflareImage';
 type FilterItem = {
   id: string;
   name: string;
-  icon: string;
+  icon?: string;
   color: string;
 };
 
@@ -43,7 +43,7 @@ const getDisplayValue = (id: string) =>
 
 export const Filter = ({ data, value, onChange }: FilterProps) => {
   return (
-    <div className="grow rounded-xl border border-white/10 bg-white/5 p-1">
+    <div className="grow rounded-xl bg-white/5 p-1">
       <div className="flex flex-wrap items-center justify-evenly gap-1">
         {data.map((item) => (
           <FilterCard
@@ -79,15 +79,21 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
           <span className="font-bold">{getDisplayValue(item.id)}</span>
         )}
 
-        <CloudflareImage
-          alt={item.name}
-          src={item.icon}
-          width={isRarity || isWpnType ? 24 : 32}
-          height={isRarity || isWpnType ? 24 : 32}
-          draggable={false}
-          isIcon={true}
-          className="aspect-square"
-        />
+        {item.icon ? (
+          <CloudflareImage
+            alt={item.name}
+            src={item.icon}
+            width={isRarity || isWpnType ? 24 : 32}
+            height={isRarity || isWpnType ? 24 : 32}
+            draggable={false}
+            isIcon={true}
+            className="aspect-square"
+          />
+        ) : (
+          <span className="truncate px-1 text-[11px] font-semibold capitalize">
+            {item.name}
+          </span>
+        )}
 
         {selected && (
           <div

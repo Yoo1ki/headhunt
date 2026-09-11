@@ -22,6 +22,7 @@ type HeadhuntRecordsProps = {
   disabled: boolean;
   onSync: () => void;
   onRestore: () => void;
+  restoreDisabled: boolean;
 };
 
 const formatTimestamp = ({ ts, locale }: { ts: number; locale: string }) => {
@@ -54,6 +55,7 @@ export const HeadhuntRecords = ({
   disabled,
   onSync,
   onRestore,
+  restoreDisabled,
 }: HeadhuntRecordsProps) => {
   const t = useTranslations('TrackerPage');
   const locale = useLocale();
@@ -252,7 +254,7 @@ export const HeadhuntRecords = ({
                     </>
                   )}
                 </Button>
-                <Button onClick={onRestore}>
+                <Button onClick={onRestore} disabled={restoreDisabled}>
                   <FaDownload />
                   <span>{t('SettingsMenu.restore')}</span>
                 </Button>

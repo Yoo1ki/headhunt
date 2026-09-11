@@ -118,10 +118,9 @@ export const WeaponsPageContent = ({
           onChange: handleSearch,
           value: filters.search,
         }}
-        desc={t('count', { count: filteredWeapons.length })}
       />
       {
-        <div className="mb-4 flex flex-wrap gap-4">
+        <div className="mb-4 flex flex-wrap gap-4 rounded-xl bg-neutral-800/40 p-3 sm:p-4">
           <Filter
             data={rarities.map((e) => ({
               id: e.id,
@@ -142,7 +141,14 @@ export const WeaponsPageContent = ({
             value={filters.weaponTypes}
             onChange={handleChangeWeaponTypes}
           />
-          <ResetButton onClick={handleReset} disabled={isResetDisabled} />
+          <div className="flex w-full items-center justify-between gap-3">
+            <p role="status" className="text-xs text-white/55">
+              {t('count', { count: filteredWeapons.length })}
+            </p>
+            <div className="flex shrink-0">
+              <ResetButton onClick={handleReset} disabled={isResetDisabled} />
+            </div>
+          </div>
         </div>
       }
       {filteredWeapons.length === 0 ? (

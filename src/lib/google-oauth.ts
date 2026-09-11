@@ -18,3 +18,19 @@ export const getGoogleOAuthConfig = () => {
 
 export const getGoogleRedirectUri = (origin: string) =>
   `${origin}/api/auth/google/callback`;
+
+export const getGoogleReturnTo = (
+  value: string | undefined,
+  origin: string
+) => {
+  try {
+    if (!value) return '/';
+    const url = new URL(value, origin);
+    if (url.origin !== origin) return '/';
+    // Keep the absolute URL so a normalized pathname starting with // cannot
+    // be interpreted as a different host when the callback resolves it again.
+    return url.href;
+  } catch {
+    return '/';
+  }
+};
