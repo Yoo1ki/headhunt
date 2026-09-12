@@ -6,7 +6,6 @@ import {
   FaArrowRightArrowLeft,
   FaChartSimple,
   FaCloudArrowUp,
-  FaBugSlash,
   FaFileArrowDown,
   FaHouse,
   FaImage,
@@ -29,7 +28,6 @@ const releases = [
       { key: 'interface', icon: FaPalette },
       { key: 'branding', icon: FaImage },
       { key: 'homepage', icon: FaHouse },
-      { key: 'hydration', icon: FaBugSlash },
     ],
   },
   {

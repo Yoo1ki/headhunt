@@ -35,10 +35,6 @@
       "homepage": {
         "title": "Refined Homepage Introduction",
         "description": "The homepage introduction is now centered and separated more clearly from shortcuts, while the mobile header adapts better to narrow screens."
-      },
-      "hydration": {
-        "title": "Stable Tooltip Rendering",
-        "description": "Tooltip accessibility attributes now remain consistent during initial rendering, preventing hydration warnings on banner cards."
       }
     },
     "releaseTitle": "Better Backups, Profiles, and Imports",
@@ -322,7 +318,8 @@
         "openPowerShellTitle": "Open Windows PowerShell",
         "openPowerShellDesc": "Press the <key>Windows</key> key, search for “PowerShell”, then launch <app>Windows PowerShell</app>.",
         "runCommandTitle": "Paste and Run the Command",
-        "runCommandDesc": "Copy the command below into <app>Windows PowerShell</app>, then press <key>Enter</key>. Once the URL appears, it will be copied to your clipboard automatically. Paste it into the import field below."
+        "runCommandDesc": "Copy the command below into <app>Windows PowerShell</app>, then press <key>Enter</key>. Once the URL appears, it will be copied to your clipboard automatically. Paste it into the import field below.",
+        "reviewScript": "Review the full script on GitHub"
       }
     }
   },

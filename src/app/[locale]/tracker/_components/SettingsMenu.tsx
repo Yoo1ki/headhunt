@@ -1224,25 +1224,18 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                                 {isEmailVisible ? connectedEmail : maskedEmail}
                               </span>
                             </span>
-                            <Tooltip
-                              position="left"
-                              title={t(
+                            <button
+                              type="button"
+                              className="cursor-pointer rounded-lg p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white"
+                              onClick={() =>
+                                setIsEmailVisible((visible) => !visible)
+                              }
+                              aria-label={t(
                                 isEmailVisible ? 'hideEmail' : 'showEmail'
                               )}
                             >
-                              <button
-                                type="button"
-                                className="cursor-pointer rounded-lg p-2 text-white/50 transition-colors hover:bg-white/10 hover:text-white"
-                                onClick={() =>
-                                  setIsEmailVisible((visible) => !visible)
-                                }
-                                aria-label={t(
-                                  isEmailVisible ? 'hideEmail' : 'showEmail'
-                                )}
-                              >
-                                {isEmailVisible ? <FaEyeSlash /> : <FaEye />}
-                              </button>
-                            </Tooltip>
+                              {isEmailVisible ? <FaEyeSlash /> : <FaEye />}
+                            </button>
                           </div>
 
                           <div className="flex items-center gap-3 rounded-xl bg-neutral-900/30 px-3 py-2.5">

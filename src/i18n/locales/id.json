@@ -35,10 +35,6 @@
       "homepage": {
         "title": "Pembuka Home Lebih Rapi",
         "description": "Bagian pembuka Home kini dipusatkan dan dipisahkan lebih jelas dari shortcut, sementara header mobile menyesuaikan layar sempit dengan lebih baik."
-      },
-      "hydration": {
-        "title": "Render Tooltip Lebih Stabil",
-        "description": "Atribut aksesibilitas tooltip kini konsisten saat render awal sehingga peringatan hydration pada kartu banner tidak lagi muncul."
       }
     },
     "releaseTitle": "Backup, Profil, dan Import yang Lebih Baik",
@@ -322,7 +318,8 @@
         "openPowerShellTitle": "Buka Windows PowerShell",
         "openPowerShellDesc": "Tekan <key>Windows</key> di keyboard, cari “PowerShell”, lalu jalankan <app>Windows PowerShell</app>.",
         "runCommandTitle": "Paste dan Jalankan Command",
-        "runCommandDesc": "Copy perintah berikut ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>. Setelah URL muncul, maka akan dicopy secara otomatis, paste pada kolom import di bawah."
+        "runCommandDesc": "Copy perintah berikut ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>. Setelah URL muncul, maka akan dicopy secara otomatis, paste pada kolom import di bawah.",
+        "reviewScript": "Periksa seluruh isi script di GitHub"
       }
     }
   },

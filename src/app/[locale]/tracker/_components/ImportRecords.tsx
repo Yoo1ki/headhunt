@@ -7,6 +7,7 @@ import { useStorageStore } from '@/store/useStorageStore';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, useRef, type ReactNode } from 'react';
 import {
+  FaArrowUpRightFromSquare,
   FaCheck,
   FaClipboard,
   FaCircleInfo,
@@ -30,6 +31,9 @@ type StepProps = {
   title: string;
   children: ReactNode;
 };
+
+const POWERSHELL_SCRIPT_URL =
+  'https://github.com/Yoo1ki/headhunt/blob/main/get-record-url.ps1';
 
 const Step = ({ number, title, children }: StepProps) => (
   <div className="flex gap-3 rounded-xl bg-white/5 p-3">
@@ -190,6 +194,15 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                   {command}
                 </code>
               </div>
+              <a
+                href={POWERSHELL_SCRIPT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300/60"
+              >
+                {t('WindowsSteps.reviewScript')}
+                <FaArrowUpRightFromSquare aria-hidden="true" />
+              </a>
             </Step>
           </div>
           {comingSoon}

@@ -97,7 +97,7 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
 
         {selected && (
           <div
-            className="absolute top-0 right-0 rounded-bl-xl bg-white p-1"
+            className="filter-check absolute top-0 right-0 origin-top-right rounded-bl-xl bg-white p-1"
             style={{ color: item.color }}
           >
             <FaCheck size={12} />

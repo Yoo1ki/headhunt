@@ -197,11 +197,11 @@ export const BannerItem = ({
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div>
-            <h3 className="text-sm leading-snug font-semibold break-words text-white/90">
+            <h3 className="text-sm leading-snug font-semibold wrap-break-word text-white/90">
               {name}
             </h3>
             <div
-              className="mt-1 text-sm leading-snug font-medium break-words"
+              className="mt-1 text-sm leading-snug font-medium wrap-break-word"
               style={{ color: CONFIG.enumColors.rarities.rarity_6 }}
             >
               {itemName}
