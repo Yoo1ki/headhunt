@@ -10,7 +10,7 @@
   "ChangelogPage": {
     "title": "Changelog",
     "description": "See the latest features, improvements, and fixes on Headhunt.cc.",
-    "newReleaseTitle": "A More Reliable and Focused Tracker",
+    "newReleaseTitle": "A More Reliable and Polished Headhunt.cc",
     "newChanges": {
       "trackerNavigation": {
         "title": "Banner Navigation",
@@ -27,6 +27,18 @@
       "interface": {
         "title": "Interface Improvements",
         "description": "Home, Tracker, Changelog, Privacy Policy, Terms of Service, modals, and mobile navigation received consistency and usability improvements."
+      },
+      "branding": {
+        "title": "Refreshed Site Identity",
+        "description": "The header logo, favicon, app icons, and web manifest artwork now share a consistent visual identity."
+      },
+      "homepage": {
+        "title": "Refined Homepage Introduction",
+        "description": "The homepage introduction is now centered and separated more clearly from shortcuts, while the mobile header adapts better to narrow screens."
+      },
+      "hydration": {
+        "title": "Stable Tooltip Rendering",
+        "description": "Tooltip accessibility attributes now remain consistent during initial rendering, preventing hydration warnings on banner cards."
       }
     },
     "releaseTitle": "Better Backups, Profiles, and Imports",

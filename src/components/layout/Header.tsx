@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { SlMenu, SlClose } from 'react-icons/sl';
 import { MobileNavbar } from './MobileNavbar';
 import { Link } from '@/i18n/navigation';
@@ -48,12 +47,12 @@ export const Header = ({ className }: HeaderProps) => {
               href="/"
               className="flex shrink-0 items-center overflow-hidden"
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/headhunt-logo.png"
                 alt={CONFIG.appName}
                 width={185}
                 height={32}
-                priority
                 className="h-auto w-[clamp(8.5rem,42vw,11.5625rem)]"
               />
             </Link>

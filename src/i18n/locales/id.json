@@ -10,7 +10,7 @@
   "ChangelogPage": {
     "title": "Log Perubahan",
     "description": "Lihat fitur baru, peningkatan, dan perbaikan terbaru di Headhunt.cc.",
-    "newReleaseTitle": "Tracker yang Lebih Andal dan Terarah",
+    "newReleaseTitle": "Headhunt.cc yang Lebih Andal dan Rapi",
     "newChanges": {
       "trackerNavigation": {
         "title": "Navigasi Banner",
@@ -27,6 +27,18 @@
       "interface": {
         "title": "Peningkatan Antarmuka",
         "description": "Home, Tracker, Log Perubahan, Kebijakan Privasi, Ketentuan Layanan, modal, dan navigasi mobile diperbaiki agar lebih konsisten dan nyaman."
+      },
+      "branding": {
+        "title": "Identitas Situs Diperbarui",
+        "description": "Logo header, favicon, ikon aplikasi, dan gambar web manifest kini memakai identitas visual yang konsisten."
+      },
+      "homepage": {
+        "title": "Pembuka Home Lebih Rapi",
+        "description": "Bagian pembuka Home kini dipusatkan dan dipisahkan lebih jelas dari shortcut, sementara header mobile menyesuaikan layar sempit dengan lebih baik."
+      },
+      "hydration": {
+        "title": "Render Tooltip Lebih Stabil",
+        "description": "Atribut aksesibilitas tooltip kini konsisten saat render awal sehingga peringatan hydration pada kartu banner tidak lagi muncul."
       }
     },
     "releaseTitle": "Backup, Profil, dan Import yang Lebih Baik",
