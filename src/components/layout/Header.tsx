@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { SlMenu, SlClose } from 'react-icons/sl';
 import { MobileNavbar } from './MobileNavbar';
 import { Link } from '@/i18n/navigation';
@@ -42,14 +43,21 @@ export const Header = ({ className }: HeaderProps) => {
         className={`flex w-full items-center bg-neutral-800 shadow-sm ${className}`}
       >
         <div className="container mx-auto p-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <Link
               href="/"
-              className="overflow-hidden text-xl font-bold text-white"
+              className="flex shrink-0 items-center overflow-hidden"
             >
-              {CONFIG.appName}
+              <Image
+                src="/headhunt-logo.png"
+                alt={CONFIG.appName}
+                width={185}
+                height={32}
+                priority
+                className="h-auto w-[clamp(8.5rem,42vw,11.5625rem)]"
+              />
             </Link>
-            <div className="flex items-center gap-4">
+            <div className="flex shrink-0 items-center gap-2 sm:gap-4">
               <LocaleSwitcher />
               <button
                 type="button"

@@ -58,7 +58,7 @@ export const LocaleSwitcher = () => {
         aria-controls={open ? listId : undefined}
         aria-haspopup="listbox"
         aria-label="Select language"
-        className="flex w-36 cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-white/85 transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-yellow-400"
+        className="flex w-36 max-[390px]:w-28 cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-white/85 transition-colors hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-yellow-400"
       >
         <span className="flex min-w-0 items-center gap-2">
           <FaGlobeAsia aria-hidden="true" className="shrink-0" />

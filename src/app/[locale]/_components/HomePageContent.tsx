@@ -51,8 +51,9 @@ export const HomePageContent = ({ banners, initialNow }: Props) => {
 
   return (
     <div className="flex w-full flex-col">
-      <PageTitle title={CONFIG.appName} desc={t('description')} />
-      <div className="flex flex-col gap-8">
+      <PageTitle title={CONFIG.appName} desc={t('description')} centered />
+      <div className="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+      <div className="flex flex-col gap-8 pt-4 sm:pt-6">
         <section
           aria-labelledby="home-shortcuts"
           className="flex flex-col gap-3"

@@ -134,7 +134,7 @@ export const Tooltip = ({
 
   const accessibleChild = isValidElement(children)
     ? cloneElement(children as ReactElement<{ 'aria-describedby'?: string }>, {
-        'aria-describedby': tooltipId,
+        'aria-describedby': isOpen ? tooltipId : undefined,
       })
     : children;
 
