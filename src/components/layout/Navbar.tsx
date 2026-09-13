@@ -27,8 +27,8 @@ type MenuItem = {
 
 const menu: MenuItem[] = [
   { key: 'home', href: '/', icon: <GiWoodCabin /> },
-  { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'tracker', href: '/tracker', icon: <GiHypersonicBolt /> },
+  { key: 'operators', href: '/operators', icon: <GiTwoShadows /> },
   { key: 'weapons', href: '/weapons', icon: <GiSaberAndPistol /> },
   { key: 'gear', href: '/gear', icon: <GiShorts />, disabled: true },
 ];

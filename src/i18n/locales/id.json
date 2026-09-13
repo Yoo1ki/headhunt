@@ -10,6 +10,33 @@
   "ChangelogPage": {
     "title": "Log Perubahan",
     "description": "Lihat fitur baru, peningkatan, dan perbaikan terbaru di Headhunt.cc.",
+    "latestReleaseTitle": "Tracker, Berbagi, dan Insight Situs yang Lebih Jelas",
+    "latestChanges": {
+      "headhuntResults": {
+        "title": "Hasil Headhunt Lebih Akurat",
+        "description": "Hasil terbaru kini menampilkan indikator menang dan kalah yang lebih jelas, serta penjelasan senjata yang disesuaikan untuk banner tanpa aturan rotasi karakter."
+      },
+      "mobileNavigation": {
+        "title": "Navigasi Mobile Lebih Mulus",
+        "description": "Link mobile, tombol kembali pada overlay, header hasil terbaru, filter rarity, dan panduan import kini bekerja lebih konsisten."
+      },
+      "socialPreviews": {
+        "title": "Gambar Preview Sosial Dinamis",
+        "description": "Gambar preview Open Graph dan X kini menampilkan semua banner aktif, termasuk gambar karakter dari rotasi Chartered Headhunting."
+      },
+      "trackerNavigation": {
+        "title": "Navigasi Masuk Tracker Diperbaiki",
+        "description": "Banner yang dibuka dari Home langsung menuju targetnya, sedangkan navigasi biasa ke Tracker dimulai dari atas dengan jarak banner yang sejajar dengan sidebar."
+      },
+      "analytics": {
+        "title": "Integrasi Google Analytics",
+        "description": "Statistik penggunaan website membantu pengembangan konten, performa, dan fitur tanpa mengumpulkan data pribadi dari tracker."
+      },
+      "legalPages": {
+        "title": "Informasi Legal Sesuai Bahasa",
+        "description": "Kebijakan Privasi dan Ketentuan Layanan kini tersedia dalam bahasa Inggris dan Indonesia, dengan penjelasan yang lebih jelas tentang Analytics dan pengelolaan data Google Drive."
+      }
+    },
     "newReleaseTitle": "Headhunt.cc yang Lebih Andal dan Rapi",
     "newChanges": {
       "trackerNavigation": {
@@ -328,6 +355,103 @@
         "runCommandDesc": "Copy perintah berikut ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>. Setelah URL muncul, maka akan dicopy secara otomatis, paste pada kolom import di bawah.",
         "reviewScript": "Periksa seluruh isi script di GitHub"
       }
+    }
+  },
+  "PrivacyPolicy": {
+    "title": "Kebijakan Privasi",
+    "updated": "Terakhir diperbarui: 14 September 2026",
+    "introduction": {
+      "title": "1. Pendahuluan",
+      "text": "Selamat datang di {appName}. Privasi kamu penting bagi kami. Kebijakan Privasi ini menjelaskan cara kami menangani data ketika kamu menggunakan situs kami."
+    },
+    "dataCollection": {
+      "title": "2. Pengumpulan Data",
+      "server": "{appName} tidak memiliki database akun pengguna atau menyimpan riwayat gacha kamu secara permanen di server kami.",
+      "local": "Semua data aplikasi, seperti riwayat gacha, catatan pity, atau data yang diimpor, disimpan secara lokal di browser kamu."
+    },
+    "localStorage": {
+      "title": "3. Penyimpanan Lokal",
+      "intro": "Kami menggunakan penyimpanan lokal browser untuk:",
+      "url": "Menyimpan URL atau token gacha kamu",
+      "history": "Menyimpan riwayat gacha dan data pelacakan pity kamu",
+      "details": "Data ini tetap berada di perangkat kamu kecuali kamu memilih untuk mengimpor riwayat atau mengaktifkan backup Google Drive. Data lokal dapat dihapus kapan saja dengan menghapus data browser."
+    },
+    "token": {
+      "title": "4. Penggunaan Token",
+      "text": "URL atau token gacha kamu hanya digunakan sementara untuk memuat riwayat pull dan tidak pernah disimpan secara permanen di server kami."
+    },
+    "drive": {
+      "title": "5. Backup Google Drive",
+      "backup": "Jika kamu menghubungkan Google Drive, data backup dikirim langsung dari browser ke folder data aplikasi di Google Drive kamu. Backup dapat berisi profil, riwayat gacha, statistik, serta URL atau token impor.",
+      "permission": "Kami meminta izin terbatas untuk data aplikasi Google Drive. Access token Google yang berumur pendek disimpan dalam memori browser dan tidak disimpan di penyimpanan lokal atau disertakan dalam file backup. Jika kamu memilih untuk tetap terhubung, refresh token Google disimpan dalam cookie HTTP-only yang aman agar situs dapat memulihkan sesi kamu. Kamu dapat memutuskan koneksi atau mencabut akses kapan saja."
+    },
+    "analytics": {
+      "title": "6. Google Analytics",
+      "collection": "Kami menggunakan Google Analytics 4 untuk memahami cara pengunjung menggunakan situs serta meningkatkan konten, performa, dan fiturnya. Google Analytics dapat mengumpulkan informasi seperti halaman yang dikunjungi, interaksi, perkiraan lokasi, detail browser dan perangkat, halaman perujuk, serta informasi sesi melalui cookie atau pengenal serupa. Browser kamu juga dapat mengirimkan alamat IP kepada Google sebagai bagian dari permintaan.",
+      "processing": "Kami hanya menggunakan Google Analytics untuk mengumpulkan statistik penggunaan website. Kami tidak mengonfigurasi Google Analytics untuk mengumpulkan riwayat gacha, URL atau token impor, isi backup Google Drive, maupun alamat email kamu. Google memproses data analitik yang dikumpulkannya sesuai dengan ketentuan dan praktik privasinya.",
+      "googleDataLink": "Pelajari cara Google menggunakan informasi dari situs yang memakai layanannya."
+    },
+    "cookies": {
+      "title": "7. Cookie dan Pilihan Kamu",
+      "text": "{appName} menggunakan cookie atau penyimpanan browser untuk fungsi penting, preferensi, koneksi Google Drive, dan analitik situs. Kamu dapat membatasi atau menghapus cookie melalui pengaturan browser, meskipun tindakan ini dapat memengaruhi beberapa fitur.",
+      "optOutIntro": "Jika didukung, kamu juga dapat menggunakan",
+      "optOutLink": "Ekstensi Browser Penonaktifan Google Analytics"
+    },
+    "thirdParty": {
+      "title": "8. Layanan Pihak Ketiga",
+      "text": "Kami menggunakan layanan pihak ketiga seperti Google Analytics, Google Drive, endpoint terkait game, dan jaringan pengiriman konten. Data yang ditangani oleh layanan tersebut tunduk pada kebijakan privasi masing-masing."
+    },
+    "changes": {
+      "title": "9. Perubahan Kebijakan",
+      "text": "Kami dapat memperbarui Kebijakan Privasi ini dari waktu ke waktu. Perubahan akan ditampilkan di halaman ini."
+    }
+  },
+  "TermsOfService": {
+    "title": "Ketentuan Layanan",
+    "updated": "Terakhir diperbarui: 14 September 2026",
+    "acceptance": {
+      "title": "1. Persetujuan terhadap Ketentuan",
+      "text": "Dengan mengakses atau menggunakan {appName}, kamu menyetujui Ketentuan Layanan ini. Jika tidak setuju, jangan gunakan layanan ini."
+    },
+    "description": {
+      "title": "2. Deskripsi Layanan",
+      "text": "{appName} adalah alat independen untuk mengimpor, menampilkan, menganalisis, membackup, dan memulihkan riwayat gacha Arknights: Endfield. Fitur dapat berubah, ditangguhkan, atau dihentikan kapan saja."
+    },
+    "drive": {
+      "title": "3. Akun Google dan Backup Drive",
+      "access": "Integrasi Google Drive bersifat opsional. Jika menghubungkan akun Google, kamu memberi izin kepada {appName} untuk membuat, memperbarui, dan membaca file backup miliknya sendiri di folder data aplikasi Google Drive kamu.",
+      "responsibility": "Kamu bertanggung jawab memilih akun Google yang benar dan melindungi aksesnya. Kamu dapat memutuskan koneksi Google Drive dari aplikasi atau mencabut akses melalui pengaturan Akun Google kapan saja."
+    },
+    "responsibilities": {
+      "title": "4. Tanggung Jawab Pengguna",
+      "lawful": "Gunakan layanan hanya untuk tujuan pribadi yang sah.",
+      "abuse": "Jangan menyalahgunakan, mengganggu, atau mencoba melewati perlindungan layanan.",
+      "private": "Jaga kerahasiaan file backup yang diekspor dan URL impor gacha karena dapat memuat token akses sementara.",
+      "verify": "Periksa data penting sebelum mengandalkan hasil perhitungan."
+    },
+    "thirdParty": {
+      "title": "5. Layanan Pihak Ketiga",
+      "text": "Layanan ini berinteraksi dengan layanan pihak ketiga, termasuk Google Drive dan endpoint terkait game. Penggunaan layanan tersebut juga diatur oleh ketentuan dan kebijakan masing-masing. Kami tidak mengendalikan ketersediaan, keakuratan, atau perilakunya."
+    },
+    "intellectualProperty": {
+      "title": "6. Kekayaan Intelektual",
+      "text": "Kode proyek {appName} tersedia berdasarkan lisensi repositorinya. Nama, gambar, merek dagang, data game, dan materi pihak ketiga lainnya terkait Arknights: Endfield tetap menjadi milik pemiliknya masing-masing dan tidak dilisensikan oleh kami."
+    },
+    "warranties": {
+      "title": "7. Penyangkalan Jaminan",
+      "text": "Layanan disediakan “sebagaimana adanya” dan “sebagaimana tersedia” tanpa jaminan apa pun. Kami tidak menjamin akses tanpa gangguan, kelengkapan data, keakuratan perhitungan, atau kompatibilitas dengan perubahan game maupun API pihak ketiga di masa mendatang."
+    },
+    "liability": {
+      "title": "8. Batasan Tanggung Jawab",
+      "text": "Sejauh diizinkan oleh hukum, {appName} dan para kontributornya tidak bertanggung jawab atas kehilangan data, masalah akun, gangguan layanan, maupun kerugian tidak langsung atau konsekuensial akibat penggunaan layanan."
+    },
+    "changes": {
+      "title": "9. Perubahan Ketentuan",
+      "text": "Kami dapat memperbarui Ketentuan ini dari waktu ke waktu. Tanggal pembaruan akan ditampilkan di halaman ini. Dengan terus menggunakan layanan setelah pembaruan, kamu dianggap menerima Ketentuan yang telah diperbarui."
+    },
+    "contact": {
+      "title": "10. Kontak",
+      "text": "Pertanyaan tentang Ketentuan ini dapat disampaikan melalui repositori resmi proyek atau kanal komunitas yang ditautkan oleh {appName}."
     }
   },
   "ImportStatus": {

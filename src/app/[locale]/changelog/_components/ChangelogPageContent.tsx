@@ -17,6 +17,20 @@ import {
 
 const releases = [
   {
+    id: '2026.09.14',
+    date: '2026-09-14T00:00:00+07:00',
+    titleKey: 'latestReleaseTitle',
+    changesKey: 'latestChanges',
+    changes: [
+      { key: 'headhuntResults', icon: FaList },
+      { key: 'mobileNavigation', icon: FaArrowRightArrowLeft },
+      { key: 'socialPreviews', icon: FaImage },
+      { key: 'trackerNavigation', icon: FaHouse },
+      { key: 'analytics', icon: FaChartSimple },
+      { key: 'legalPages', icon: FaFileArrowDown },
+    ],
+  },
+  {
     id: '2026.09.12',
     date: '2026-09-12T00:00:00+07:00',
     titleKey: 'newReleaseTitle',
