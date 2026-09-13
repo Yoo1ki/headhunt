@@ -116,7 +116,7 @@ export const HeadhuntRecords = ({
             {isWeapon ? t('issueRecords') : t('headhuntRecords')}
           </h2>
 
-          <div>
+          <div className="shrink-0">
             <Filter
               data={rarities
                 .filter((r) =>
