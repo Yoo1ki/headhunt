@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SlMenu, SlClose } from 'react-icons/sl';
 import { MobileNavbar } from './MobileNavbar';
 import { Link } from '@/i18n/navigation';
@@ -13,28 +13,66 @@ type HeaderProps = {
 
 export const Header = ({ className }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const onClick = () => setIsOpen((prev) => !prev);
+  const closeMenu = useCallback(() => {
+    if (window.history.state?.headhuntMobileMenu) {
+      window.history.back();
+    } else {
+      setIsOpen(false);
+    }
+  }, []);
+
+  const toggleMenu = () => {
+    if (isOpen) {
+      closeMenu();
+    } else {
+      setIsOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (!isOpen) return;
+
+    let closedByHistory = false;
+    const currentHistoryState = window.history.state;
+    window.history.pushState(
+      {
+        ...(typeof currentHistoryState === 'object' && currentHistoryState
+          ? currentHistoryState
+          : {}),
+        headhuntMobileMenu: true,
+      },
+      '',
+      window.location.href
+    );
+
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setIsOpen(false);
+      if (event.key === 'Escape') closeMenu();
+    };
+    const handlePopState = () => {
+      closedByHistory = true;
+      setIsOpen(false);
     };
     const desktop = window.matchMedia('(min-width: 1024px)');
     const handleResize = () => {
-      if (desktop.matches) setIsOpen(false);
+      if (desktop.matches) closeMenu();
     };
     window.addEventListener('keydown', handleKey);
+    window.addEventListener('popstate', handlePopState);
     desktop.addEventListener('change', handleResize);
 
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener('keydown', handleKey);
+      window.removeEventListener('popstate', handlePopState);
       desktop.removeEventListener('change', handleResize);
+
+      if (!closedByHistory && window.history.state?.headhuntMobileMenu) {
+        window.history.back();
+      }
     };
-  }, [isOpen]);
+  }, [closeMenu, isOpen]);
 
   return (
     <>
@@ -60,7 +98,7 @@ export const Header = ({ className }: HeaderProps) => {
               <LocaleSwitcher />
               <button
                 type="button"
-                onClick={onClick}
+                onClick={toggleMenu}
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isOpen}
                 aria-controls="mobile-navigation"
@@ -76,7 +114,7 @@ export const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
       </header>
-      <MobileNavbar isOpen={isOpen} onClick={() => setIsOpen(false)} />
+      <MobileNavbar isOpen={isOpen} onClick={closeMenu} />
     </>
   );
 };
