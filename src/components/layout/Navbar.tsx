@@ -15,7 +15,7 @@ import { FaDiscord } from 'react-icons/fa6';
 import { CONFIG } from '@/config';
 
 type NavbarProps = {
-  onClick?: () => void;
+  onClick?: (href?: string) => void;
 };
 
 type MenuItem = {
@@ -89,6 +89,11 @@ export const Navbar = ({ onClick }: NavbarProps) => {
                         onClick?.();
                       }
                     : onClick
+                      ? (event) => {
+                          event.preventDefault();
+                          onClick(item.href);
+                        }
+                      : undefined
                 }
                 className={`${baseClass} ${activeClass}`}
               >

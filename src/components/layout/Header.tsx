@@ -1,9 +1,9 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SlMenu, SlClose } from 'react-icons/sl';
 import { MobileNavbar } from './MobileNavbar';
-import { Link } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
 import { LocaleSwitcher } from '../shared/LocaleSwitcher';
 import { CONFIG } from '@/config';
 
@@ -12,7 +12,9 @@ type HeaderProps = {
 };
 
 export const Header = ({ className }: HeaderProps) => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const pendingNavigationRef = useRef<string | null>(null);
   const closeMenu = useCallback(() => {
     if (window.history.state?.headhuntMobileMenu) {
       window.history.back();
@@ -28,6 +30,20 @@ export const Header = ({ className }: HeaderProps) => {
       setIsOpen(true);
     }
   };
+
+  const handleMobileNavigation = useCallback(
+    (href?: string) => {
+      pendingNavigationRef.current = href ?? null;
+
+      if (window.history.state?.headhuntMobileMenu) {
+        window.history.back();
+      } else {
+        setIsOpen(false);
+        if (href) router.push(href);
+      }
+    },
+    [router]
+  );
 
   useEffect(() => {
     if (!isOpen) return;
@@ -53,6 +69,9 @@ export const Header = ({ className }: HeaderProps) => {
     const handlePopState = () => {
       closedByHistory = true;
       setIsOpen(false);
+      const pendingHref = pendingNavigationRef.current;
+      pendingNavigationRef.current = null;
+      if (pendingHref) router.push(pendingHref);
     };
     const desktop = window.matchMedia('(min-width: 1024px)');
     const handleResize = () => {
@@ -72,7 +91,7 @@ export const Header = ({ className }: HeaderProps) => {
         window.history.back();
       }
     };
-  }, [closeMenu, isOpen]);
+  }, [closeMenu, isOpen, router]);
 
   return (
     <>
@@ -114,7 +133,7 @@ export const Header = ({ className }: HeaderProps) => {
           </div>
         </div>
       </header>
-      <MobileNavbar isOpen={isOpen} onClick={closeMenu} />
+      <MobileNavbar isOpen={isOpen} onClick={handleMobileNavigation} />
     </>
   );
 };
