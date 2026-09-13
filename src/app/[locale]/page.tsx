@@ -2,6 +2,7 @@ import { getLocale } from 'next-intl/server';
 import { HomePageContent } from './_components/HomePageContent';
 import type { Banners } from '@/types/banner';
 import type { Catalogs } from '@/types/catalog';
+import { getActiveLimitedBanners } from '@/lib/active-banners';
 
 export default async function HomePage() {
   const locale = await getLocale();
@@ -18,42 +19,28 @@ export default async function HomePage() {
   const initialNow = Date.now();
   const now = initialNow / 1000;
 
-  const sortedBanners = Object.values(banners).sort((a, b) => {
-    const aStart = a.startTime ?? 0;
-    const bStart = b.startTime ?? 0;
-    return bStart - aStart;
+  const limitedBanners = getActiveLimitedBanners(banners, now).map((banner) => {
+    let itemName = catalogs[banner.rateup]?.name ?? banner.rateup;
+    if (banner.id.startsWith('joint')) {
+      itemName =
+        banner.rotate?.map((id) => catalogs[id]?.name ?? id).join(', ') ??
+        itemName;
+    }
+    return {
+      id: banner.id,
+      name: banner.name,
+      endTime: banner.endTime,
+      itemName,
+      icon: catalogs[banner.rateup]?.icon ?? '',
+      rotation: [...new Set(banner.rotate ?? [])].flatMap((id) => {
+        if (id === banner.rateup) return [];
+        const character = catalogs[id];
+        return character?.icon
+          ? [{ id, name: character.name, icon: character.icon }]
+          : [];
+      }),
+    };
   });
-
-  const activeBanners = sortedBanners.filter((banner) => {
-    const start = banner.startTime ?? 0;
-    const end = banner.endTime ?? Infinity;
-    return now >= start && now <= end;
-  });
-
-  const limitedBanners = activeBanners
-    .filter((banner) => !banner.id.startsWith('weaponbox'))
-    .map((banner) => {
-      let itemName = catalogs[banner.rateup]?.name ?? banner.rateup;
-      if (banner.id.startsWith('joint')) {
-        itemName =
-          banner.rotate?.map((id) => catalogs[id]?.name ?? id).join(', ') ??
-          itemName;
-      }
-      return {
-        id: banner.id,
-        name: banner.name,
-        endTime: banner.endTime,
-        itemName,
-        icon: catalogs[banner.rateup]?.icon ?? '',
-        rotation: [...new Set(banner.rotate ?? [])].flatMap((id) => {
-          if (id === banner.rateup) return [];
-          const character = catalogs[id];
-          return character?.icon
-            ? [{ id, name: character.name, icon: character.icon }]
-            : [];
-        }),
-      };
-    });
 
   return <HomePageContent banners={limitedBanners} initialNow={initialNow} />;
 }
