@@ -166,6 +166,8 @@
     "resultLose": "Lost Rateup and Rotate",
     "resultRotate": "Won Rotate, lost Rateup",
     "resultRateup": "Won Rateup and Rotate",
+    "resultWeaponLose": "Lost Rateup",
+    "resultWeaponRateup": "Won Rateup",
     "resultGuarantee": "Guaranteed",
     "freePull": "Free pull",
     "noRecordFound": "No Records found.",

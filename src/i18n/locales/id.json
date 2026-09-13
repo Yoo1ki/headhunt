@@ -166,6 +166,8 @@
     "resultLose": "Kalah Rateup dan Rotate",
     "resultRotate": "Menang Rotate, kalah Rateup",
     "resultRateup": "Menang Rateup dan Rotate",
+    "resultWeaponLose": "Kalah Rateup",
+    "resultWeaponRateup": "Menang Rateup",
     "resultGuarantee": "Guaranteed",
     "freePull": "Pull gratis",
     "noRecordFound": "Record tidak ditemukan.",

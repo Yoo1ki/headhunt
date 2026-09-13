@@ -61,6 +61,15 @@ const RESULT_BADGES: Record<
   },
 };
 
+const getResultTranslationKey = (result: GachaResult, isWeapon: boolean) => {
+  if (isWeapon) {
+    if (result === GachaResult.Lose) return 'resultWeaponLose';
+    if (result === GachaResult.Rateup) return 'resultWeaponRateup';
+  }
+
+  return RESULT_BADGES[result].translationKey;
+};
+
 const getPityColor = ({
   pity,
   rarityId,
@@ -192,7 +201,12 @@ export const RecentHeadhunts = ({
               <span className="font-semibold">{badge.label}</span> ={' '}
               {Number(result) === GachaResult.Guarantee
                 ? t('guaranteedDesc', { limit: guaranteedLimit })
-                : t(badge.translationKey)}
+                : t(
+                    getResultTranslationKey(
+                      Number(result) as GachaResult,
+                      isWeapon
+                    )
+                  )}
             </div>
           ))}
         </div>
@@ -230,7 +244,13 @@ export const RecentHeadhunts = ({
                   <strong className="text-white">{name}</strong>
                   {resultBadge && (
                     <span className="font-normal text-white/70">
-                      {resultBadge.label} = {t(resultBadge.translationKey)}
+                      {resultBadge.label} ={' '}
+                      {t(
+                        getResultTranslationKey(
+                          record.result,
+                          record.typeId === 'weponbox'
+                        )
+                      )}
                     </span>
                   )}
                   <span className="font-normal text-white/70">
