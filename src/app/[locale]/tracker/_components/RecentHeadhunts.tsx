@@ -165,17 +165,12 @@ export const RecentHeadhunts = ({
 
   return (
     <section className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 p-3">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-xl font-bold">
-            {isWeapon ? t('recentIssues') : t('recentHeadhunts')}
-          </h2>
-          <span className="rounded-md bg-white/7 px-2 py-0.5 text-xs font-medium text-white/45 tabular-nums">
-            {filteredRecords.length}
-          </span>
-        </div>
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="text-xl font-bold">
+          {isWeapon ? t('recentIssues') : t('recentHeadhunts')}
+        </h2>
 
-        <div className="self-start sm:self-auto">
+        <div className="shrink-0">
           <Filter
             data={rarityOptions}
             value={rarityFilter}

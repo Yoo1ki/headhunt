@@ -165,7 +165,7 @@
     "guaranteedDesc": "Rateup Guaranteed within the first {limit} pulls on each banner",
     "resultLose": "Lost Rateup and Rotate",
     "resultRotate": "Won Rotate, lost Rateup",
-    "resultRateup": "Win Rateup and Rotate",
+    "resultRateup": "Won Rateup and Rotate",
     "resultGuarantee": "Guaranteed",
     "freePull": "Free pull",
     "noRecordFound": "No Records found.",
