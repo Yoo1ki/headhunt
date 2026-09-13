@@ -10,7 +10,7 @@ const rarityColors: Record<string, string> = {
   equip_rarity_2: '#86efac',
   equip_rarity_3: '#7dd3fc',
   equip_rarity_4: '#c4b5fd',
-  equip_rarity_5: '#fde047',
+  equip_rarity_5: '#FF8000',
 };
 
 const formatSetDescription = (gear: Gear) =>
@@ -56,7 +56,7 @@ export const GearCard = ({
         </div>
         <div className="min-w-0 flex-1">
           <p className="mb-1 text-xs font-medium text-white/50">{typeName}</p>
-          <h2 className="text-sm leading-snug font-semibold break-words text-white sm:text-base">
+          <h2 className="text-sm leading-snug font-semibold wrap-break-word text-white sm:text-base">
             {gear.name}
           </h2>
           <div className="mt-2 flex flex-wrap gap-1.5 text-[11px] font-semibold text-white/65">
