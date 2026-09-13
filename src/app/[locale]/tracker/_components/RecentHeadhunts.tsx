@@ -9,6 +9,7 @@ import type { Catalogs } from '@/types/catalog';
 import { PiImageBroken } from 'react-icons/pi';
 import { CloudflareImage } from '@/components/shared/CloudflareImage';
 import { useTranslations } from 'next-intl';
+import clsx from 'clsx';
 
 type RecentHeadhuntsProps = {
   hash: string;
@@ -19,9 +20,46 @@ type RecentHeadhuntsProps = {
 };
 
 const PAGE_SIZE = 50;
+const RATE_RESULT_TYPE_IDS = new Set(['special', 'weponbox']);
 
 const isIncluded = <T,>(filter: T[], value: T) =>
   filter.length === 0 || filter.includes(value);
+
+const RESULT_BADGES: Record<
+  GachaResult,
+  {
+    label: string;
+    className: string;
+    legendClassName: string;
+    translationKey:
+      'resultLose' | 'resultRotate' | 'resultRateup' | 'resultGuarantee';
+  }
+> = {
+  [GachaResult.Lose]: {
+    label: 'L',
+    className: 'bg-rose-600/90',
+    legendClassName: 'bg-rose-500/15 text-rose-100/80',
+    translationKey: 'resultLose',
+  },
+  [GachaResult.Rotate]: {
+    label: 'R',
+    className: 'bg-sky-500/90',
+    legendClassName: 'bg-sky-500/15 text-sky-100/80',
+    translationKey: 'resultRotate',
+  },
+  [GachaResult.Rateup]: {
+    label: 'W',
+    className: 'bg-emerald-500/90',
+    legendClassName: 'bg-emerald-500/15 text-emerald-100/80',
+    translationKey: 'resultRateup',
+  },
+  [GachaResult.Guarantee]: {
+    label: 'G',
+    className: 'bg-violet-500/90',
+    legendClassName: 'bg-violet-500/15 text-violet-100/80',
+    translationKey: 'resultGuarantee',
+  },
+};
 
 const getPityColor = ({
   pity,
@@ -66,6 +104,21 @@ export const RecentHeadhunts = ({
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [rarityFilter, setRarityFilter] = useState<string[]>(['rarity_6']);
 
+  const rarityOptions = useMemo(
+    () =>
+      rarities
+        .filter((rarity) =>
+          ['rarity_4', 'rarity_5', 'rarity_6'].includes(rarity.id)
+        )
+        .map((rarity) => ({
+          id: rarity.id,
+          name: `${rarity.name}★`,
+          icon: 'rarity',
+          color: CONFIG.enumColors.rarities[rarity.id],
+        })),
+    [rarities]
+  );
+
   const handleChangeRarity = (values: string[]) => {
     setRarityFilter(values);
     setVisible(PAGE_SIZE);
@@ -82,6 +135,24 @@ export const RecentHeadhunts = ({
   }, [filteredRecords, visible]);
 
   const hasMore = visible < filteredRecords.length;
+  const availableResults = useMemo(
+    () =>
+      new Set(
+        filteredRecords
+          .filter(
+            (record) =>
+              record.rarity === 6 && RATE_RESULT_TYPE_IDS.has(record.typeId)
+          )
+          .map((record) => record.result)
+      ),
+    [filteredRecords]
+  );
+  const resultLegends = (
+    Object.entries(RESULT_BADGES) as [
+      string,
+      (typeof RESULT_BADGES)[GachaResult],
+    ][]
+  ).filter(([result]) => availableResults.has(Number(result) as GachaResult));
 
   const handleLoadMore = () => {
     if (hasMore) {
@@ -93,36 +164,42 @@ export const RecentHeadhunts = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 px-3 py-2">
-      <div className="flex items-center justify-between gap-2">
-        <h2 className="text-xl font-bold">
-          {isWeapon ? t('recentIssues') : t('recentHeadhunts')}
-        </h2>
+    <section className="flex flex-col gap-4 rounded-xl bg-neutral-800/80 p-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-bold">
+            {isWeapon ? t('recentIssues') : t('recentHeadhunts')}
+          </h2>
+          <span className="rounded-md bg-white/7 px-2 py-0.5 text-xs font-medium text-white/45 tabular-nums">
+            {filteredRecords.length}
+          </span>
+        </div>
 
-        <div>
+        <div className="self-start sm:self-auto">
           <Filter
-            data={rarities
-              .filter((r) =>
-                ['rarity_4', 'rarity_5', 'rarity_6'].includes(r.id)
-              )
-              .map((e) => ({
-                id: e.id,
-                name: `${e.name}★`,
-                icon: 'rarity',
-                color: CONFIG.enumColors.rarities[e.id],
-              }))}
+            data={rarityOptions}
             value={rarityFilter}
             onChange={handleChangeRarity}
           />
         </div>
       </div>
 
-      {visibleRecords.some(
-        (record) => record.result === GachaResult.Guarantee
-      ) && (
-        <div className="w-fit rounded-md border-l-2 border-violet-500 bg-violet-500/20 px-2 py-0.5 text-sm font-light italic">
-          <span className="font-semibold">G</span> ={' '}
-          {t('guaranteedDesc', { limit: guaranteedLimit })}
+      {resultLegends.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {resultLegends.map(([result, badge]) => (
+            <div
+              key={result}
+              className={clsx(
+                'w-fit rounded-lg px-2.5 py-1 text-xs',
+                badge.legendClassName
+              )}
+            >
+              <span className="font-semibold">{badge.label}</span> ={' '}
+              {Number(result) === GachaResult.Guarantee
+                ? t('guaranteedDesc', { limit: guaranteedLimit })
+                : t(badge.translationKey)}
+            </div>
+          ))}
         </div>
       )}
 
@@ -132,14 +209,17 @@ export const RecentHeadhunts = ({
           gridTemplateColumns: 'repeat(auto-fill, minmax(4rem, 1fr))',
         }}
       >
-        {visibleRecords?.map((record, index) => {
+        {visibleRecords.map((record) => {
           const catalog = catalogs[record.itemId];
 
           const name = catalog?.name ?? record.itemId;
           const rarityId =
             catalog?.rarityId ??
             (`rarity_${record.rarity}` as keyof typeof CONFIG.enumColors.rarities);
-          const isGuarantee = record.result === GachaResult.Guarantee;
+          const resultBadge =
+            record.rarity === 6 && RATE_RESULT_TYPE_IDS.has(record.typeId)
+              ? RESULT_BADGES[record.result]
+              : null;
 
           const pityColor = getPityColor({
             pity: record.pity,
@@ -148,41 +228,72 @@ export const RecentHeadhunts = ({
           });
 
           return (
-            <div
-              key={index}
-              className="group flex items-center justify-center rounded-full"
+            <Tooltip
+              key={`${record.typeId}-${record.id}`}
+              title={
+                <span className="flex flex-col gap-0.5">
+                  <strong className="text-white">{name}</strong>
+                  {resultBadge && (
+                    <span className="font-normal text-white/70">
+                      {resultBadge.label} = {t(resultBadge.translationKey)}
+                    </span>
+                  )}
+                  <span className="font-normal text-white/70">
+                    {record.isFree
+                      ? t('freePull')
+                      : `${t('pity')}: ${record.pity}`}
+                  </span>
+                </span>
+              }
+              position="top"
+              className="group mx-auto w-16 rounded-xl"
             >
-              <Tooltip title={name} position="top">
-                <div
-                  className="relative h-16 w-16 overflow-hidden rounded-xl bg-neutral-800 ring-2"
-                  style={
-                    {
-                      '--tw-ring-color': CONFIG.enumColors.rarities[rarityId],
-                    } as React.CSSProperties
-                  }
-                >
+              <div
+                className="overflow-hidden rounded-xl bg-neutral-900/60 ring-2 transition-[filter] duration-200 group-hover:brightness-110"
+                style={
+                  {
+                    '--tw-ring-color': CONFIG.enumColors.rarities[rarityId],
+                  } as React.CSSProperties
+                }
+              >
+                <div className="relative h-16 w-16 overflow-hidden">
                   {catalog ? (
                     <CloudflareImage
                       src={catalog.icon}
                       alt={name}
                       width={64}
                       height={64}
-                      draggable="false"
-                      className="scale-110 transition duration-300 group-hover:scale-120 group-hover:transform"
+                      draggable={false}
+                      className="scale-110 transition-transform duration-300 group-hover:scale-115"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-sm text-white/60">
                       <PiImageBroken size={24} />
                     </div>
                   )}
-                  <div
-                    className={`${isGuarantee ? 'bg-violet-500' : pityColor} absolute right-0 bottom-0 flex items-center justify-center rounded-tl-xl px-1 py-0.5 text-sm font-semibold`}
-                  >
-                    {isGuarantee ? 'G' : record.pity || 'Free'}
-                  </div>
                 </div>
-              </Tooltip>
-            </div>
+                <div className="flex h-5 border-t border-black/20 text-xs font-bold text-white">
+                  {resultBadge && (
+                    <span
+                      className={clsx(
+                        'flex w-6 shrink-0 items-center justify-center border-r border-black/20',
+                        resultBadge.className
+                      )}
+                    >
+                      {resultBadge.label}
+                    </span>
+                  )}
+                  <span
+                    className={clsx(
+                      'flex min-w-0 flex-1 items-center justify-center px-1 font-semibold tabular-nums',
+                      pityColor
+                    )}
+                  >
+                    {record.isFree ? 'Free' : record.pity}
+                  </span>
+                </div>
+              </div>
+            </Tooltip>
           );
         })}
         {hasMore && (
@@ -191,6 +302,7 @@ export const RecentHeadhunts = ({
             title={`${filteredRecords.length - visible}`}
           >
             <button
+              type="button"
               className="w-full cursor-pointer self-center rounded-xl bg-neutral-700/80 px-3 py-1 text-xs text-white/80 transition hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60"
               onClick={handleLoadMore}
             >
@@ -199,6 +311,6 @@ export const RecentHeadhunts = ({
           </Tooltip>
         )}
       </div>
-    </div>
+    </section>
   );
 };

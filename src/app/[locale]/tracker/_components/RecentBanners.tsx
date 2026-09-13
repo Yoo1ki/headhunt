@@ -103,6 +103,7 @@ export const RecentBanners = ({
             title={`${bannerIdsArray.length - visible}`}
           >
             <button
+              type="button"
               className="w-full cursor-pointer self-center rounded-xl bg-neutral-700/80 px-3 py-1 text-xs text-white/80 transition hover:bg-neutral-700 hover:text-white active:bg-neutral-700/60 active:text-white/60"
               onClick={handleLoadMore}
             >
