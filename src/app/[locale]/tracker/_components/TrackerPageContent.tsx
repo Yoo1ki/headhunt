@@ -72,6 +72,19 @@ export const TrackerPageContent = ({
   const [isOpenSettings, setIsOpenSettings] = useState(false);
 
   useEffect(() => {
+    // The URL hash selects a category, not a scroll anchor. Reset the shared
+    // layout's scroll position when entering Tracker from another page.
+    const frame = requestAnimationFrame(() => {
+      document.getElementById('scroll-container')?.scrollTo({
+        top: 0,
+        behavior: 'instant',
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [pathname]);
+
+  useEffect(() => {
     if (searchParams.get('settings') !== 'google-drive') return;
     setIsOpenSettings(true);
     router.replace(pathname, { scroll: false });
@@ -238,7 +251,7 @@ export const TrackerPageContent = ({
       <div className="grid w-full flex-1 gap-2 xl:grid-cols-[minmax(17rem,1fr)_minmax(0,2fr)]">
         <aside className="min-w-0 xl:sticky xl:top-20 xl:h-fit">
           <div className="overflow-hidden rounded-xl xl:bg-neutral-900/35">
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:flex xl:max-h-[calc(100dvh-9rem)] xl:flex-col xl:overflow-y-auto xl:overscroll-contain xl:pr-1.5">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:flex xl:max-h-[calc(100dvh-9.5rem)] xl:flex-col xl:overflow-y-auto xl:overscroll-contain xl:pr-1.5">
               {sidebarTypes.map((type) => {
                 const isWeaponBanner = type.id.startsWith('weponbox_');
                 const typeStats = hasHydrated

@@ -181,6 +181,7 @@ export const BannerItem = ({
   return (
     <Link
       href={`/tracker#${hash}`}
+      scroll={false}
       className="group flex min-w-0 flex-col overflow-hidden rounded-xl bg-neutral-800/80 transition-colors hover:bg-neutral-700/70 focus-visible:ring-2 focus-visible:ring-yellow-400"
     >
       <div className="flex flex-1 items-center gap-4 p-4 sm:p-5">
