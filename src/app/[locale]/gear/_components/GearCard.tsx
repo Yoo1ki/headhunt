@@ -1,6 +1,6 @@
 'use client';
 
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import type { Gear } from '@/types/gear';
 import { useTranslations } from 'next-intl';
 import { TiArrowSortedDown } from 'react-icons/ti';

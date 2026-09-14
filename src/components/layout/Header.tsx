@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SlMenu, SlClose } from 'react-icons/sl';
 import { MobileNavbar } from './MobileNavbar';
 import { Link, useRouter } from '@/i18n/navigation';
-import { LocaleSwitcher } from '../shared/LocaleSwitcher';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { CONFIG } from '@/config';
 
 type HeaderProps = {

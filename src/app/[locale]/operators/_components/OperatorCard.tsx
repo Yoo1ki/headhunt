@@ -1,6 +1,6 @@
 'use client';
 
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { Tooltip } from '@/components/ui/Tooltip';
 
 type IconProps = {

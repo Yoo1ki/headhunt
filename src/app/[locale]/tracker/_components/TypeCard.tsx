@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 
 type TypeCardProps = {
   hash: string;

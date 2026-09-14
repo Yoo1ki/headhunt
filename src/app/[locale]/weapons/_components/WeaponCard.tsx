@@ -1,6 +1,6 @@
 'use client';
 
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { CONFIG } from '@/config';
 import type { WeaponDetail } from '@/types/weapons';
 import clsx from 'clsx';

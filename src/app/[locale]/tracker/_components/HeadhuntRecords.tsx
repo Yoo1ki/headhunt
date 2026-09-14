@@ -10,7 +10,7 @@ import type { Banners } from '@/types/banner';
 import type { Catalogs } from '@/types/catalog';
 import { useLocale, useTranslations } from 'next-intl';
 import { PiImageBroken } from 'react-icons/pi';
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { EmptyFilterState } from '@/components/ui/EmptyFilterState';
 
 type HeadhuntRecordsProps = {
@@ -231,7 +231,7 @@ export const HeadhuntRecords = ({
               </tbody>
             </table>
           ) : (
-            <EmptyFilterState title={t('noRecordFound')} compact>
+            <EmptyFilterState title={t('noRecordFound')} compact transparent>
               <Button onClick={onSync} variant="secondary" disabled={disabled}>
                 {isSyncing ? (
                   <>

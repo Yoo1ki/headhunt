@@ -3,7 +3,7 @@
 import { Tooltip } from './Tooltip';
 import { FaCheck } from 'react-icons/fa6';
 import clsx from 'clsx';
-import { CloudflareImage } from '../shared/CloudflareImage';
+import { CloudflareImage } from './CloudflareImage';
 
 type FilterItem = {
   id: string;

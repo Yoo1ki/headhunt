@@ -1,6 +1,6 @@
 'use client';
 
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { PageTitle } from '@/components/ui/PageTitle';
 import { Tooltip } from '@/components/ui/Tooltip';
 import { CONFIG } from '@/config';

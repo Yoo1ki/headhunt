@@ -1,7 +1,7 @@
 import type { Banners } from '@/types/banner';
 import { useMemo, useState } from 'react';
 import { Tooltip } from '@/components/ui/Tooltip';
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { useTranslations } from 'next-intl';
 
 type RecentBannersProps = {

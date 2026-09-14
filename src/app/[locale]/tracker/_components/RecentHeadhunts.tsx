@@ -7,7 +7,7 @@ import type { RecordItem } from '@/types/profile';
 import { GachaResult } from '@/types/profile';
 import type { Catalogs } from '@/types/catalog';
 import { PiImageBroken } from 'react-icons/pi';
-import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { CloudflareImage } from '@/components/ui/CloudflareImage';
 import { useTranslations } from 'next-intl';
 import clsx from 'clsx';
 
