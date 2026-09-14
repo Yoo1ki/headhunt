@@ -10,7 +10,6 @@ import {
   FaArrowUpRightFromSquare,
   FaCheck,
   FaClipboard,
-  FaCircleInfo,
   FaClock,
   FaFileImport,
   FaLink,
@@ -134,17 +133,6 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   return (
     <Modal title={t('title')} isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
-        <div className="flex items-start gap-3 rounded-xl bg-yellow-500/10 p-3 text-yellow-200">
-          <FaCircleInfo className="mt-0.5 shrink-0" />
-          <p className="text-sm leading-relaxed">
-            {trackerT.rich('importInstruction', {
-              bold: (chunks) => (
-                <strong className="font-semibold">{chunks}</strong>
-              ),
-            })}
-          </p>
-        </div>
-
         <Tabs tabs={['Windows', 'Android', 'iOS']}>
           <div className="flex flex-col gap-3">
             <Step number={1} title={t('WindowsSteps.openHeadHuntingTitle')}>

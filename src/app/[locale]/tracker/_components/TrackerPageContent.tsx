@@ -3,7 +3,7 @@
 import { Loading } from '@/components/ui/Loading';
 import { PageTitle } from '@/components/ui/PageTitle';
 import { useTranslations } from 'next-intl';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHash } from '@/hooks/useHash';
 import { FaDownload, FaFileImport, FaGear } from 'react-icons/fa6';
 import { FaSyncAlt } from 'react-icons/fa';
@@ -22,6 +22,7 @@ import type { Enums } from '@/types/enums';
 import type { RecordItem } from '@/types/profile';
 import { SettingsMenu } from './SettingsMenu';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 type TrackerPageContentProps = {
   types: Types;
@@ -70,6 +71,7 @@ export const TrackerPageContent = ({
 
   const [isOpenImport, setIsOpenImport] = useState(false);
   const [isOpenSettings, setIsOpenSettings] = useState(false);
+  const handleCloseSettings = useCallback(() => setIsOpenSettings(false), []);
 
   useEffect(() => {
     // The URL hash selects a category, not a scroll anchor. Reset the shared
@@ -345,17 +347,42 @@ export const TrackerPageContent = ({
               />
             </>
           ) : (
-            <div className="flex flex-1 flex-col items-center justify-center gap-2 rounded-xl bg-neutral-800/80 px-3 py-2">
-              <div>
-                {profile?.stores?.headhunt?.records
-                  ? t('noGachaRecords')
-                  : t('noRecordImported')}
+            <div className="flex min-h-[28rem] flex-1 flex-col items-center justify-center rounded-xl bg-neutral-800/80 px-5 py-10 text-center">
+              <div className="mb-5">
+                <Image
+                  src="/web-app-manifest-512x512.png"
+                  alt=""
+                  width={96}
+                  height={96}
+                  className="size-20 rounded-xl object-cover sm:size-24"
+                />
               </div>
-              <div className="flex flex-wrap justify-center gap-2">
+
+              <div className="max-w-lg">
+                <h2 className="text-xl font-bold text-white sm:text-2xl">
+                  {profile?.stores?.headhunt
+                    ? t('noGachaRecords')
+                    : t('noRecordImported')}
+                </h2>
+                {!profile?.stores?.headhunt && (
+                  <p className="mt-2 text-sm leading-6 text-neutral-400 sm:text-base">
+                    {t.rich('importInstruction', {
+                      bold: (chunks) => (
+                        <span className="font-semibold text-neutral-200">
+                          {chunks}
+                        </span>
+                      ),
+                    })}
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-6 flex w-full max-w-sm flex-col justify-center gap-2 sm:flex-row">
                 {profile?.stores?.headhunt ? (
                   <Button
                     onClick={handleSync}
                     variant="secondary"
+                    className="sm:min-w-32"
                     disabled={!profile.stores.headhunt?.url || isImporting}
                   >
                     {isImporting && processType === 'sync' ? (
@@ -373,6 +400,7 @@ export const TrackerPageContent = ({
                 ) : (
                   <Button
                     onClick={() => setIsOpenImport(true)}
+                    className="sm:min-w-32"
                     disabled={isImporting && processType === 'sync'}
                   >
                     <FaFileImport />
@@ -385,6 +413,7 @@ export const TrackerPageContent = ({
                 )}
                 <Button
                   variant="secondary"
+                  className="sm:min-w-32"
                   onClick={handleOpenSettings}
                   disabled={isImporting}
                 >
@@ -401,10 +430,7 @@ export const TrackerPageContent = ({
         isOpen={isOpenImport}
         onClose={() => setIsOpenImport(false)}
       />
-      <SettingsMenu
-        isOpen={isOpenSettings}
-        onClose={() => setIsOpenSettings(false)}
-      />
+      <SettingsMenu isOpen={isOpenSettings} onClose={handleCloseSettings} />
     </>
   );
 };

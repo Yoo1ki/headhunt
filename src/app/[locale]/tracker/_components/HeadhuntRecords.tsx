@@ -11,6 +11,7 @@ import type { Catalogs } from '@/types/catalog';
 import { useLocale, useTranslations } from 'next-intl';
 import { PiImageBroken } from 'react-icons/pi';
 import { CloudflareImage } from '@/components/shared/CloudflareImage';
+import { EmptyFilterState } from '@/components/ui/EmptyFilterState';
 
 type HeadhuntRecordsProps = {
   hash: string;
@@ -230,28 +231,21 @@ export const HeadhuntRecords = ({
               </tbody>
             </table>
           ) : (
-            <div className="flex flex-col items-center gap-2 py-10">
-              <p>{t('noRecordFound')}</p>
-              <div className="flex flex-wrap justify-center gap-2">
-                <Button
-                  onClick={onSync}
-                  variant="secondary"
-                  disabled={disabled}
-                >
-                  {isSyncing ? (
-                    <>
-                      <FaSyncAlt className="animate-spin" />
-                      <span> {t('syncing')}</span>
-                    </>
-                  ) : (
-                    <>
-                      <FaSyncAlt />
-                      <span>{t('sync')}</span>
-                    </>
-                  )}
-                </Button>
-              </div>
-            </div>
+            <EmptyFilterState title={t('noRecordFound')} compact>
+              <Button onClick={onSync} variant="secondary" disabled={disabled}>
+                {isSyncing ? (
+                  <>
+                    <FaSyncAlt className="animate-spin" />
+                    <span> {t('syncing')}</span>
+                  </>
+                ) : (
+                  <>
+                    <FaSyncAlt />
+                    <span>{t('sync')}</span>
+                  </>
+                )}
+              </Button>
+            </EmptyFilterState>
           )}
         </div>
       </div>

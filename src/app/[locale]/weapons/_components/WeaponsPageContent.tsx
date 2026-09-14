@@ -7,6 +7,7 @@ import type { Weapon } from '@/types/weapons';
 import { CONFIG } from '@/config';
 import { Filter } from '@/components/ui/Filter';
 import { ResetButton } from '@/components/ui/ResetButton';
+import { EmptyFilterState } from '@/components/ui/EmptyFilterState';
 import { WeaponCard } from './WeaponCard';
 import type { EnumRarity, EnumWPType } from '@/types/enums';
 
@@ -152,7 +153,9 @@ export const WeaponsPageContent = ({
         </div>
       }
       {filteredWeapons.length === 0 ? (
-        <div className="my-40 text-center">{t('notfound')}</div>
+        <EmptyFilterState title={t('notfound')}>
+          <ResetButton onClick={handleReset} />
+        </EmptyFilterState>
       ) : (
         <div className="grid-weapons">
           {filteredWeapons.map((weapon) => {

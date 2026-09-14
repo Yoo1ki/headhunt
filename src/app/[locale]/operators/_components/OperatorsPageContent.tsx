@@ -8,6 +8,7 @@ import { OperatorCard } from './OperatorCard';
 import { CONFIG } from '@/config';
 import { Filter } from '@/components/ui/Filter';
 import { ResetButton } from '@/components/ui/ResetButton';
+import { EmptyFilterState } from '@/components/ui/EmptyFilterState';
 import type { EnumElement, EnumOpClass, EnumRarity } from '@/types/enums';
 
 type OperatorsPageContentProps = {
@@ -181,7 +182,9 @@ export const OperatorsPageContent = ({
         </div>
       }
       {filteredOperators.length === 0 ? (
-        <div className="my-40 text-center">{t('notfound')}</div>
+        <EmptyFilterState title={t('notfound')}>
+          <ResetButton onClick={handleReset} />
+        </EmptyFilterState>
       ) : (
         <div className="grid-operators">
           {filteredOperators.map((op) => {

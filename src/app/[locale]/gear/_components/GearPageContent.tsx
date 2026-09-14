@@ -3,6 +3,7 @@
 import { PageTitle } from '@/components/ui/PageTitle';
 import { FilterList } from '@/components/ui/FilterList';
 import { ResetButton } from '@/components/ui/ResetButton';
+import { EmptyFilterState } from '@/components/ui/EmptyFilterState';
 import type { Gear, GearFilters } from '@/types/gear';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -138,9 +139,14 @@ export const GearPageContent = ({
         </div>
       </div>
       {filteredGear.length === 0 ? (
-        <div className="my-24 rounded-xl bg-neutral-800/80 p-8 text-center text-white/60">
-          {t('notFound')}
-        </div>
+        <EmptyFilterState title={t('notFound')}>
+          <ResetButton
+            onClick={() => {
+              reset();
+              setOpenFilter(null);
+            }}
+          />
+        </EmptyFilterState>
       ) : (
         <div className="grid items-start gap-4 lg:grid-cols-2 2xl:grid-cols-3">
           {filteredGear.map((item) => (

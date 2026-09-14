@@ -337,6 +337,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
       setInitialDriveBackupData(null);
       setDriveStatus('driveBackedUp');
       notify(t('restored'));
+      onClose();
     } catch {
       setDriveStatus('driveError');
     }
@@ -377,6 +378,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
           restoreProfiles(backup.profiles, backup.currentProfileId);
           setDriveStatus('driveBackedUp');
           notify(t('restored'));
+          onClose();
           syncResolved = true;
         };
 
@@ -443,6 +445,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     currentProfileId,
     lastBackupSignature,
     notify,
+    onClose,
     profiles,
     resolvedLocalUpdatedAt,
     restoreProfiles,
@@ -509,6 +512,23 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         return;
       }
 
+      // Match the initial Google Drive restore flow: a fresh browser has no
+      // local records to protect, so the selected backup can be applied
+      // immediately without asking the user to choose between empty local
+      // data and the JSON backup.
+      if (!hasLocalImportedData) {
+        lastSyncedDataRef.current = null;
+        setLastBackupSignature('');
+        if (driveSession) setDriveStatus('driveOutdated');
+        restoreProfiles(backup.profiles, backup.currentProfileId);
+        setPendingBackup(null);
+        setPendingBackupDetails(null);
+        setStatus(null);
+        notify(t('restored'));
+        onClose();
+        return;
+      }
+
       setPendingBackup(backup);
       setPendingBackupDetails({
         source: 'json',
@@ -544,6 +564,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     setPendingBackup(null);
     setPendingBackupDetails(null);
     notify(t('restored'));
+    onClose();
   };
 
   const handleAddProfile = () => {

@@ -1,28 +1,25 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import nextTypeScript from 'eslint-config-next/typescript';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  {
-    ignores: [
-      '.next/**',
-      '.open-next/**',
-      '.wrangler/**',
-      'cloudflare-env.d.ts',
-      'next-env.d.ts',
-    ],
-  },
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+export default defineConfig([
+  ...nextVitals,
+  ...nextTypeScript,
+  globalIgnores([
+    '.next/**',
+    '.open-next/**',
+    '.wrangler/**',
+    'cloudflare-env.d.ts',
+    'next-env.d.ts',
+  ]),
   {
     rules: {
+      // These React 19 rules are new in eslint-config-next 16. Keep the
+      // existing runtime behavior during this framework-only upgrade.
+      'react-hooks/purity': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/set-state-in-effect': 'off',
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { fixStyle: 'separate-type-imports', prefer: 'type-imports' },
@@ -30,6 +27,4 @@ const eslintConfig = [
     },
   },
   eslintConfigPrettier,
-];
-
-export default eslintConfig;
+]);
