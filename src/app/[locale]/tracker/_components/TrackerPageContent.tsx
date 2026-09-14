@@ -201,7 +201,7 @@ export const TrackerPageContent = ({
 
   return (
     <>
-      <div className="z-30 -mx-4 -mt-4 flow-root bg-neutral-900/80 px-4 pt-4 backdrop-blur-sm lg:sticky lg:top-0 lg:mx-0 lg:px-0">
+      <div className="z-30 -mx-4 -mt-4 flow-root bg-neutral-900/80 px-4 pt-4 backdrop-blur-xs lg:sticky lg:top-0 lg:mx-0 lg:px-0">
         <PageTitle title={t('pageTitle')}>
           <div className="flex w-full flex-wrap items-stretch justify-center gap-2 lg:w-auto lg:justify-end">
             <Button

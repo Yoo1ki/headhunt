@@ -96,7 +96,7 @@ export const Header = ({ className }: HeaderProps) => {
   return (
     <>
       <header
-        className={`flex w-full items-center bg-neutral-800 shadow-sm ${className}`}
+        className={`flex w-full items-center bg-neutral-800 shadow-xs ${className}`}
       >
         <div className="container mx-auto p-4">
           <div className="flex items-center justify-between gap-2">

@@ -26,7 +26,7 @@ export const Button = ({
 
   const variantClass = {
     primary:
-      'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-neutral-950 hover:text-black active:text-black/70 shadow-sm shadow-yellow-950/20',
+      'bg-yellow-500 hover:bg-yellow-400 active:bg-yellow-600 text-neutral-950 hover:text-black active:text-black/70 shadow-xs shadow-yellow-950/20',
     secondary:
       'bg-neutral-300 hover:bg-neutral-200 active:bg-neutral-400 text-black/80 hover:text-black active:text-black/60',
     danger:

@@ -84,7 +84,7 @@ export const FilterList = ({
                   onChange={() => toggle(item.id)}
                   className="h-4 w-4 accent-yellow-400"
                 />
-                <span className="min-w-0 break-words capitalize">
+                <span className="min-w-0 wrap-break-word capitalize">
                   {item.name}
                 </span>
               </label>

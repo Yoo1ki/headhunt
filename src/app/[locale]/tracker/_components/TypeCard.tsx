@@ -145,7 +145,7 @@ export const TypeCard = ({
   return (
     <a
       className={clsx(
-        'relative flex min-h-25 overflow-hidden rounded-xl border-2 transition-colors duration-200 hover:bg-neutral-700/80 focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:outline-none',
+        'relative flex min-h-25 overflow-hidden rounded-xl border-2 transition-colors duration-200 hover:bg-neutral-700/80 focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:outline-hidden',
         borderColor
       )}
       href={`#${hash}`}

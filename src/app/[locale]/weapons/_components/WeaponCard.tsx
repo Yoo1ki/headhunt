@@ -65,7 +65,7 @@ export const WeaponCard = ({
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-2">
-          <h2 className="text-base leading-snug font-semibold break-words text-white">
+          <h2 className="text-base leading-snug font-semibold wrap-break-word text-white">
             {name}
           </h2>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
@@ -113,8 +113,8 @@ export const WeaponCard = ({
                   {e}
                 </h3>
                 {skills && (
-                  <div className="mt-2 leading-relaxed break-words text-white/65">
-                    <span className="mr-1 inline-block rounded bg-white/5 px-1.5 py-0.5 font-medium text-white/80">
+                  <div className="mt-2 leading-relaxed wrap-break-word text-white/65">
+                    <span className="mr-1 inline-block rounded-sm bg-white/5 px-1.5 py-0.5 font-medium text-white/80">
                       {skills.label}
                     </span>{' '}
                     {skills.content.map((skill, i) => {

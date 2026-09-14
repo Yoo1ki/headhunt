@@ -45,9 +45,10 @@ cloudflare-env.d.ts
 /.open-next
 
 # wrangler files
-.wrangler
+/.wrangler/
 /.wrangler-config/
 .dev.vars*
+!.dev.vars.example
 
 # PWA
 **/public/workbox-*.js

@@ -163,7 +163,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                   <strong className="text-white/85">{chunks}</strong>
                 ),
                 key: (chunks) => (
-                  <kbd className="rounded bg-white/10 px-1.5 py-0.5 font-medium text-white/85">
+                  <kbd className="rounded-sm bg-white/10 px-1.5 py-0.5 font-medium text-white/85">
                     {chunks}
                   </kbd>
                 ),
@@ -176,7 +176,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                     <strong className="text-white/85">{chunks}</strong>
                   ),
                   key: (chunks) => (
-                    <kbd className="rounded bg-white/10 px-1.5 py-0.5 font-medium text-white/85">
+                    <kbd className="rounded-sm bg-white/10 px-1.5 py-0.5 font-medium text-white/85">
                       {chunks}
                     </kbd>
                   ),
@@ -209,7 +209,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 href={POWERSHELL_SCRIPT_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300/60"
+                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-300/60 focus-visible:outline-hidden"
               >
                 {t('WindowsSteps.reviewScript')}
                 <FaArrowUpRightFromSquare aria-hidden="true" />
@@ -302,7 +302,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                           }}
                           className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-left text-xs text-white/85 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-yellow-400 aria-pressed:bg-yellow-400/15 aria-pressed:text-yellow-200"
                         >
-                          <span className="min-w-0 flex-1 break-words">
+                          <span className="min-w-0 flex-1 wrap-break-word">
                             {profile.name ?? t('unnamedProfile')}
                             {id === currentProfileId
                               ? ' — ' + t('activeProfile')
@@ -349,7 +349,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 value={url}
                 onChange={(event) => validateUrl(event.target.value)}
                 placeholder="https://ef-webview.gryphline.com/page/gacha_char?..."
-                className={`w-full rounded-xl border bg-neutral-950/60 py-2.5 pr-3 pl-10 text-sm text-white transition-colors outline-none placeholder:text-white/25 ${error ? 'border-red-400/60 focus:border-red-400' : 'border-white/10 focus:border-yellow-400/60'}`}
+                className={`w-full rounded-xl border bg-neutral-950/60 py-2.5 pr-3 pl-10 text-sm text-white outline-hidden transition-colors placeholder:text-white/25 ${error ? 'border-red-400/60 focus:border-red-400' : 'border-white/10 focus:border-yellow-400/60'}`}
                 inputMode="url"
                 autoCapitalize="none"
                 autoCorrect="off"

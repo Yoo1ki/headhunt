@@ -14,7 +14,7 @@ export const MobileNavbar = ({ isOpen, onClick }: MobileNavbarProps) => {
       aria-hidden={!isOpen}
       inert={!isOpen}
       onClick={() => onClick?.()}
-      className={`fixed top-14 right-0 bottom-0 left-0 z-40 bg-black/50 backdrop-blur-sm transition-[opacity,visibility] duration-200 ease-out motion-reduce:transition-none lg:hidden ${isOpen ? 'visible opacity-100' : 'pointer-events-none invisible opacity-0'}`}
+      className={`fixed top-14 right-0 bottom-0 left-0 z-40 bg-black/50 backdrop-blur-xs transition-[opacity,visibility] duration-200 ease-out motion-reduce:transition-none lg:hidden ${isOpen ? 'visible opacity-100' : 'pointer-events-none invisible opacity-0'}`}
     >
       <div
         onClick={(event) => event.stopPropagation()}

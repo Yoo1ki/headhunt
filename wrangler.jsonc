@@ -14,20 +14,20 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
     "binding": "ASSETS",
-    "directory": ".open-next/assets",
+    "directory": ".open-next/assets"
   },
   "images": {
     // Enable image optimization
     // see https://opennext.js.org/cloudflare/howtos/image
-    "binding": "IMAGES",
+    "binding": "IMAGES"
   },
   "services": [
     {
       // Self-reference service binding, the service name must match the worker name
       // see https://opennext.js.org/cloudflare/caching
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "headhunt",
-    },
+      "service": "headhunt"
+    }
   ],
   "r2_buckets": [
     // Use R2 incremental cache
@@ -37,11 +37,11 @@
       // You can change the bucket name if you want
       // See https://developers.cloudflare.com/workers/wrangler/commands/#r2-bucket-create
       "binding": "NEXT_INC_CACHE_R2_BUCKET",
-      "bucket_name": "headhunt-opennext-cache",
-    },
+      "bucket_name": "headhunt-opennext-cache"
+    }
   ],
   "observability": {
-    "enabled": true,
+    "enabled": true
   },
   "upload_source_maps": true,
   "workers_dev": false,
@@ -66,6 +66,6 @@
   // "vars": {  "MY_VARIABLE": "production_value" }
   "vars": {
     "NEXT_PUBLIC_GOOGLE_CLIENT_ID": "907562393809-e275d60o81dkhs9adom0hdb9l4tsiopc.apps.googleusercontent.com",
-    "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID": "G-KJ3V3HYFYR",
-  },
+    "NEXT_PUBLIC_GOOGLE_ANALYTICS_ID": "G-KJ3V3HYFYR"
+  }
 }

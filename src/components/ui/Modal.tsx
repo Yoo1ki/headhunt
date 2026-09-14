@@ -81,10 +81,7 @@ export const Modal = ({
       window.removeEventListener('keydown', handleKey);
       window.removeEventListener('popstate', handlePopState);
 
-      if (
-        !closedByHistory &&
-        window.history.state?.headhuntModal === titleId
-      ) {
+      if (!closedByHistory && window.history.state?.headhuntModal === titleId) {
         window.history.back();
       }
     };
@@ -94,7 +91,7 @@ export const Modal = ({
 
   return (
     <div
-      className="modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 backdrop-blur-sm sm:p-6"
+      className="modal-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-3 backdrop-blur-xs sm:p-6"
       onClick={requestClose}
     >
       <div
@@ -107,7 +104,7 @@ export const Modal = ({
         <div className="flex shrink-0 items-center justify-between gap-4 bg-neutral-800/70 px-4 py-2 sm:px-5">
           <h2
             id={titleId}
-            className="min-w-0 text-lg leading-snug font-semibold break-words text-white sm:text-xl"
+            className="min-w-0 text-lg leading-snug font-semibold wrap-break-word text-white sm:text-xl"
           >
             {title}
           </h2>

@@ -153,7 +153,7 @@ export const DetailRecords = ({
               >
                 <button
                   type="button"
-                  className="shrink-0 cursor-help rounded-full text-white/35 transition-colors hover:text-yellow-300 focus-visible:text-yellow-300 focus-visible:outline-none"
+                  className="shrink-0 cursor-help rounded-full text-white/35 transition-colors hover:text-yellow-300 focus-visible:text-yellow-300 focus-visible:outline-hidden"
                   aria-label={t('showDescription', { label: detail.label })}
                 >
                   <FaCircleInfo className="text-xs" />

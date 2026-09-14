@@ -880,7 +880,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     maxLength={20}
                     autoFocus
                     placeholder={t('profileNamePlaceholder')}
-                    className="mt-3 w-full rounded-xl border border-white/15 bg-neutral-900/70 px-3 py-2 text-sm text-white transition-colors outline-none placeholder:text-white/30 focus:border-yellow-400/60"
+                    className="mt-3 w-full rounded-xl border border-white/15 bg-neutral-900/70 px-3 py-2 text-sm text-white outline-hidden transition-colors placeholder:text-white/30 focus:border-yellow-400/60"
                   />
                   <div className="mt-1.5 flex justify-between gap-3 text-xs">
                     <span
@@ -1038,7 +1038,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     minLength={2}
                     maxLength={20}
                     autoFocus
-                    className="mt-3 w-full rounded-xl border border-white/15 bg-neutral-900/70 px-3 py-2 text-sm text-white transition-colors outline-none focus:border-blue-400/60"
+                    className="mt-3 w-full rounded-xl border border-white/15 bg-neutral-900/70 px-3 py-2 text-sm text-white outline-hidden transition-colors focus:border-blue-400/60"
                   />
                   <div className="mt-1.5 flex justify-between gap-3 text-xs">
                     <span

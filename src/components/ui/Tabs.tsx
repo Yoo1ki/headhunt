@@ -53,9 +53,9 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
             aria-controls={`${baseId}-panel-${index}`}
             tabIndex={active === index ? 0 : -1}
             onClick={() => setActive(index)}
-            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold transition-all outline-none focus-visible:ring-2 focus-visible:ring-yellow-400/70 ${
+            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold outline-hidden transition-all focus-visible:ring-2 focus-visible:ring-yellow-400/70 ${
               active === index
-                ? 'bg-yellow-500 text-neutral-950 shadow-sm shadow-yellow-950/30'
+                ? 'bg-yellow-500 text-neutral-950 shadow-xs shadow-yellow-950/30'
                 : 'text-white/55 hover:bg-white/7 hover:text-white'
             }`}
           >
@@ -72,7 +72,7 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
           aria-labelledby={`${baseId}-tab-${index}`}
           hidden={active !== index}
           tabIndex={0}
-          className="outline-none"
+          className="outline-hidden"
         >
           {child}
         </div>

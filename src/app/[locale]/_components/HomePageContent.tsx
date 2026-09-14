@@ -131,7 +131,7 @@ export const HomePageContent = ({ banners, initialNow }: Props) => {
             </h2>
             <Link
               href="/tracker"
-              className="flex items-center gap-2 rounded text-xs text-white/50 hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-yellow-400"
+              className="flex items-center gap-2 rounded-sm text-xs text-white/50 hover:text-yellow-300 focus-visible:outline-2 focus-visible:outline-yellow-400"
             >
               {t('openTracker')}
               <FaArrowRight aria-hidden="true" />

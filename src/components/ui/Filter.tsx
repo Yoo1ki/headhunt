@@ -70,7 +70,7 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
         onClick={() => onClick(item.id)}
         className={clsx(
           'relative flex h-10 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 p-1 text-sm select-none',
-          selected ? 'border-white shadow-sm' : 'border-transparent',
+          selected ? 'border-white shadow-xs' : 'border-transparent',
           'hover:border-white/60 focus-visible:ring-2 focus-visible:ring-yellow-400 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-900'
         )}
         style={{ backgroundColor: item.color }}

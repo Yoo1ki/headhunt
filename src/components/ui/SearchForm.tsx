@@ -24,7 +24,7 @@ export const SearchForm = ({
       <input
         type="text"
         aria-label={ariaLabel}
-        className="w-full rounded-xl bg-white/5 px-10 py-2.5 text-sm text-white placeholder-white/40 transition-colors outline-none hover:bg-white/10 focus:bg-white/10 focus:ring-2 focus:ring-yellow-400/70"
+        className="w-full rounded-xl bg-white/5 px-10 py-2.5 text-sm text-white placeholder-white/40 outline-hidden transition-colors hover:bg-white/10 focus:bg-white/10 focus:ring-2 focus:ring-yellow-400/70"
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
