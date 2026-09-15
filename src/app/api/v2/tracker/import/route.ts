@@ -21,6 +21,9 @@ const isWeaponDraw = (record: GameRecord): record is GameRecordWeapon =>
   record.kind === 'draw' && 'weaponId' in record;
 
 export async function POST(req: Request) {
+  const processType = new URL(req.url).pathname.endsWith('/sync')
+    ? 'sync'
+    : 'import';
   const body = await parseJsonRequest(req);
   const payload = importPayloadSchema.safeParse(body);
   if (!payload.success) return jsonError('Bad Request');
@@ -40,7 +43,7 @@ export async function POST(req: Request) {
   recordUrl.search = params.toString();
 
   const res = await fetchJsonWithRetry<ResGameRecord>(recordUrl, {
-    context: 'tracker.import.v2',
+    context: `tracker.${processType}.v2`,
   });
   if (res?.code === 40100) return jsonError('Invalid Token', 401);
   if (res?.code !== 0) return jsonError('Unknown Error', 500);

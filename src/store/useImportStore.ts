@@ -165,6 +165,7 @@ export const useImportStore = create<ImportState>((set) => ({
     };
 
     const newRawRecords = new Map<string, ImportRecordItem[]>();
+    const recordsEndpoint = `/api/v2/tracker/${processType}`;
 
     // Fetch
     for (const type of headhuntTypes) {
@@ -180,7 +181,7 @@ export const useImportStore = create<ImportState>((set) => ({
         try {
           // Metode ini harus diganti jika trafik banyak
           // karena ini multiple request
-          const response = await fetchWithRetry('/api/v2/tracker/import', {
+          const response = await fetchWithRetry(recordsEndpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
