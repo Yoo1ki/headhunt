@@ -355,6 +355,7 @@ export const TrackerPageContent = ({
                   alt=""
                   width={96}
                   height={96}
+                  draggable={false}
                   className="size-20 rounded-xl object-cover sm:size-24"
                 />
               </div>
