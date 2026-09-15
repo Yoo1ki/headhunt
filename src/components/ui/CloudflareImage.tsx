@@ -1,24 +1,29 @@
-import type { ImageProps } from 'next/image';
-import Image from 'next/image';
-import cloudflareLoader from '@/lib/cloudflare-loader';
+import type { ImgHTMLAttributes } from 'react';
 
-type CloudflareImageProps = { isIcon?: boolean } & Omit<ImageProps, 'loader'>;
+type CloudflareImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src'> & {
+  src: string;
+};
 
 export const CloudflareImage = ({
   src,
   alt,
-  isIcon = false,
+  loading = 'lazy',
+  decoding = 'async',
   ...props
 }: CloudflareImageProps) => {
   const isDev = process.env.NODE_ENV === 'development';
-  const finalSrc = isIcon ? `/${src}.png` : `/assets/${src}.png`;
+  const assetPath = `/assets/${src}.png`;
+  const finalSrc = isDev ? assetPath : `/cdn-cgi/image/format=auto${assetPath}`;
+
   return (
-    <Image
+    // Asset images are optimized by Cloudflare at the edge, not Next.js.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       {...props}
       src={finalSrc}
       alt={alt}
-      loader={cloudflareLoader}
-      unoptimized={props.unoptimized || isDev}
+      loading={loading}
+      decoding={decoding}
     />
   );
 };

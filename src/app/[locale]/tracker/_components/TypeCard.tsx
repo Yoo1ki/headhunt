@@ -100,28 +100,28 @@ export const TypeCard = ({
           ) : (
             <div className="flex flex-col">
               <div className="flex items-center justify-between gap-3 text-[#FF8A32]">
-                <CloudflareImage
-                  src="rarity_6"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/rarity_6.png"
                   alt={'6★'}
                   width={54}
                   height={29}
                   draggable={false}
                   className="w-8"
-                  isIcon={true}
                 />
                 <div className="text-sm font-semibold tabular-nums">
                   {pity6}/{pity6Limit}
                 </div>
               </div>
               <div className="flex items-center justify-between gap-3 text-[#FFD036]">
-                <CloudflareImage
-                  src="rarity_5"
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/rarity_5.png"
                   alt={'5★'}
                   width={54}
                   height={29}
                   draggable={false}
                   className="w-8"
-                  isIcon={true}
                 />
                 <div className="text-sm font-semibold tabular-nums">
                   {pity5}/{pity5Limit}

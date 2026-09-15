@@ -151,7 +151,8 @@ async function main() {
     console.log('All audit regression checks passed.');
   } finally {
     globalThis.fetch = originalFetch;
-    if (originalSecret === undefined) delete process.env.GOOGLE_CLIENT_SECRET;
+    if (originalSecret === undefined)
+      Reflect.deleteProperty(process.env, 'GOOGLE_CLIENT_SECRET');
     else process.env.GOOGLE_CLIENT_SECRET = originalSecret;
   }
 }

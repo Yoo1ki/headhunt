@@ -22,7 +22,6 @@ import type { Enums } from '@/types/enums';
 import type { RecordItem } from '@/types/profile';
 import { SettingsMenu } from './SettingsMenu';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
 
 type TrackerPageContentProps = {
   types: Types;
@@ -347,9 +346,11 @@ export const TrackerPageContent = ({
               />
             </>
           ) : (
-            <div className="flex min-h-[28rem] flex-1 flex-col items-center justify-center rounded-xl bg-neutral-800/80 px-5 py-10 text-center">
+            <div className="flex min-h-112 flex-1 flex-col items-center justify-center rounded-xl bg-neutral-800/80 px-5 py-10 text-center">
               <div className="mb-5">
-                <Image
+                {/* Local static logo does not need Cloudflare image optimization. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/web-app-manifest-512x512.png"
                   alt=""
                   width={96}

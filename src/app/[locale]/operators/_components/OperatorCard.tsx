@@ -80,13 +80,14 @@ export const OperatorCard = ({
 
 const OperatorCardIcon = ({ icon, name, color }: IconProps) => (
   <Tooltip title={name} position="left">
-    <CloudflareImage
-      src={icon}
+    {/* Local UI icon; CloudflareImage is reserved for /assets data. */}
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <img
+      src={`/${icon}.png`}
       alt={name}
       width={24}
       height={24}
       draggable={false}
-      isIcon={true}
       className="h-6 w-6 rounded-lg ring-1 ring-black/50"
       style={{ backgroundColor: color }}
     />

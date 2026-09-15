@@ -3,7 +3,6 @@
 import { Tooltip } from './Tooltip';
 import { FaCheck } from 'react-icons/fa6';
 import clsx from 'clsx';
-import { CloudflareImage } from './CloudflareImage';
 
 type FilterItem = {
   id: string;
@@ -80,13 +79,16 @@ const FilterCard = ({ item, selected, onClick }: FilterCardProps) => {
         )}
 
         {item.icon ? (
-          <CloudflareImage
+          /* Filter icons are local files from public/. */
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
             alt={item.name}
-            src={item.icon}
+            src={`/${item.icon}.png`}
             width={isRarity || isWpnType ? 24 : 32}
             height={isRarity || isWpnType ? 24 : 32}
             draggable={false}
-            isIcon={true}
+            loading="eager"
+            decoding="async"
             className="aspect-square"
           />
         ) : (

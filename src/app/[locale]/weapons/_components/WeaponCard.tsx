@@ -76,13 +76,13 @@ export const WeaponCard = ({
               {rarity.id.replace('rarity_', '')}★
             </span>
             <div className="flex items-center gap-1.5 text-xs text-white/60">
-              <CloudflareImage
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 alt={type.name}
                 width={24}
                 height={24}
-                src={type.id}
+                src={`/${type.id}.png`}
                 className="h-3.5 w-fit object-contain"
-                isIcon={true}
               />{' '}
               <span>{type.name}</span>
             </div>
