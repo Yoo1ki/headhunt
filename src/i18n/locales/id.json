@@ -183,6 +183,7 @@
     "standardName": "Headhunt Dasar",
     "beginnerName": "Headhunt Cakrawala Baru",
     "importInstruction": "Lakukan proses import sekali saja. Setelah itu gunakan tombol <bold>Sync</bold> jika ingin memperbarui data. Semua data akan disimpan secara lokal di browser. Riwayat gacha dari maksimal 90 hari terakhir akan diimpor.",
+    "reimportInstruction": "Untuk memperbarui riwayat, cukup gunakan tombol <bold>Sync</bold>. Jika URL import sudah kedaluwarsa, buat URL baru lalu import kembali ke profil yang sama.",
     "import": "Import",
     "importing": "Mengimpor...",
     "sync": "Sync",

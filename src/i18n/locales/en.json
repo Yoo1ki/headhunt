@@ -183,6 +183,7 @@
     "standardName": "Basic Headhunting",
     "beginnerName": "New Horizons Headhunting",
     "importInstruction": "Import your history once. After that, use the <bold>Sync</bold> button whenever you want to update the data. All data is stored locally in your browser. Up to 90 days of gacha history will be imported.",
+    "reimportInstruction": "To update your history, simply use the <bold>Sync</bold> button. If your import URL has expired, generate a new URL and import it again into the same profile.",
     "import": "Import",
     "importing": "Importing...",
     "sync": "Sync",

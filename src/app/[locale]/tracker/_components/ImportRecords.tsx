@@ -11,6 +11,7 @@ import {
   FaCheck,
   FaClipboard,
   FaClock,
+  FaCircleInfo,
   FaFileImport,
   FaLink,
   FaPaste,
@@ -80,6 +81,9 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
   const profileEntries = Object.entries(profiles);
   const targetProfile = profiles[targetProfileId];
+  const hasImportedData = profileEntries.some(
+    ([, profile]) => profile.stores?.headhunt
+  );
 
   const command =
     'iwr "https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main/get-record-url.ps1" -UseB | iex';
@@ -133,6 +137,19 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   return (
     <Modal title={t('title')} isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
+        {hasImportedData && (
+          <div className="flex items-start gap-3 rounded-xl bg-yellow-500/10 p-3 text-yellow-200">
+            <FaCircleInfo className="mt-0.5 shrink-0" />
+            <p className="text-sm leading-relaxed">
+              {trackerT.rich('reimportInstruction', {
+                bold: (chunks) => (
+                  <strong className="font-semibold">{chunks}</strong>
+                ),
+              })}
+            </p>
+          </div>
+        )}
+
         <Tabs tabs={['Windows', 'Android', 'iOS']}>
           <div className="flex flex-col gap-3">
             <Step number={1} title={t('WindowsSteps.openHeadHuntingTitle')}>
