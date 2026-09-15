@@ -1,11 +1,11 @@
 export const CONFIG = {
   appName: 'Headhunt.cc',
   appShortName: 'Headhunt',
+  buildId: process.env.NEXT_PUBLIC_BUILD_ID ?? 'development',
   baseUrl:
     process.env.NODE_ENV === 'production'
       ? 'https://headhunt.cc'
       : 'http://localhost:3000',
-  since: 2026,
   endfieldBaseUrl: 'https://ef-webview.gryphline.com',
   discordUrl: 'https://discord.gg/jBNxtSstEa',
   googleClientId:

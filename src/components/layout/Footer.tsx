@@ -4,7 +4,6 @@ import { useTranslations } from 'next-intl';
 
 export const Footer = () => {
   const t = useTranslations('App');
-  const y = new Date().getFullYear();
 
   return (
     <footer className="w-full bg-neutral-800/80 p-4 lg:rounded-xl">
@@ -48,10 +47,7 @@ export const Footer = () => {
                 Discord
               </Link> */}
             </div>
-            <p className="font-semibold">
-              &copy; {CONFIG.since}
-              {y > CONFIG.since && ' - ' + y} {CONFIG.appName}
-            </p>
+            <p className="font-semibold">Build ID: {CONFIG.buildId}</p>
           </div>
         </div>
       </div>

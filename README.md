@@ -34,6 +34,7 @@ Common commands:
 
 ```bash
 npm run generate:content
+npm run generate:gear
 npm run generate:banner
 npm run get:pool
 npm run get:guide
@@ -72,6 +73,19 @@ published tracker UI downloads it through its stable GitHub raw URL.
 Puppeteer scripts use the existing local defaults for Chrome. Override them on
 another machine with `CHROME_EXECUTABLE_PATH` and `PUPPETEER_USER_DATA_DIR`.
 
+## Image assets
+
+Generated catalog images are stored in `public/assets/` using a SHA-256 content
+hash as the filename. Because changing an image also changes its URL, these
+files are served with a one-year immutable browser cache through
+`public/_headers`.
+
+In production, `CloudflareImage` serves catalog images through
+`/cdn-cgi/image/format=auto/...` so Cloudflare can select an efficient image
+format. Local UI icons in the root of `public/` are served directly as Workers
+Static Assets. The project does not use the Next.js Image component or an Images
+binding.
+
 ## Google Drive backups
 
 Create a Google OAuth 2.0 Web client, add the application's origins to its
@@ -98,5 +112,38 @@ in production; never commit the downloaded Google client-secret JSON file.
 
 ```bash
 npm run preview
+```
+
+Before the first deployment, create the R2 incremental-cache bucket configured
+in `wrangler.jsonc`, or replace its name with your own bucket:
+
+```bash
+npx wrangler r2 bucket create headhunt-opennext-cache
+```
+
+For a normal local deployment, commit and push the exact revision first:
+
+```bash
+npm run check
+git add .
+git commit -m "Describe the change"
+git push
 npm run deploy
 ```
+
+`npm run deploy` automatically runs `scripts/check-deploy.mjs` before building.
+For a Git clone or fork, deployment is stopped when the working tree is dirty,
+the current branch has no upstream, or local commits have not been pushed. The
+upstream is detected dynamically, so forks deploy against their own repository
+rather than this repository.
+
+Downloaded source archives do not contain `.git`; in that case the Git check is
+skipped with a warning and deployment is allowed. Clean CI checkouts, including
+GitHub Actions and Cloudflare builds, also skip the local upstream check because
+their revision already originates from the remote repository.
+
+The footer displays a seven-character Git commit SHA as the Build ID. Builds
+use `GITHUB_SHA` or `CF_PAGES_COMMIT_SHA` when available, then fall back to the
+local Git `HEAD`. Builds from a source archive without Git metadata use the
+package version instead. The value is embedded during the build and does not
+make a runtime API request.
