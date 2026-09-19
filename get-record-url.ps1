@@ -10,7 +10,9 @@
 # files, request administrator access, or save the token anywhere.
 
 $CachePath = Join-Path $env:LOCALAPPDATA "PlatformProcess\Cache\data_1"
-$CanonicalImportPage = "https://ef-webview.gryphline.com/page/gacha_char"
+$CanonicalImportEndpoint = "https://ef-webview.gryphline.com/api/record/char"
+$ImportLanguage = "en-us"
+$CharacterPoolType = "E_CharacterGachaPoolType_Special"
 
 # Query parameters are validated separately, keeping this rule easy to audit.
 $GryphlineUrlPattern = [regex]::new(
@@ -132,7 +134,7 @@ function New-CanonicalImportUrl {
     $EncodedToken = [Uri]::EscapeDataString($Token)
     $EncodedServerId = [Uri]::EscapeDataString($ServerId)
 
-    return "${CanonicalImportPage}?token=${EncodedToken}&server_id=${EncodedServerId}"
+    return "${CanonicalImportEndpoint}?lang=${ImportLanguage}&pool_type=${CharacterPoolType}&token=${EncodedToken}&server_id=${EncodedServerId}"
 }
 
 try {

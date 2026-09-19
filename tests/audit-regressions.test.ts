@@ -13,6 +13,8 @@ import {
 } from '../src/lib/google-drive-backup';
 import {
   createTrackerBackup,
+  calculateTrackerBackupHash,
+  getTrackerBackupProfilesForRestore,
   parseTrackerBackup,
 } from '../src/lib/tracker-backup';
 import { extractImportCredential } from '../src/lib/validators/import-url';
@@ -20,7 +22,8 @@ import { useStorageStore } from '../src/store/useStorageStore';
 
 async function main() {
   const origin = 'https://headhunt.cc';
-  const importOrigin = 'https://ef-webview.gryphline.com/page/gacha_char';
+  const importOrigin =
+    'https://ef-webview.gryphline.com/api/record/char?lang=en-us&pool_type=E_CharacterGachaPoolType_Special&';
 
   for (const [query, expected] of [
     ['token=current&server_id=2', { token: 'current', server: '2' }],
@@ -32,10 +35,16 @@ async function main() {
     ],
   ] as const) {
     assert.deepEqual(
-      extractImportCredential(`${importOrigin}?${query}`),
+      extractImportCredential(`${importOrigin}${query}`),
       expected
     );
   }
+  assert.deepEqual(
+    extractImportCredential(
+      'https://ef-webview.gryphline.com/page/gacha_char?token=legacy-url&server_id=2'
+    ),
+    { token: 'legacy-url', server: '2' }
+  );
   assert.equal(
     extractImportCredential('https://example.com/?token=x&server_id=2'),
     null
@@ -92,7 +101,8 @@ async function main() {
     const profileWithUrl = {
       id: 'with-url',
       stores: {
-        headhunt: { url: 'secret', types: {}, banners: {}, records: {} },
+        // Intentionally use a different key order than the backup schema.
+        headhunt: { records: {}, banners: {}, types: {}, url: 'secret' },
       },
     };
     const privateBackup = createTrackerBackup(
@@ -101,18 +111,39 @@ async function main() {
       { includeImportUrls: false }
     );
     assert.equal(privateBackup.profiles['with-url'].stores?.headhunt?.url, '');
+    assert.equal(privateBackup.includesImportUrls, false);
+    assert.equal(profileWithUrl.stores.headhunt.url, 'secret');
+    const backupWithUrl = createTrackerBackup(
+      { 'with-url': profileWithUrl },
+      'with-url'
+    );
+    assert.equal(backupWithUrl.includesImportUrls, true);
+    assert.equal(
+      getTrackerBackupProfilesForRestore(privateBackup, {
+        'with-url': profileWithUrl,
+      })['with-url'].stores?.headhunt?.url,
+      'secret'
+    );
+    assert.equal(
+      await calculateTrackerBackupHash(
+        parseTrackerBackup(JSON.parse(JSON.stringify(privateBackup)))
+      ),
+      await calculateTrackerBackupHash(parseTrackerBackup(backupWithUrl), {
+        includeImportUrls: false,
+      })
+    );
     assert.equal(profileWithUrl.stores.headhunt.url, 'secret');
 
     useStorageStore
       .getState()
       .restoreProfiles(backup.profiles, backup.currentProfileId);
     useStorageStore.getState().setProfile({ name: 'First', stores: {} });
-    useStorageStore.getState().setProfile({ name: 'Second', stores: {} });
     const profiles = useStorageStore.getState().profiles;
-    assert.equal(Object.keys(profiles).length, 4);
+    assert.equal(Object.keys(profiles).length, 3);
     assert.equal(profiles.abc.name, 'Original');
     assert.equal(profiles['1'].name, 'First');
-    assert.equal(profiles['2'].name, 'Second');
+    useStorageStore.getState().setProfile({ name: 'Fourth', stores: {} });
+    assert.equal(Object.keys(useStorageStore.getState().profiles).length, 3);
 
     const deleted: string[] = [];
     const pages: string[] = [];

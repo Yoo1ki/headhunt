@@ -30,7 +30,7 @@ type ImportState = {
     processType?: ImportProcessType,
     profileId?: string,
     saveImportUrl?: boolean
-  ) => Promise<void>;
+  ) => Promise<boolean>;
 };
 
 type HeadhuntBanners = Record<
@@ -143,7 +143,7 @@ export const useImportStore = create<ImportState>((set) => ({
 
     const targetProfileId = profileId ?? currentProfileId;
     const profile = profiles[targetProfileId];
-    if (!profile) return;
+    if (!profile) return false;
 
     const headhuntBanners: HeadhuntBanners = Object.fromEntries(
       Object.entries(banners as Banners).map(([key, value]) => [
@@ -512,5 +512,6 @@ export const useImportStore = create<ImportState>((set) => ({
     }
 
     set({ isImporting: false });
+    return !isError;
   },
 }));

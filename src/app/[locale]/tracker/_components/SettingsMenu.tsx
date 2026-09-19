@@ -7,6 +7,7 @@ import { Tooltip } from '@/components/ui/Tooltip';
 import {
   calculateTrackerBackupHash,
   createTrackerBackup,
+  getTrackerBackupProfilesForRestore,
   parseTrackerBackup,
   type TrackerBackup,
 } from '@/lib/tracker-backup';
@@ -80,10 +81,9 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     (state) => state.setGoogleDriveLastBackupSignature
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [status, setStatus] = useState<
-    'backedUp' | 'identical' | 'invalid' | null
-  >(null);
+  const backupDragDepthRef = useRef(0);
   const notify = useNotificationStore((state) => state.notify);
+  const [isBackupDragActive, setIsBackupDragActive] = useState(false);
   const [pendingBackup, setPendingBackup] = useState<TrackerBackup | null>(
     null
   );
@@ -132,6 +132,11 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   const [includeImportUrls, setIncludeImportUrls] = useState(false);
   const [editingProfileId, setEditingProfileId] = useState<string | null>(null);
   const [editingProfileName, setEditingProfileName] = useState('');
+  const [visibleImportUrlProfileIds, setVisibleImportUrlProfileIds] = useState<
+    Set<string>
+  >(() => new Set());
+  const [pendingDeleteImportUrlProfileId, setPendingDeleteImportUrlProfileId] =
+    useState<string | null>(null);
   const lastSyncedDataRef = useRef<string | null>(null);
   const currentDataSignature = JSON.stringify({ currentProfileId, profiles });
   const hasLocalImportedData = Object.values(profiles).some(
@@ -140,9 +145,12 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   const hasStoredImportUrl = Object.values(profiles).some((profile) =>
     Boolean(profile.stores?.headhunt?.url)
   );
-
   useEffect(() => {
-    if (isOpen) setIncludeImportUrls(false);
+    if (isOpen) {
+      setIncludeImportUrls(false);
+      setVisibleImportUrlProfileIds(new Set());
+      setPendingDeleteImportUrlProfileId(null);
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -159,6 +167,8 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   );
 
   const profileCount = Object.keys(profiles).length;
+  const hasReachedProfileLimit =
+    profileCount >= TRACKER_CONFIG.profiles.maxCount;
   const recordCount = Object.values(profiles).reduce(
     (total, profile) =>
       total +
@@ -202,7 +212,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     anchor.click();
     anchor.remove();
     window.setTimeout(() => URL.revokeObjectURL(url), 0);
-    setStatus('backedUp');
+    notify(t('backedUp'));
   };
 
   const handleRestore = () => {
@@ -502,28 +512,31 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     }
   };
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file) return;
-
+  const handleBackupFile = async (file: File) => {
     try {
       if (file.size > TRACKER_CONFIG.backup.maxFileSizeBytes)
         throw new Error('Backup is too large');
 
       const backup = parseTrackerBackup(JSON.parse(await file.text()));
-      const localBackup = createTrackerBackup(profiles, currentProfileId);
+      // Normalize both sides through the same schema before hashing. Parsed
+      // files can have different key order/default fields than in-memory data.
+      const localBackup = parseTrackerBackup(
+        createTrackerBackup(profiles, currentProfileId)
+      );
+      const compareImportUrls = backup.includesImportUrls !== false;
       const [backupHash, localHash] = await Promise.all([
-        calculateTrackerBackupHash(backup),
-        calculateTrackerBackupHash(localBackup),
+        calculateTrackerBackupHash(backup, {
+          includeImportUrls: compareImportUrls,
+        }),
+        calculateTrackerBackupHash(localBackup, {
+          includeImportUrls: compareImportUrls,
+        }),
       ]);
 
       if (backupHash === localHash) {
         setPendingBackup(null);
         setPendingBackupDetails(null);
-        setStatus('identical');
+        notify(t('identical'));
         return;
       }
 
@@ -535,10 +548,12 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         lastSyncedDataRef.current = null;
         setLastBackupSignature('');
         if (driveSession) setDriveStatus('driveOutdated');
-        restoreProfiles(backup.profiles, backup.currentProfileId);
+        restoreProfiles(
+          getTrackerBackupProfilesForRestore(backup, profiles),
+          backup.currentProfileId
+        );
         setPendingBackup(null);
         setPendingBackupDetails(null);
-        setStatus(null);
         notify(t('restored'));
         onClose();
         return;
@@ -550,20 +565,55 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         date: backup.exportedAt,
         size: new TextEncoder().encode(JSON.stringify(backup)).byteLength,
       });
-      setStatus(null);
     } catch {
-      setStatus('invalid');
+      notify(t('invalid'), 'error');
     }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (file) void handleBackupFile(file);
+  };
+
+  const handleBackupDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    backupDragDepthRef.current += 1;
+    setIsBackupDragActive(true);
+  };
+
+  const handleBackupDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+  };
+
+  const handleBackupDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    backupDragDepthRef.current = Math.max(0, backupDragDepthRef.current - 1);
+    if (backupDragDepthRef.current === 0) setIsBackupDragActive(false);
+  };
+
+  const handleBackupDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    backupDragDepthRef.current = 0;
+    setIsBackupDragActive(false);
+
+    const file = event.dataTransfer.files[0];
+    if (file) void handleBackupFile(file);
   };
 
   const handleConfirmRestore = () => {
     if (!pendingBackup) return;
 
+    const isGoogleDriveRestore = pendingBackupDetails?.source === 'googleDrive';
+    const restoredProfiles = getTrackerBackupProfilesForRestore(
+      pendingBackup,
+      profiles
+    );
     const restoredDataSignature = JSON.stringify({
       currentProfileId: pendingBackup.currentProfileId,
-      profiles: pendingBackup.profiles,
+      profiles: restoredProfiles,
     });
-    const isGoogleDriveRestore = pendingBackupDetails?.source === 'googleDrive';
 
     if (isGoogleDriveRestore) {
       lastSyncedDataRef.current = restoredDataSignature;
@@ -575,7 +625,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
       if (driveSession) setDriveStatus('driveOutdated');
     }
 
-    restoreProfiles(pendingBackup.profiles, pendingBackup.currentProfileId);
+    restoreProfiles(restoredProfiles, pendingBackup.currentProfileId);
     setPendingBackup(null);
     setPendingBackupDetails(null);
     notify(t('restored'));
@@ -584,23 +634,51 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
   const handleAddProfile = () => {
     const name = profileName.trim();
-    if (name.length < 2 || name.length > 20) return;
+    if (name.length < 2 || name.length > 20 || hasReachedProfileLimit) return;
 
-    setProfile(
-      {
-        name,
-        stores: {},
-      },
-      { makeActive: false }
-    );
+    setProfile({ name, stores: {} }, { makeActive: false });
     setProfileName('');
     setIsAddingProfile(false);
+  };
+
+  const handleToggleAddProfile = () => {
+    setIsAddingProfile((value) => !value);
+    setProfileName('');
+    setPendingDeleteProfileId(null);
+    setEditingProfileId(null);
+    setEditingProfileName('');
   };
 
   const handleDeleteProfile = () => {
     if (!pendingDeleteProfileId || profileCount <= 1) return;
     removeProfile(pendingDeleteProfileId);
     setPendingDeleteProfileId(null);
+  };
+
+  const handleDeleteImportUrl = () => {
+    if (!pendingDeleteImportUrlProfileId) return;
+
+    const profile = profiles[pendingDeleteImportUrlProfileId];
+    const headhunt = profile?.stores?.headhunt;
+    if (!profile || !headhunt?.url) return;
+
+    setProfile(
+      {
+        ...profile,
+        stores: {
+          ...profile.stores,
+          headhunt: { ...headhunt, url: '' },
+        },
+      },
+      { makeActive: false }
+    );
+    setVisibleImportUrlProfileIds((ids) => {
+      const next = new Set(ids);
+      next.delete(profile.id);
+      return next;
+    });
+    setPendingDeleteImportUrlProfileId(null);
+    notify(t('importUrlDeleted'));
   };
 
   const handleEditProfile = () => {
@@ -615,14 +693,17 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   };
 
   const handleClose = () => {
+    backupDragDepthRef.current = 0;
+    setIsBackupDragActive(false);
     setPendingBackup(null);
     setPendingBackupDetails(null);
-    setStatus(null);
     setIsAddingProfile(false);
     setProfileName('');
     setPendingDeleteProfileId(null);
     setEditingProfileId(null);
     setEditingProfileName('');
+    setVisibleImportUrlProfileIds(new Set());
+    setPendingDeleteImportUrlProfileId(null);
     onClose();
   };
 
@@ -642,6 +723,12 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     : undefined;
   const editingProfile = editingProfileId
     ? profiles[editingProfileId]
+    : undefined;
+  const profilesWithImportUrls = Object.values(profiles).filter((profile) =>
+    Boolean(profile.stores?.headhunt?.url)
+  );
+  const pendingDeleteImportUrlProfile = pendingDeleteImportUrlProfileId
+    ? profiles[pendingDeleteImportUrlProfileId]
     : undefined;
   const normalizedEditingProfileName = editingProfileName.trim();
   const isEditingProfileNameValid =
@@ -869,19 +956,24 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     {t('profilesDescription')}
                   </p>
                 </div>
-                <Button
-                  size="sm"
-                  onClick={() => {
-                    setIsAddingProfile((value) => !value);
-                    setProfileName('');
-                    setPendingDeleteProfileId(null);
-                    setEditingProfileId(null);
-                    setEditingProfileName('');
-                  }}
-                >
-                  <FaPlus />
-                  {t('addProfile')}
-                </Button>
+                {hasReachedProfileLimit ? (
+                  <Tooltip
+                    position="left"
+                    title={t('profileLimitReached', {
+                      count: TRACKER_CONFIG.profiles.maxCount,
+                    })}
+                  >
+                    <Button size="sm" disabled>
+                      <FaPlus />
+                      {t('addProfile')}
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Button size="sm" onClick={handleToggleAddProfile}>
+                    <FaPlus />
+                    {t('addProfile')}
+                  </Button>
+                )}
               </div>
 
               {isAddingProfile && (
@@ -943,7 +1035,10 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     >
                       {t('cancel')}
                     </Button>
-                    <Button type="submit" disabled={!isProfileNameValid}>
+                    <Button
+                      type="submit"
+                      disabled={!isProfileNameValid || hasReachedProfileLimit}
+                    >
                       <FaSave />
                       {t('createProfile')}
                     </Button>
@@ -1117,7 +1212,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                   aria-labelledby="delete-profile-title"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="rounded-xl bg-red-500/15 p-3 text-red-300">
+                    <span className="p-1 text-xl text-red-300">
                       <FaTrash />
                     </span>
                     <div className="min-w-0 flex-1">
@@ -1145,6 +1240,164 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     <Button variant="danger" onClick={handleDeleteProfile}>
                       <FaTrash />
                       {t('deletePermanently')}
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </section>
+
+            <div className="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+
+            <section
+              className="flex flex-col gap-3"
+              aria-labelledby="import-urls-title"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3
+                    id="import-urls-title"
+                    className="text-sm font-semibold text-white"
+                  >
+                    {t('importUrlsTitle')}
+                  </h3>
+                  <p className="mt-0.5 text-xs leading-relaxed text-white/50">
+                    {t('importUrlsDescription')}
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-white/8 px-2.5 py-1 text-[11px] font-semibold text-white/55">
+                  {t('savedImportUrlCount', {
+                    count: profilesWithImportUrls.length,
+                  })}
+                </span>
+              </div>
+
+              {profilesWithImportUrls.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  {profilesWithImportUrls.map((profile) => {
+                    const importUrl = profile.stores?.headhunt?.url ?? '';
+                    const isVisible = visibleImportUrlProfileIds.has(
+                      profile.id
+                    );
+
+                    return (
+                      <div
+                        key={profile.id}
+                        className="overflow-hidden rounded-xl bg-white/5"
+                      >
+                        <div className="flex items-start justify-between gap-3 px-3 pt-3">
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-medium text-white/85">
+                              {profile.name || t('unnamedProfile')}
+                            </p>
+                          </div>
+                          {profile.id === currentProfileId && (
+                            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-yellow-400/15 px-2 py-1 text-[11px] font-semibold text-yellow-200">
+                              <span className="h-1.5 w-1.5 rounded-full bg-yellow-300" />
+                              {t('activeProfile')}
+                            </span>
+                          )}
+                        </div>
+                        <div
+                          aria-label={t('savedImportUrl')}
+                          className="mx-3 mt-2 min-h-9 rounded-lg bg-neutral-950/45 px-3 py-2 font-mono text-xs leading-relaxed text-white/65"
+                        >
+                          {isVisible ? (
+                            <span className="wrap-break-word">{importUrl}</span>
+                          ) : (
+                            <span
+                              className="text-white/30 select-none"
+                              aria-hidden="true"
+                            >
+                              ••••••••••••••••••••
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="mt-3 grid grid-cols-1 gap-1 bg-black/10 px-3 py-2 sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-2">
+                          <button
+                            type="button"
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-white/55 transition-colors hover:bg-white/6 hover:text-white"
+                            onClick={() =>
+                              setVisibleImportUrlProfileIds((ids) => {
+                                const next = new Set(ids);
+                                if (next.has(profile.id))
+                                  next.delete(profile.id);
+                                else next.add(profile.id);
+                                return next;
+                              })
+                            }
+                            aria-label={t(
+                              isVisible ? 'hideImportUrl' : 'showImportUrl'
+                            )}
+                          >
+                            {isVisible ? <FaEyeSlash /> : <FaEye />}
+                            {t(isVisible ? 'hideImportUrl' : 'showImportUrl')}
+                          </button>
+                          <span className="hidden h-5 w-px bg-white/8 sm:block" />
+                          <button
+                            type="button"
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-white/55 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                            onClick={() =>
+                              setPendingDeleteImportUrlProfileId(profile.id)
+                            }
+                            aria-label={t('deleteImportUrl')}
+                          >
+                            <FaTrash />
+                            {t('deleteImportUrl')}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex items-start gap-3 rounded-xl bg-white/4 p-4">
+                  <span className="rounded-lg bg-white/5 p-2.5 text-white/30">
+                    <FaLinkSlash aria-hidden="true" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-medium text-white/65">
+                      {t('noSavedImportUrls')}
+                    </p>
+                    <p className="mt-1 text-xs leading-relaxed text-white/40">
+                      {t('noSavedImportUrlsDescription')}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {pendingDeleteImportUrlProfile?.stores?.headhunt?.url && (
+                <div
+                  className="rounded-xl bg-linear-to-br from-red-500/12 to-neutral-900/50 p-4"
+                  role="alertdialog"
+                  aria-labelledby="delete-import-url-title"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="rounded-xl bg-red-500/15 p-3 text-red-300">
+                      <FaLinkSlash />
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <h4
+                        id="delete-import-url-title"
+                        className="font-semibold text-white"
+                      >
+                        {t('deleteImportUrlTitle')}
+                      </h4>
+                      <p className="mt-1 text-sm leading-relaxed text-white/60">
+                        {t('deleteImportUrlConfirmation')}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                    <Button
+                      variant="secondary"
+                      onClick={() => setPendingDeleteImportUrlProfileId(null)}
+                    >
+                      {t('cancel')}
+                    </Button>
+                    <Button variant="danger" onClick={handleDeleteImportUrl}>
+                      <FaLinkSlash />
+                      {t('deleteImportUrl')}
                     </Button>
                   </div>
                 </div>
@@ -1218,13 +1471,34 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     </Button>
                   </div>
 
-                  <div className="flex flex-col rounded-xl bg-white/5 p-4">
+                  <div
+                    className={`flex flex-col rounded-xl p-4 transition-colors ${
+                      isBackupDragActive
+                        ? 'bg-yellow-400/15 ring-2 ring-yellow-300/70 ring-inset'
+                        : 'bg-white/5'
+                    }`}
+                    onDragEnter={handleBackupDragEnter}
+                    onDragOver={handleBackupDragOver}
+                    onDragLeave={handleBackupDragLeave}
+                    onDrop={handleBackupDrop}
+                  >
                     <div className="flex items-start gap-3">
                       <FaUpload className="mb-3 text-xl text-yellow-300" />
                       <h3 className="font-semibold">{t('restore')}</h3>
                     </div>
                     <p className="mt-1 flex-1 text-sm leading-relaxed text-white/60">
                       {t('restoreDescription')}
+                    </p>
+                    <p
+                      className={`mt-4 text-center text-sm transition-colors ${
+                        isBackupDragActive
+                          ? 'font-medium text-yellow-200'
+                          : 'text-white/45'
+                      }`}
+                    >
+                      {t(
+                        isBackupDragActive ? 'dropBackupActive' : 'dropBackup'
+                      )}
                     </p>
                     <Button className="mt-4 w-full" onClick={handleRestore}>
                       <FaUpload />
@@ -1517,19 +1791,6 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
               <FaShieldHalved className="mt-0.5 shrink-0" />
               <p className="text-sm leading-relaxed">{t('securityWarning')}</p>
             </div>
-
-            {status && (
-              <p
-                className={`rounded-lg px-3 py-2 text-sm ${
-                  status === 'invalid'
-                    ? 'bg-red-500/10 text-red-300'
-                    : 'bg-green-500/10 text-green-300'
-                }`}
-                role="status"
-              >
-                {t(status)}
-              </p>
-            )}
           </>
         )}
       </div>

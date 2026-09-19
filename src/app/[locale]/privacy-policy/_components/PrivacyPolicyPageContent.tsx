@@ -42,6 +42,7 @@ export const PrivacyPolicyPageContent = () => {
             <li>{t('localStorage.history')}</li>
           </ul>
           <p>{t('localStorage.details')}</p>
+          <p>{t('localStorage.export')}</p>
         </Section>
 
         <Section title={t('token.title')}>

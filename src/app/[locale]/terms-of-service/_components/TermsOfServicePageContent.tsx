@@ -42,6 +42,7 @@ export const TermsOfServicePageContent = () => {
         <Section title={t('responsibilities.title')}>
           <ul className="list-disc space-y-1 pl-6 marker:text-white/35">
             <li>{t('responsibilities.lawful')}</li>
+            <li>{t('responsibilities.account')}</li>
             <li>{t('responsibilities.abuse')}</li>
             <li>{t('responsibilities.private')}</li>
             <li>{t('responsibilities.verify')}</li>

@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
   for (const candidateServerId of serverIds) {
     const params = new URLSearchParams({
-      lang: 'en-us',
+      lang: TRACKER_CONFIG.import.language,
       ...(lastId ? { seq_id: lastId.toString() } : {}),
       ...(type.poolType ? { pool_type: type.poolType } : {}),
       token: url.token,

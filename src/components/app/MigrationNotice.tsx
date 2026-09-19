@@ -19,22 +19,25 @@ export const MigrationNotice = () => {
       isOpen={migrationNotice}
       onClose={dismissMigrationNotice}
     >
-      <div className="flex flex-col gap-5 pt-4">
-        <div className="flex items-center gap-3 rounded-xl bg-green-400/10 p-3">
-          <FaCircleCheck className="shrink-0 text-2xl text-green-300" />
-          <p className="text-sm leading-relaxed font-semibold text-green-50">
-            {t('fixedLabel')}
-          </p>
+      <div className="flex flex-col items-center px-1 py-2 text-center sm:px-4 sm:py-3">
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-400/15 text-2xl text-emerald-300 shadow-lg shadow-emerald-950/20">
+          <FaCircleCheck aria-hidden="true" />
         </div>
-        <p className="text-sm leading-relaxed text-white/70">
+
+        <h3 className="mt-4 text-base font-semibold text-white sm:text-lg">
+          {t('fixedLabel')}
+        </h3>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-white/60">
           {t('description')}
         </p>
-        <div className="flex justify-end pt-4">
-          <Button onClick={dismissMigrationNotice} size="sm">
-            <FaCircleCheck />
-            {t('dismiss')}
-          </Button>
-        </div>
+
+        <Button
+          className="mt-6 w-full sm:w-auto sm:min-w-32"
+          onClick={dismissMigrationNotice}
+        >
+          <FaCircleCheck aria-hidden="true" />
+          {t('dismiss')}
+        </Button>
       </div>
     </Modal>
   );

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { FaCheck, FaSyncAlt } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useImportStore } from '@/store/useImportStore';
-import { FaX } from 'react-icons/fa6';
+import { FaCircleExclamation } from 'react-icons/fa6';
 import { useTranslations } from 'next-intl';
 
 export const ImportStatus = () => {
@@ -17,7 +17,7 @@ export const ImportStatus = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
 
     if (isImporting) {
       timeout = setTimeout(() => setShow(true), 0);
@@ -35,16 +35,24 @@ export const ImportStatus = () => {
         ? t('networkError')
         : t('unknownError');
 
-  const message = isImporting
-    ? totalRecord
-      ? t('found', { total: totalRecord })
+  const title = isImporting
+    ? processType === 'import'
+      ? t('importing')
+      : t('syncing')
+    : errorType
+      ? t('failed')
       : processType === 'import'
-        ? t('importing')
-        : t('syncing')
-    : totalRecord
-      ? t('added', { total: totalRecord })
-      : errorType
-        ? errorMsg
+        ? t('importComplete')
+        : t('syncComplete');
+
+  const message = errorType
+    ? errorMsg
+    : isImporting
+      ? totalRecord
+        ? t('found', { total: totalRecord })
+        : t('preparing')
+      : totalRecord
+        ? t('added', { total: totalRecord })
         : t('noNewRecords');
 
   const displayClass = show
@@ -52,27 +60,55 @@ export const ImportStatus = () => {
     : '-translate-y-full opacity-0 pointer-events-none';
 
   const coloringClass = isImporting
-    ? 'bg-neutral-300 text-black/80'
+    ? 'bg-neutral-800/95 text-yellow-300'
     : errorType
-      ? 'bg-red-500 text-white/80'
-      : 'bg-green-500 text-white/80';
+      ? 'bg-red-950/95 text-red-300'
+      : 'bg-emerald-950/95 text-emerald-300';
 
   return (
     <div
+      role={errorType ? 'alert' : 'status'}
+      aria-live={errorType ? 'assertive' : 'polite'}
+      aria-atomic="true"
       className={clsx(
-        'fixed top-2 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-lg px-2 py-1 text-sm font-semibold transition-all duration-300 ease-out',
+        'fixed top-[4.25rem] left-1/2 z-60 flex w-[calc(100%-1.5rem)] max-w-sm -translate-x-1/2 items-start gap-3 overflow-hidden rounded-xl p-3 shadow-xl shadow-black/30 backdrop-blur-md transition-all duration-300 ease-out sm:top-[4.5rem] sm:p-4',
         coloringClass,
         displayClass
       )}
     >
-      {isImporting ? (
-        <FaSyncAlt className="animate-spin" />
-      ) : errorType ? (
-        <FaX />
-      ) : (
-        <FaCheck className="scale-110" />
+      <div
+        className={clsx(
+          'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+          isImporting
+            ? 'bg-yellow-400/15'
+            : errorType
+              ? 'bg-red-400/15'
+              : 'bg-emerald-400/15'
+        )}
+      >
+        {isImporting ? (
+          <FaSyncAlt className="animate-spin" aria-hidden="true" />
+        ) : errorType ? (
+          <FaCircleExclamation aria-hidden="true" />
+        ) : (
+          <FaCheck aria-hidden="true" />
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1 pt-0.5">
+        <p className="text-sm leading-tight font-semibold text-white">
+          {title}
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-white/65 sm:text-sm">
+          {message}
+        </p>
+      </div>
+
+      {isImporting && (
+        <div className="absolute inset-x-0 bottom-0 h-0.5 overflow-hidden bg-white/5">
+          <div className="h-full w-1/3 animate-[pulse_1s_ease-in-out_infinite] rounded-full bg-yellow-300" />
+        </div>
       )}
-      {message}
     </div>
   );
 };

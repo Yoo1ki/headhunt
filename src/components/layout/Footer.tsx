@@ -37,14 +37,7 @@ export const Footer = () => {
                 Discord
               </Link> */}
             </div>
-            <div className="flex items-center justify-center gap-2 lg:justify-end">
-              <Link
-                href="/changelog"
-                className="duration-300 hover:text-yellow-500"
-              >
-                {t('changelog')}
-              </Link>
-              <span aria-hidden="true">•</span>
+            <div className="flex items-center justify-center lg:justify-end">
               <span>Build ID: {CONFIG.buildId}</span>
             </div>
           </div>

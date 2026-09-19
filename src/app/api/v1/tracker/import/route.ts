@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     (headhuntType) => headhuntType.id === headhuntTypeId
   )!;
   const params = new URLSearchParams({
-    lang: 'en-us',
+    lang: TRACKER_CONFIG.import.language,
     ...(lastId ? { seq_id: lastId.toString() } : {}),
     ...(type.poolType ? { pool_type: type.poolType } : {}),
     token: url.token,

@@ -7,15 +7,30 @@ import {
   FaChartSimple,
   FaCloudArrowUp,
   FaFileArrowDown,
+  FaGlobe,
   FaHouse,
   FaImage,
   FaList,
   FaPalette,
   FaRotate,
+  FaShieldHalved,
   FaUserGroup,
 } from 'react-icons/fa6';
 
 const releases = [
+  {
+    id: '2026.09.20',
+    date: '2026-09-20T00:00:00+07:00',
+    titleKey: 'currentReleaseTitle',
+    changesKey: 'currentChanges',
+    changes: [
+      { key: 'importPrivacy', icon: FaShieldHalved },
+      { key: 'webImport', icon: FaGlobe },
+      { key: 'backupRestore', icon: FaFileArrowDown },
+      { key: 'profileManagement', icon: FaUserGroup },
+      { key: 'notifications', icon: FaRotate },
+    ],
+  },
   {
     id: '2026.09.14',
     date: '2026-09-14T00:00:00+07:00',

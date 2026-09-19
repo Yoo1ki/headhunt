@@ -10,6 +10,29 @@
   "ChangelogPage": {
     "title": "Changelog",
     "description": "See the latest features, improvements, and fixes on Headhunt.cc.",
+    "currentReleaseTitle": "More Practical Imports, Backups, and Profiles",
+    "currentChanges": {
+      "importPrivacy": {
+        "title": "Import URL Privacy Controls",
+        "description": "Saving import URLs and including them in exported files are now optional, disabled by default, and manageable for each profile."
+      },
+      "webImport": {
+        "title": "Web Import on Every Device",
+        "description": "History can now be imported from the official page using a bookmark, with automatic server selection and tailored guidance for non-Windows devices."
+      },
+      "backupRestore": {
+        "title": "More Consistent Backup and Restore",
+        "description": "Backup files can now be restored with drag and drop, while data comparison and existing saved URLs continue to be handled safely."
+      },
+      "profileManagement": {
+        "title": "Faster Profile Switching",
+        "description": "The active profile can now be switched directly from the sidebar, with management for up to three profiles to keep data compact."
+      },
+      "notifications": {
+        "title": "Clearer Process Status",
+        "description": "Import, sync, backup, and restore now use more consistent, responsive, and easier-to-understand notifications."
+      }
+    },
     "latestReleaseTitle": "Clearer Tracking, Sharing, and Site Insights",
     "latestChanges": {
       "headhuntResults": {
@@ -99,7 +122,13 @@
     "tracker": "HH Tracker",
     "weapons": "Weapons",
     "gear": "Gear",
+    "changelog": "Changelog",
     "comingSoon": "Coming soon",
+    "selectProfile": "Select profile",
+    "selectedProfile": "Current Profile",
+    "loadingProfile": "Loading profile...",
+    "loadingProfileStatus": "Loading data",
+    "unnamedProfile": "Unnamed profile",
     "joinDiscord": "Join Discord"
   },
   "HomePage": {
@@ -167,9 +196,9 @@
     "recentHeadhunts": "Recent Headhunts",
     "recentIssues": "Recent Issues",
     "migrationNotice": {
-      "title": "Thank you for continuing to use Headhunt Tracker",
-      "fixedLabel": "Pity calculation improvements are now active",
-      "description": "We have fixed an issue that caused some pity calculations to be inaccurate. We will continue improving this tool. If you find another bug, please report it through Discord.",
+      "title": "Tracker Data Updated",
+      "fixedLabel": "Pity calculations have been updated",
+      "description": "Your existing data has been adjusted to the latest pity calculation system. Your gacha history remains available, and you can continue using the tracker as usual.",
       "dismiss": "Got it"
     },
     "headhuntRecords": "Headhunt Records",
@@ -246,6 +275,7 @@
       "profilesTitle": "Profiles",
       "profilesDescription": "Select or manage your profiles.",
       "addProfile": "Add",
+      "profileLimitReached": "Maximum {count} profiles.",
       "addProfileTitle": "Add Profile",
       "addProfileDescription": "Create a new profile for another Arknights: Endfield account.",
       "profileName": "Profile name",
@@ -253,7 +283,7 @@
       "profileNameHint": "The name must be 2–20 characters.",
       "createProfile": "Save",
       "unnamedProfile": "Unnamed profile",
-      "activeProfile": "Current profile",
+      "activeProfile": "Current Profile",
       "selectProfile": "Click to select",
       "deleteProfile": "Delete",
       "editProfile": "Edit",
@@ -265,6 +295,18 @@
       "deleteProfileConfirmation": "The “{name}” profile and all of its data will be permanently deleted.",
       "deletePermanently": "Delete permanently",
       "cannotDeleteOnlyProfile": "The only profile cannot be deleted.",
+      "importUrlsTitle": "Saved Import URLs",
+      "importUrlsDescription": "View or delete the Import URL saved for each profile.",
+      "savedImportUrlCount": "{count, plural, one {# saved} other {# saved}}",
+      "savedImportUrl": "Saved Import URL",
+      "showImportUrl": "Show import URL",
+      "hideImportUrl": "Hide import URL",
+      "deleteImportUrl": "Delete import URL",
+      "deleteImportUrlTitle": "Delete import URL?",
+      "deleteImportUrlConfirmation": "The Import URL will be deleted. Your gacha history will remain, but Sync cannot be used until a new URL is saved.",
+      "importUrlDeleted": "Import URL deleted successfully.",
+      "noSavedImportUrls": "No import URLs have been saved for any profile yet.",
+      "noSavedImportUrlsDescription": "Save the URL during import so it can be reused for Sync.",
       "backupRecords": "Information",
       "description": "Here is the total amount of data you currently have.",
       "securityWarning": "Keep backup files private, especially when you choose to include import URLs or access tokens.",
@@ -276,6 +318,8 @@
       "downloadBackup": "Download backup",
       "restore": "Restore",
       "restoreDescription": "Restore your data using a previous backup file.",
+      "dropBackup": "Drag and drop a JSON backup here, or choose a file from your device.",
+      "dropBackupActive": "Drop the file to start restoring.",
       "chooseBackup": "Choose backup file",
       "profileCount": "{count, plural, one {# profile} other {# profiles}}",
       "recordCount": "{count, plural, one {# record} other {# records}}",
@@ -380,7 +424,7 @@
   },
   "PrivacyPolicy": {
     "title": "Privacy Policy",
-    "updated": "Last updated: 14 September 2026",
+    "updated": "Last updated: 20 September 2026",
     "introduction": {
       "title": "1. Introduction",
       "text": "Welcome to {appName}. Your privacy is important to us. This Privacy Policy explains how we handle your data when you use our website."
@@ -393,17 +437,18 @@
     "localStorage": {
       "title": "3. Local Storage",
       "intro": "We use your browser’s local storage to:",
-      "url": "Save your gacha URL or token",
+      "url": "Save your gacha import URL only when you select the save option during import",
       "history": "Save your gacha history and pity tracking data",
-      "details": "This data stays on your device unless you choose to import records or enable Google Drive backup. Local data can be deleted at any time by clearing your browser data."
+      "details": "Your history and any import URL you choose to save remain in the browser on your device. Import URLs are not saved by default. You can delete local data at any time by clearing your browser data.",
+      "export": "Local backup files do not include import URLs by default. A saved import URL is included only when you specifically select that option before downloading the backup. Restoring a file without URLs does not overwrite URLs already stored in the browser."
     },
     "token": {
       "title": "4. Token Usage",
-      "text": "Your gacha URL or token is only used temporarily to load roll history and is never stored or persisted on our servers."
+      "text": "Your gacha URL or token is used to request roll history from game-related endpoints and is never permanently stored on our servers. With the Web method, the bookmark reads only the temporary gacha token from the official site's session storage to create an import URL; it does not read your password. The URL is saved in your browser only if you select the save option during import."
     },
     "drive": {
       "title": "5. Google Drive Backup",
-      "backup": "If you connect Google Drive, backup data is sent directly from your browser to the application data folder in your Google Drive. The backup may contain your profiles, gacha records, statistics, and import URL or token.",
+      "backup": "If you connect Google Drive, backup data is sent directly from your browser to the application data folder in your Google Drive. A backup may contain your profiles, gacha records, statistics, and an import URL that you previously chose to save. If no import URL is saved, the backup does not contain that URL or token.",
       "permission": "We request the limited Google Drive application-data permission. The short-lived Google access token is kept in browser memory and is not stored in local storage or included in backup files. If you choose to stay connected, a Google refresh token is stored in a secure, HTTP-only cookie so the website can restore your session. You can disconnect or revoke access at any time."
     },
     "analytics": {
@@ -429,7 +474,7 @@
   },
   "TermsOfService": {
     "title": "Terms of Service",
-    "updated": "Last updated: 14 September 2026",
+    "updated": "Last updated: 20 September 2026",
     "acceptance": {
       "title": "1. Acceptance of Terms",
       "text": "By accessing or using {appName}, you agree to these Terms of Service. If you do not agree, please do not use the service."
@@ -440,14 +485,15 @@
     },
     "drive": {
       "title": "3. Google Account and Drive Backups",
-      "access": "Google Drive integration is optional. If you connect a Google account, you authorize {appName} to create, update, and read its own backup file in the application data folder of your Google Drive.",
+      "access": "Google Drive integration is optional. If you connect a Google account, you authorize {appName} to create, update, read, and manage its own backup files and backup history in the application data folder of your Google Drive.",
       "responsibility": "You are responsible for selecting the correct Google account and protecting access to it. You may disconnect Google Drive at any time from the application or revoke access through your Google Account settings."
     },
     "responsibilities": {
       "title": "4. User Responsibilities",
       "lawful": "Use the service only for lawful, personal purposes.",
+      "account": "Use import methods, including the Web method, only with an account you own or are lawfully authorized to access, and comply with the applicable terms of third-party services.",
       "abuse": "Do not abuse, disrupt, or attempt to bypass the service.",
-      "private": "Keep exported backup files and gacha import URLs private because they may contain temporary access tokens.",
+      "private": "Keep gacha import URLs and exported backup files private. A backup file may contain an import URL or temporary access token if you choose to include it.",
       "verify": "Verify important data before relying on calculated results."
     },
     "thirdParty": {
@@ -476,13 +522,21 @@
     }
   },
   "ImportStatus": {
-    "urlExpired": "URL expired, please re-import using a new URL",
-    "networkError": "Network Error, please try again",
-    "unknownError": "Unknown Error, please try again later",
+    "urlExpired": "The import URL has expired. Generate a new URL and import again.",
+    "networkError": "There was a network problem. Check your connection and try again.",
+    "unknownError": "Something went wrong while processing the data. Please try again.",
     "found": "{total, plural, one {Found # record} other {Found # records}}",
     "added": "{total, plural, one {Added # record} other {Added # records}}",
     "importing": "Importing records...",
     "syncing": "Syncing records...",
+    "preparing": "Connecting and checking your gacha history.",
+    "importComplete": "Import complete",
+    "syncComplete": "Sync complete",
+    "failed": "Process failed",
     "noNewRecords": "No new records found"
+  },
+  "NotificationStatus": {
+    "success": "Success",
+    "error": "Something went wrong"
   }
 }

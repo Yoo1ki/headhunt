@@ -10,6 +10,29 @@
   "ChangelogPage": {
     "title": "Log Perubahan",
     "description": "Lihat fitur baru, peningkatan, dan perbaikan terbaru di Headhunt.cc.",
+    "currentReleaseTitle": "Import, Backup, dan Profil yang Lebih Praktis",
+    "currentChanges": {
+      "importPrivacy": {
+        "title": "Kontrol Privasi URL Import",
+        "description": "Penyimpanan URL import dan penyertaannya dalam file export kini opsional, tidak aktif secara default, serta dapat dilihat atau dihapus per profil."
+      },
+      "webImport": {
+        "title": "Import Web untuk Semua Perangkat",
+        "description": "Riwayat kini dapat diimpor melalui halaman resmi menggunakan bookmark, dengan pemilihan server otomatis dan panduan yang disesuaikan untuk perangkat non-Windows."
+      },
+      "backupRestore": {
+        "title": "Backup dan Restore Lebih Konsisten",
+        "description": "File backup kini dapat dipulihkan dengan drag-and-drop, sementara perbandingan data dan URL yang sudah tersimpan tetap ditangani dengan aman."
+      },
+      "profileManagement": {
+        "title": "Pergantian Profil Lebih Cepat",
+        "description": "Profil aktif kini dapat diganti langsung dari sidebar, dengan pengelolaan hingga tiga profil untuk menjaga data tetap ringkas."
+      },
+      "notifications": {
+        "title": "Status Proses Lebih Jelas",
+        "description": "Import, sync, backup, dan restore kini memakai notifikasi yang lebih konsisten, responsif, dan mudah dipahami."
+      }
+    },
     "latestReleaseTitle": "Tracker, Berbagi, dan Insight Situs yang Lebih Jelas",
     "latestChanges": {
       "headhuntResults": {
@@ -99,7 +122,13 @@
     "tracker": "HH Tracker",
     "weapons": "Senjata",
     "gear": "Gear",
+    "changelog": "Log Perubahan",
     "comingSoon": "Segera hadir",
+    "selectProfile": "Pilih profil",
+    "selectedProfile": "Profil Saat Ini",
+    "loadingProfile": "Memuat profil...",
+    "loadingProfileStatus": "Memuat data",
+    "unnamedProfile": "Profil tanpa nama",
     "joinDiscord": "Gabung Discord"
   },
   "HomePage": {
@@ -167,9 +196,9 @@
     "recentHeadhunts": "Headhunt Terbaru",
     "recentIssues": "Edisi Terbaru",
     "migrationNotice": {
-      "title": "Terima kasih sudah tetap menggunakan Headhunt.cc",
-      "fixedLabel": "Perbaikan perhitungan pity sudah diterapkan",
-      "description": "Kami telah memperbaiki masalah yang menyebabkan beberapa perhitungan pity kurang tepat. Kami akan terus mengembangkan tools ini. Jika kamu menemukan bug lain, mohon laporkan melalui Discord.",
+      "title": "Pembaruan Data Tracker",
+      "fixedLabel": "Perhitungan pity telah diperbarui",
+      "description": "Data lama kamu telah disesuaikan dengan sistem perhitungan pity terbaru. Riwayat gacha tetap tersimpan dan kamu dapat melanjutkan menggunakan tracker seperti biasa.",
       "dismiss": "Mengerti"
     },
     "headhuntRecords": "Riwayat Headhunt",
@@ -246,6 +275,7 @@
       "profilesTitle": "Profil",
       "profilesDescription": "Pilih profil atau kelola profil.",
       "addProfile": "Tambah",
+      "profileLimitReached": "Maksimal {count} profil.",
       "addProfileTitle": "Tambah Profil",
       "addProfileDescription": "Buat profil baru untuk akun Arknight: Endfield-mu yang lain.",
       "profileName": "Nama profil",
@@ -253,7 +283,7 @@
       "profileNameHint": "Nama harus terdiri dari 2–20 karakter.",
       "createProfile": "Simpan",
       "unnamedProfile": "Profil tanpa nama",
-      "activeProfile": "Profil saat ini",
+      "activeProfile": "Profil Saat Ini",
       "selectProfile": "Klik untuk memilih",
       "deleteProfile": "Hapus",
       "editProfile": "Edit",
@@ -265,6 +295,18 @@
       "deleteProfileConfirmation": "Profil “{name}” beserta seluruh datanya akan dihapus secara permanen.",
       "deletePermanently": "Hapus permanen",
       "cannotDeleteOnlyProfile": "Satu-satunya profil tidak dapat dihapus.",
+      "importUrlsTitle": "URL Import Tersimpan",
+      "importUrlsDescription": "Lihat atau hapus URL Import pada setiap profil.",
+      "savedImportUrlCount": "{count} tersimpan",
+      "savedImportUrl": "URL Import tersimpan",
+      "showImportUrl": "Tampilkan URL import",
+      "hideImportUrl": "Sembunyikan URL import",
+      "deleteImportUrl": "Hapus URL import",
+      "deleteImportUrlTitle": "Hapus URL import?",
+      "deleteImportUrlConfirmation": "URL Import akan dihapus. Riwayat gacha tetap tersimpan, tetapi Sync tidak dapat digunakan sampai URL baru disimpan.",
+      "importUrlDeleted": "URL import berhasil dihapus.",
+      "noSavedImportUrls": "Belum ada URL import yang tersimpan pada profil mana pun.",
+      "noSavedImportUrlsDescription": "Simpan URL saat melakukan import agar dapat digunakan kembali untuk Sync.",
       "backupRecords": "Informasi",
       "description": "Berikut adalah total data yang kamu miliki.",
       "securityWarning": "Jaga kerahasiaan file backup, terutama jika kamu memilih untuk menyertakan URL import atau token akses.",
@@ -276,6 +318,8 @@
       "downloadBackup": "Unduh backup",
       "restore": "Restore",
       "restoreDescription": "Pulihkan data menggunakan file backup sebelumnya.",
+      "dropBackup": "Tarik dan lepas file backup JSON di sini, atau pilih file dari perangkat.",
+      "dropBackupActive": "Lepaskan file untuk memulai restore.",
       "chooseBackup": "Pilih file backup",
       "profileCount": "{count} Profil",
       "recordCount": "{count} Record",
@@ -380,7 +424,7 @@
   },
   "PrivacyPolicy": {
     "title": "Kebijakan Privasi",
-    "updated": "Terakhir diperbarui: 14 September 2026",
+    "updated": "Terakhir diperbarui: 20 September 2026",
     "introduction": {
       "title": "1. Pendahuluan",
       "text": "Selamat datang di {appName}. Privasi kamu penting bagi kami. Kebijakan Privasi ini menjelaskan cara kami menangani data ketika kamu menggunakan situs kami."
@@ -393,17 +437,18 @@
     "localStorage": {
       "title": "3. Penyimpanan Lokal",
       "intro": "Kami menggunakan penyimpanan lokal browser untuk:",
-      "url": "Menyimpan URL atau token gacha kamu",
+      "url": "Menyimpan URL import gacha hanya jika kamu memilih opsi penyimpanan saat melakukan import",
       "history": "Menyimpan riwayat gacha dan data pelacakan pity kamu",
-      "details": "Data ini tetap berada di perangkat kamu kecuali kamu memilih untuk mengimpor riwayat atau mengaktifkan backup Google Drive. Data lokal dapat dihapus kapan saja dengan menghapus data browser."
+      "details": "Riwayat dan URL import yang kamu pilih untuk disimpan tetap berada di browser pada perangkat kamu. URL import tidak disimpan secara default. Data lokal dapat dihapus kapan saja dengan menghapus data browser.",
+      "export": "File backup lokal tidak menyertakan URL import secara default. URL import yang tersimpan hanya disertakan jika kamu secara khusus memilih opsi tersebut sebelum mengunduh backup. Saat file tanpa URL dipulihkan, URL yang sudah ada di browser tidak ditimpa."
     },
     "token": {
       "title": "4. Penggunaan Token",
-      "text": "URL atau token gacha kamu hanya digunakan sementara untuk memuat riwayat pull dan tidak pernah disimpan secara permanen di server kami."
+      "text": "URL atau token gacha digunakan untuk meminta riwayat pull dari endpoint terkait game dan tidak pernah disimpan secara permanen di server kami. Pada metode Web, bookmark hanya membaca token gacha sementara dari penyimpanan sesi situs resmi untuk membuat URL import; bookmark tidak membaca password kamu. URL tersebut hanya disimpan di browser jika kamu memilih opsi penyimpanan saat import."
     },
     "drive": {
       "title": "5. Backup Google Drive",
-      "backup": "Jika kamu menghubungkan Google Drive, data backup dikirim langsung dari browser ke folder data aplikasi di Google Drive kamu. Backup dapat berisi profil, riwayat gacha, statistik, serta URL atau token impor.",
+      "backup": "Jika kamu menghubungkan Google Drive, data backup dikirim langsung dari browser ke folder data aplikasi di Google Drive kamu. Backup dapat berisi profil, riwayat gacha, statistik, serta URL import yang sebelumnya kamu pilih untuk disimpan. Jika tidak ada URL import yang tersimpan, backup tidak memuat URL atau token tersebut.",
       "permission": "Kami meminta izin terbatas untuk data aplikasi Google Drive. Access token Google yang berumur pendek disimpan dalam memori browser dan tidak disimpan di penyimpanan lokal atau disertakan dalam file backup. Jika kamu memilih untuk tetap terhubung, refresh token Google disimpan dalam cookie HTTP-only yang aman agar situs dapat memulihkan sesi kamu. Kamu dapat memutuskan koneksi atau mencabut akses kapan saja."
     },
     "analytics": {
@@ -429,7 +474,7 @@
   },
   "TermsOfService": {
     "title": "Ketentuan Layanan",
-    "updated": "Terakhir diperbarui: 14 September 2026",
+    "updated": "Terakhir diperbarui: 20 September 2026",
     "acceptance": {
       "title": "1. Persetujuan terhadap Ketentuan",
       "text": "Dengan mengakses atau menggunakan {appName}, kamu menyetujui Ketentuan Layanan ini. Jika tidak setuju, jangan gunakan layanan ini."
@@ -440,14 +485,15 @@
     },
     "drive": {
       "title": "3. Akun Google dan Backup Drive",
-      "access": "Integrasi Google Drive bersifat opsional. Jika menghubungkan akun Google, kamu memberi izin kepada {appName} untuk membuat, memperbarui, dan membaca file backup miliknya sendiri di folder data aplikasi Google Drive kamu.",
+      "access": "Integrasi Google Drive bersifat opsional. Jika menghubungkan akun Google, kamu memberi izin kepada {appName} untuk membuat, memperbarui, membaca, dan mengelola file serta riwayat backup miliknya sendiri di folder data aplikasi Google Drive kamu.",
       "responsibility": "Kamu bertanggung jawab memilih akun Google yang benar dan melindungi aksesnya. Kamu dapat memutuskan koneksi Google Drive dari aplikasi atau mencabut akses melalui pengaturan Akun Google kapan saja."
     },
     "responsibilities": {
       "title": "4. Tanggung Jawab Pengguna",
       "lawful": "Gunakan layanan hanya untuk tujuan pribadi yang sah.",
+      "account": "Gunakan metode import, termasuk metode Web, hanya untuk akun yang kamu miliki atau yang secara sah boleh kamu akses, serta patuhi ketentuan layanan pihak ketiga yang terkait.",
       "abuse": "Jangan menyalahgunakan, mengganggu, atau mencoba melewati perlindungan layanan.",
-      "private": "Jaga kerahasiaan file backup yang diekspor dan URL impor gacha karena dapat memuat token akses sementara.",
+      "private": "Jaga kerahasiaan URL import gacha dan file backup yang diekspor. File backup dapat memuat URL atau token akses sementara jika kamu memilih untuk menyertakannya.",
       "verify": "Periksa data penting sebelum mengandalkan hasil perhitungan."
     },
     "thirdParty": {
@@ -476,13 +522,21 @@
     }
   },
   "ImportStatus": {
-    "urlExpired": "URL expired, tolong import ulang dengan URL baru",
-    "networkError": "Kesalahan Jaringan, coba lagi",
-    "unknownError": "Terjadi Kesalahan, coba lagi nanti",
+    "urlExpired": "URL import telah kedaluwarsa. Buat URL baru lalu import ulang.",
+    "networkError": "Koneksi jaringan bermasalah. Periksa koneksi lalu coba lagi.",
+    "unknownError": "Terjadi kesalahan saat memproses data. Silakan coba lagi.",
     "found": "{total} record ditemukan",
     "added": "{total} record ditambahkan",
     "importing": "Mengimpor record...",
     "syncing": "Menyinkronkan record...",
+    "preparing": "Menghubungkan dan memeriksa riwayat gacha.",
+    "importComplete": "Import selesai",
+    "syncComplete": "Sinkronisasi selesai",
+    "failed": "Proses gagal",
     "noNewRecords": "Belum ada record baru"
+  },
+  "NotificationStatus": {
+    "success": "Berhasil",
+    "error": "Terjadi kesalahan"
   }
 }

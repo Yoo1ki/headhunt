@@ -3,6 +3,7 @@
 import LZString from 'lz-string';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { migrateProfilesToV2 } from '@/lib/tracker-migration';
 import type { Profile } from '@/types/profile';
 
@@ -70,6 +71,14 @@ export const useStorageStore = create<StorageState>()(
 
       setProfile: (profile, options) => {
         set((state) => {
+          if (
+            !profile.id &&
+            Object.keys(state.profiles).length >=
+              TRACKER_CONFIG.profiles.maxCount
+          ) {
+            return state;
+          }
+
           let nextId = 1;
           while (Object.hasOwn(state.profiles, String(nextId))) nextId++;
           const id = profile.id || String(nextId);
@@ -152,7 +161,8 @@ export const useStorageStore = create<StorageState>()(
       storage: createJSONStorage(() => storage),
 
       migrate: (persistedState, version) => {
-        if (version >= 2 || !persistedState) return persistedState;
+        // This migration and its notice apply only to the v1 -> v2 upgrade.
+        if (version !== 1 || !persistedState) return persistedState;
 
         const state = persistedState as Partial<StorageState>;
         if (!state.profiles) return persistedState;

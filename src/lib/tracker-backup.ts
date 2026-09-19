@@ -74,6 +74,7 @@ const profileSchema = z.object({
 const backupSchema = z.object({
   app: z.literal('headhunt.cc'),
   version: z.union([z.literal(1), z.literal(2)]),
+  includesImportUrls: z.boolean().optional(),
   exportedAt: z.iso.datetime(),
   currentProfileId: z.string().catch(''),
   profiles: z
@@ -90,6 +91,7 @@ export const createTrackerBackup = (
 ): TrackerBackup => ({
   app: 'headhunt.cc',
   version: 2,
+  includesImportUrls: options.includeImportUrls ?? true,
   exportedAt: new Date().toISOString(),
   currentProfileId,
   profiles:
@@ -111,11 +113,60 @@ export const createTrackerBackup = (
         ),
 });
 
-export const calculateTrackerBackupHash = async (backup: TrackerBackup) => {
+const withoutImportUrls = (
+  profiles: TrackerBackup['profiles']
+): TrackerBackup['profiles'] =>
+  Object.fromEntries(
+    Object.entries(profiles).map(([id, profile]) => [
+      id,
+      profile.stores?.headhunt
+        ? {
+            ...profile,
+            stores: {
+              ...profile.stores,
+              headhunt: { ...profile.stores.headhunt, url: '' },
+            },
+          }
+        : profile,
+    ])
+  );
+
+export const getTrackerBackupProfilesForRestore = (
+  backup: TrackerBackup,
+  currentProfiles: Record<string, Profile>
+): TrackerBackup['profiles'] =>
+  backup.includesImportUrls !== false
+    ? backup.profiles
+    : Object.fromEntries(
+        Object.entries(backup.profiles).map(([id, profile]) => {
+          const currentUrl = currentProfiles[id]?.stores?.headhunt?.url;
+          if (!profile.stores?.headhunt || !currentUrl) return [id, profile];
+
+          return [
+            id,
+            {
+              ...profile,
+              stores: {
+                ...profile.stores,
+                headhunt: { ...profile.stores.headhunt, url: currentUrl },
+              },
+            },
+          ];
+        })
+      );
+
+export const calculateTrackerBackupHash = async (
+  backup: TrackerBackup,
+  options: { includeImportUrls?: boolean } = {}
+) => {
+  const includeImportUrls =
+    options.includeImportUrls ?? backup.includesImportUrls !== false;
   const canonicalContent = JSON.stringify({
     version: backup.version,
     currentProfileId: backup.currentProfileId,
-    profiles: backup.profiles,
+    profiles: includeImportUrls
+      ? backup.profiles
+      : withoutImportUrls(backup.profiles),
   });
   const digest = await crypto.subtle.digest(
     'SHA-256',

@@ -1,4 +1,4 @@
-import { TRACKER_CONFIG, TRACKER_IMPORT_PAGE_URL } from '@/config/tracker';
+import { TRACKER_CONFIG, TRACKER_IMPORT_URL_BASE } from '@/config/tracker';
 
 export const OFFICIAL_RECORDBOOK_URL =
   TRACKER_CONFIG.import.officialRecordBookUrl;
@@ -17,7 +17,7 @@ export const WEB_IMPORT_BOOKMARKLET = [
   '}',
   '}',
   "if(!token)throw new Error('Token not found. Log in, select your character, then refresh the page.');",
-  `const importUrl='${TRACKER_IMPORT_PAGE_URL}?token='+encodeURIComponent(token)+'&server_id=${TRACKER_CONFIG.import.autoServerId}';`,
+  `const importUrl='${TRACKER_IMPORT_URL_BASE}?lang=${TRACKER_CONFIG.import.language}&pool_type=${TRACKER_CONFIG.import.characterPoolType}&token='+encodeURIComponent(token)+'&server_id=${TRACKER_CONFIG.import.autoServerId}';`,
   'try{',
   'await navigator.clipboard.writeText(importUrl);',
   "alert('Import URL copied. Return to Headhunt.cc and paste it.');",

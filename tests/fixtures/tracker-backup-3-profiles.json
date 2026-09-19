@@ -1,0 +1,45 @@
+{
+  "app": "headhunt.cc",
+  "version": 2,
+  "includesImportUrls": true,
+  "exportedAt": "2026-09-20T12:00:00.000Z",
+  "currentProfileId": "1",
+  "profiles": {
+    "1": {
+      "id": "1",
+      "name": "Main Account",
+      "stores": {
+        "headhunt": {
+          "url": "https://ef-webview.gryphline.com/api/record/char?lang=en-us&pool_type=E_CharacterGachaPoolType_Special&token=test-token-main&server_id=2",
+          "types": {},
+          "banners": {},
+          "records": {}
+        }
+      }
+    },
+    "2": {
+      "id": "2",
+      "name": "Second Account",
+      "stores": {
+        "headhunt": {
+          "url": "https://ef-webview.gryphline.com/api/record/char?lang=en-us&pool_type=E_CharacterGachaPoolType_Special&token=test-token-second&server_id=3",
+          "types": {},
+          "banners": {},
+          "records": {}
+        }
+      }
+    },
+    "3": {
+      "id": "3",
+      "name": "No Saved URL",
+      "stores": {
+        "headhunt": {
+          "url": "",
+          "types": {},
+          "banners": {},
+          "records": {}
+        }
+      }
+    }
+  }
+}

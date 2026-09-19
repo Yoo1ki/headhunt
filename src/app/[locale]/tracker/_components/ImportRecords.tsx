@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Tabs } from '@/components/ui/Tabs';
 import { importUrlSchema } from '@/lib/validators/import-url';
-import { TRACKER_CONFIG, TRACKER_IMPORT_PAGE_URL } from '@/config/tracker';
+import { TRACKER_CONFIG, TRACKER_IMPORT_URL_EXAMPLE } from '@/config/tracker';
 import {
   OFFICIAL_RECORDBOOK_URL,
   WEB_IMPORT_BOOKMARKLET,
@@ -93,7 +93,6 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   useEffect(() => {
     if (isOpen) {
       setTargetProfileId(currentProfileId);
-      setSaveImportUrl(false);
       setDefaultImportTab(/Windows/i.test(navigator.userAgent) ? 0 : 1);
       return;
     }
@@ -118,7 +117,14 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
   const handleImport = () => {
     if (isImporting || !url || error || !targetProfile) return;
-    importRecords(url, 'import', targetProfileId, saveImportUrl);
+    void importRecords(url, 'import', targetProfileId, saveImportUrl).then(
+      (succeeded) => {
+        if (!succeeded) return;
+        setUrl('');
+        setError('');
+        setSaveImportUrl(false);
+      }
+    );
     onClose();
   };
 
@@ -408,7 +414,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 type="url"
                 value={url}
                 onChange={(event) => validateUrl(event.target.value)}
-                placeholder={`${TRACKER_IMPORT_PAGE_URL}?...`}
+                placeholder={TRACKER_IMPORT_URL_EXAMPLE}
                 className={`w-full rounded-xl border bg-neutral-950/60 py-2.5 pr-3 pl-10 text-sm text-white outline-hidden transition-colors placeholder:text-white/25 ${error ? 'border-red-400/60 focus:border-red-400' : 'border-white/10 focus:border-yellow-400/60'}`}
                 inputMode="url"
                 autoCapitalize="none"
