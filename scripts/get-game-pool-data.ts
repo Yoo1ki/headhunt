@@ -5,6 +5,7 @@ import type {
   GamePoolWeapon,
 } from '../src/types/api/game-pool';
 import { CONFIG } from '@/config';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { ensureDirs } from './lib/ensure-dirs';
 import { writeJsonFiles } from './lib/write-json-files';
 import { bannerPoolConfig } from './config/banner-pools';
@@ -24,7 +25,7 @@ async function getContent(lang: string, poolId: string) {
   });
 
   const response = await fetch(
-    `${CONFIG.endfieldBaseUrl}/api/content?${params}`
+    `${TRACKER_CONFIG.api.baseUrl}/api/content?${params}`
   );
 
   if (!response.ok) {

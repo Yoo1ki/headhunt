@@ -1,33 +1,21 @@
 import { z } from 'zod';
-import { CONFIG } from '@/config';
+import { TRACKER_CONFIG } from '@/config/tracker';
 
-const extractImportUrl = (value: string) => {
+export const extractImportCredential = (value: string) => {
   const url = new URL(value);
 
-  if (url.origin !== CONFIG.endfieldBaseUrl) return null;
+  if (url.origin !== TRACKER_CONFIG.api.baseUrl) return null;
 
   const params = url.searchParams;
+  const token = params.get('token') ?? params.get('u8_token');
+  const server = params.get('server_id') ?? params.get('server');
 
-  const patterns = [
-    { token: 'u8_token', server: 'server' },
-    { token: 'token', server: 'server_id' },
-  ];
-
-  for (const pattern of patterns) {
-    const token = params.get(pattern.token);
-    const server = params.get(pattern.server);
-
-    if (token && server) {
-      return { token, server };
-    }
-  }
-
-  return null;
+  return token && server ? { token, server } : null;
 };
 
 export const importUrlSchema = z.url().transform((value, ctx) => {
   try {
-    const result = extractImportUrl(value);
+    const result = extractImportCredential(value);
 
     if (!result) {
       ctx.addIssue({ code: 'custom', message: 'Invalid URL' });

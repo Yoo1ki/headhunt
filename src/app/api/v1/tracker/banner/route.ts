@@ -1,4 +1,4 @@
-import { CONFIG } from '@/config';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { jsonError, jsonSuccess } from '@/lib/api-response';
 import { fetchJsonWithRetry } from '@/lib/fetch-json-with-retry';
 import { bannerPayloadSchema } from '@/lib/validators/banner-payload';
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
       pool_id: id,
       server_id: '2',
     });
-    const url = new URL('/api/content', CONFIG.endfieldBaseUrl);
+    const url = new URL('/api/content', TRACKER_CONFIG.api.baseUrl);
     url.search = params.toString();
 
     // Fetch API

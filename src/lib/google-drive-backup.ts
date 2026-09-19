@@ -34,9 +34,12 @@ export const getGoogleDriveSession =
   };
 
 export const beginGoogleDriveConnection = (returnTo: string) => {
-  window.location.assign(
-    `/api/auth/google/start?${new URLSearchParams({ returnTo })}`
+  const authorizationUrl = new URL(
+    '/api/auth/google/start',
+    window.location.origin
   );
+  authorizationUrl.search = new URLSearchParams({ returnTo }).toString();
+  window.location.assign(authorizationUrl);
 };
 
 export const disconnectGoogleDriveSession = async () => {

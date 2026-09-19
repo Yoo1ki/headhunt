@@ -6,6 +6,7 @@ export type DataImportRecord = {
   list: ImportRecordItem[];
   hasMore: boolean;
   nextId?: number;
+  serverId?: string;
 };
 
 export type ImportRecordItem = {

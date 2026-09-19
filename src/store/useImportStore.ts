@@ -28,7 +28,8 @@ type ImportState = {
   importRecords: (
     url: string,
     processType?: ImportProcessType,
-    profileId?: string
+    profileId?: string,
+    saveImportUrl?: boolean
   ) => Promise<void>;
 };
 
@@ -131,7 +132,12 @@ export const useImportStore = create<ImportState>((set) => ({
   totalRecord: 0,
   errorType: null,
 
-  importRecords: async (url, processType = 'import', profileId) => {
+  importRecords: async (
+    url,
+    processType = 'import',
+    profileId,
+    saveImportUrl = false
+  ) => {
     const { profiles, currentProfileId, setProfile } =
       useStorageStore.getState();
 
@@ -158,7 +164,9 @@ export const useImportStore = create<ImportState>((set) => ({
     const oldHeadhunt = profile.stores?.headhunt;
 
     const newHeadhunt: Headhunt = {
-      url,
+      // Sync always keeps the URL it already relies on. A manual import only
+      // persists the submitted credential when the user explicitly opts in.
+      url: processType === 'sync' || saveImportUrl ? url : '',
       types: {},
       banners: {},
       records: {},
@@ -202,6 +210,12 @@ export const useImportStore = create<ImportState>((set) => ({
           }
 
           const json = (await response.json()) as ResImportRecord;
+          if (json.data.serverId) {
+            parsedUrl.searchParams.set('server_id', json.data.serverId);
+            if (processType === 'sync' || saveImportUrl) {
+              newHeadhunt.url = parsedUrl.toString();
+            }
+          }
           nextId = json.data.nextId;
 
           const newRecords = json.data.list.filter(

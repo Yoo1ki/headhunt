@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -11,12 +12,23 @@ import {
 type TabsProps = {
   tabs: string[];
   children: ReactNode[];
+  defaultActiveIndex?: number;
+  resetKey?: unknown;
 };
 
-export const Tabs = ({ tabs, children }: TabsProps) => {
-  const [active, setActive] = useState(0);
+export const Tabs = ({
+  tabs,
+  children,
+  defaultActiveIndex = 0,
+  resetKey,
+}: TabsProps) => {
+  const [active, setActive] = useState(defaultActiveIndex);
   const baseId = useId();
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    setActive(Math.min(Math.max(defaultActiveIndex, 0), tabs.length - 1));
+  }, [defaultActiveIndex, resetKey, tabs.length]);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
@@ -38,7 +50,7 @@ export const Tabs = ({ tabs, children }: TabsProps) => {
         role="tablist"
         aria-label="Platform"
         onKeyDown={handleKeyDown}
-        className="mb-4 grid grid-cols-3 gap-1 rounded-xl bg-neutral-950/50 p-1"
+        className="mb-4 grid auto-cols-fr grid-flow-col gap-1 rounded-xl bg-neutral-950/50 p-1"
       >
         {tabs.map((tab, index) => (
           <button

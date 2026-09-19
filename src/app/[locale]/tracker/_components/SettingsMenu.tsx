@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/Button';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { Modal } from '@/components/ui/Modal';
 import { Tooltip } from '@/components/ui/Tooltip';
 import {
@@ -45,9 +46,6 @@ import {
   FaLinkSlash,
 } from 'react-icons/fa6';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
-const MAX_BACKUP_SIZE = 10 * 1024 * 1024;
-const HISTORY_PAGE_SIZE = 5;
 
 type SettingsMenuProps = {
   isOpen: boolean;
@@ -131,6 +129,7 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   >(null);
   const [isAddingProfile, setIsAddingProfile] = useState(false);
   const [profileName, setProfileName] = useState('');
+  const [includeImportUrls, setIncludeImportUrls] = useState(false);
   const [editingProfileId, setEditingProfileId] = useState<string | null>(null);
   const [editingProfileName, setEditingProfileName] = useState('');
   const lastSyncedDataRef = useRef<string | null>(null);
@@ -138,6 +137,17 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   const hasLocalImportedData = Object.values(profiles).some(
     (profile) => profile.stores?.headhunt?.records !== undefined
   );
+  const hasStoredImportUrl = Object.values(profiles).some((profile) =>
+    Boolean(profile.stores?.headhunt?.url)
+  );
+
+  useEffect(() => {
+    if (isOpen) setIncludeImportUrls(false);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!hasStoredImportUrl) setIncludeImportUrls(false);
+  }, [hasStoredImportUrl]);
 
   const refreshDriveHistory = useCallback(
     async (session: GoogleDriveSession) => {
@@ -171,11 +181,15 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
   const resolvedLocalUpdatedAt =
     localDataUpdatedAt || latestLocalRecordTimestamp;
   const localBackupSize = new TextEncoder().encode(
-    JSON.stringify(createTrackerBackup(profiles, currentProfileId))
+    JSON.stringify(
+      createTrackerBackup(profiles, currentProfileId, { includeImportUrls })
+    )
   ).byteLength;
 
   const handleBackup = () => {
-    const backup = createTrackerBackup(profiles, currentProfileId);
+    const backup = createTrackerBackup(profiles, currentProfileId, {
+      includeImportUrls,
+    });
     const blob = new Blob([JSON.stringify(backup)], {
       type: 'application/json',
     });
@@ -496,7 +510,8 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
     if (!file) return;
 
     try {
-      if (file.size > MAX_BACKUP_SIZE) throw new Error('Backup is too large');
+      if (file.size > TRACKER_CONFIG.backup.maxFileSizeBytes)
+        throw new Error('Backup is too large');
 
       const backup = parseTrackerBackup(JSON.parse(await file.text()));
       const localBackup = createTrackerBackup(profiles, currentProfileId);
@@ -613,11 +628,11 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
 
   const historyPageCount = Math.max(
     1,
-    Math.ceil(driveBackups.length / HISTORY_PAGE_SIZE)
+    Math.ceil(driveBackups.length / TRACKER_CONFIG.backup.historyPageSize)
   );
   const visibleDriveBackups = driveBackups.slice(
-    historyPage * HISTORY_PAGE_SIZE,
-    (historyPage + 1) * HISTORY_PAGE_SIZE
+    historyPage * TRACKER_CONFIG.backup.historyPageSize,
+    (historyPage + 1) * TRACKER_CONFIG.backup.historyPageSize
   );
   const normalizedProfileName = profileName.trim();
   const isProfileNameValid =
@@ -1164,9 +1179,38 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
                     <p className="mt-1 flex-1 text-sm leading-relaxed text-white/60">
                       {t('backupDescription')}
                     </p>
+                    <label
+                      className={`mt-4 flex items-start gap-3 text-sm ${
+                        hasStoredImportUrl
+                          ? 'cursor-pointer text-white/80'
+                          : 'cursor-not-allowed text-white/35'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={includeImportUrls}
+                        disabled={!hasStoredImportUrl}
+                        onChange={(event) =>
+                          setIncludeImportUrls(event.target.checked)
+                        }
+                        className="mt-0.5 h-4 w-4 shrink-0 accent-yellow-400 disabled:opacity-40"
+                      />
+                      <span>
+                        <span className="block font-medium">
+                          {t('includeImportUrls')}
+                        </span>
+                        <span className="mt-0.5 block leading-relaxed opacity-70">
+                          {t(
+                            hasStoredImportUrl
+                              ? 'includeImportUrlsDescription'
+                              : 'noImportUrlsDescription'
+                          )}
+                        </span>
+                      </span>
+                    </label>
                     <Button
                       variant="secondary"
-                      className="mt-4 w-full"
+                      className="mt-3 w-full"
                       onClick={handleBackup}
                     >
                       <FaDownload />

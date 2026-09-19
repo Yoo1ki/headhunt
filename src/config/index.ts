@@ -6,7 +6,6 @@ export const CONFIG = {
     process.env.NODE_ENV === 'production'
       ? 'https://headhunt.cc'
       : 'http://localhost:3000',
-  endfieldBaseUrl: 'https://ef-webview.gryphline.com',
   discordUrl: 'https://discord.gg/jBNxtSstEa',
   googleClientId:
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ??

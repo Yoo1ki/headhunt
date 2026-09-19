@@ -70,6 +70,11 @@ src/components/
 `get-record-url.ps1` intentionally remains in the repository root because the
 published tracker UI downloads it through its stable GitHub raw URL.
 
+Tracker-specific endpoints, import sources, supported server IDs, and backup
+limits are centralized in `src/config/tracker.ts`. Keep environment-independent
+product configuration there instead of duplicating literals across components,
+API routes, or scripts.
+
 Puppeteer scripts use the existing local defaults for Chrome. Override them on
 another machine with `CHROME_EXECUTABLE_PATH` and `PUPPETEER_USER_DATA_DIR`.
 

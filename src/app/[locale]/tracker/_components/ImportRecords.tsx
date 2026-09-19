@@ -2,6 +2,11 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { Tabs } from '@/components/ui/Tabs';
 import { importUrlSchema } from '@/lib/validators/import-url';
+import { TRACKER_CONFIG, TRACKER_IMPORT_PAGE_URL } from '@/config/tracker';
+import {
+  OFFICIAL_RECORDBOOK_URL,
+  WEB_IMPORT_BOOKMARKLET,
+} from '@/lib/web-import-bookmarklet';
 import { useImportStore } from '@/store/useImportStore';
 import { useStorageStore } from '@/store/useStorageStore';
 import { useTranslations } from 'next-intl';
@@ -10,11 +15,11 @@ import {
   FaArrowUpRightFromSquare,
   FaCheck,
   FaClipboard,
-  FaClock,
   FaCircleInfo,
   FaFileImport,
   FaLink,
   FaPaste,
+  FaShieldHalved,
   FaTerminal,
   FaUser,
 } from 'react-icons/fa6';
@@ -31,9 +36,6 @@ type StepProps = {
   title: string;
   children: ReactNode;
 };
-
-const POWERSHELL_SCRIPT_URL =
-  'https://github.com/Yoo1ki/headhunt/blob/main/get-record-url.ps1';
 
 const Step = ({ number, title, children }: StepProps) => (
   <div className="flex gap-3 rounded-xl bg-white/5 p-3">
@@ -58,8 +60,10 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   const currentProfileId = useStorageStore((state) => state.currentProfileId);
   const [url, setUrl] = useState('');
   const [error, setError] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [saveImportUrl, setSaveImportUrl] = useState(false);
+  const [copied, setCopied] = useState<'web' | 'windows' | null>(null);
   const [targetProfileId, setTargetProfileId] = useState(currentProfileId);
+  const [defaultImportTab, setDefaultImportTab] = useState(0);
 
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement>(null);
@@ -81,22 +85,22 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
   const profileEntries = Object.entries(profiles);
   const targetProfile = profiles[targetProfileId];
-  const hasImportedData = profileEntries.some(
-    ([, profile]) => profile.stores?.headhunt
-  );
+  const targetHasImportedData = Boolean(targetProfile?.stores?.headhunt);
+  const targetHasSavedImportUrl = Boolean(targetProfile?.stores?.headhunt?.url);
 
-  const command =
-    'iwr "https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main/get-record-url.ps1" -UseB | iex';
+  const command = `iwr "${TRACKER_CONFIG.import.powershellScriptRawUrl}" -UseB | iex`;
 
   useEffect(() => {
     if (isOpen) {
       setTargetProfileId(currentProfileId);
+      setSaveImportUrl(false);
+      setDefaultImportTab(/Windows/i.test(navigator.userAgent) ? 0 : 1);
       return;
     }
 
     if (!isOpen) {
       setError('');
-      setCopied(false);
+      setCopied(null);
     }
   }, [currentProfileId, isOpen]);
 
@@ -114,43 +118,42 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
 
   const handleImport = () => {
     if (isImporting || !url || error || !targetProfile) return;
-    importRecords(url, 'import', targetProfileId);
+    importRecords(url, 'import', targetProfileId, saveImportUrl);
     onClose();
   };
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(command);
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1500);
+  const handleCopy = async (value: string, source: 'web' | 'windows') => {
+    await navigator.clipboard.writeText(value);
+    setCopied(source);
+    window.setTimeout(() => setCopied(null), 1500);
   };
-
-  const comingSoon = (
-    <div className="flex flex-col items-center justify-center rounded-xl bg-white/3 px-4 py-10 text-center">
-      <FaClock className="text-2xl text-white/35" />
-      <h3 className="mt-3 font-semibold text-white">{t('comingSoonTitle')}</h3>
-      <p className="mt-1 max-w-sm text-sm leading-relaxed text-white/50">
-        {t('comingSoonDescription')}
-      </p>
-    </div>
-  );
 
   return (
     <Modal title={t('title')} isOpen={isOpen} onClose={onClose}>
       <div className="flex flex-col gap-4">
-        {hasImportedData && (
+        {targetHasImportedData && (
           <div className="flex items-start gap-3 rounded-xl bg-yellow-500/10 p-3 text-yellow-200">
             <FaCircleInfo className="mt-0.5 shrink-0" />
             <p className="text-sm leading-relaxed">
-              {trackerT.rich('reimportInstruction', {
-                bold: (chunks) => (
-                  <strong className="font-semibold">{chunks}</strong>
-                ),
-              })}
+              {trackerT.rich(
+                targetHasSavedImportUrl
+                  ? 'reimportInstruction'
+                  : 'reimportWithoutSavedUrlInstruction',
+                {
+                  bold: (chunks) => (
+                    <strong className="font-semibold">{chunks}</strong>
+                  ),
+                }
+              )}
             </p>
           </div>
         )}
 
-        <Tabs tabs={['Windows', 'Android', 'iOS']}>
+        <Tabs
+          tabs={['Windows', 'Web']}
+          defaultActiveIndex={defaultImportTab}
+          resetKey={isOpen}
+        >
           <div className="flex flex-col gap-3">
             <Step number={1} title={t('WindowsSteps.openHeadHuntingTitle')}>
               {t.rich('WindowsSteps.openHeadHuntingDesc', {
@@ -195,15 +198,15 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                   </span>
                   <button
                     type="button"
-                    onClick={() => void handleCopy()}
+                    onClick={() => void handleCopy(command, 'windows')}
                     className="flex cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 font-medium text-white/60 transition-colors hover:bg-white/10 hover:text-white"
                   >
-                    {copied ? (
+                    {copied === 'windows' ? (
                       <FaCheck className="text-green-300" />
                     ) : (
                       <FaClipboard />
                     )}
-                    {t(copied ? 'copied' : 'copy')}
+                    {t(copied === 'windows' ? 'copied' : 'copy')}
                   </button>
                 </div>
                 <code className="block p-3 text-xs leading-relaxed break-all whitespace-pre-wrap text-white/70">
@@ -211,7 +214,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 </code>
               </div>
               <a
-                href={POWERSHELL_SCRIPT_URL}
+                href={TRACKER_CONFIG.import.powershellScriptUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-300/60 focus-visible:outline-hidden"
@@ -221,8 +224,60 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
               </a>
             </Step>
           </div>
-          {comingSoon}
-          {comingSoon}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start gap-3 rounded-xl bg-green-500/10 p-3 text-green-200">
+              <FaShieldHalved className="mt-0.5 shrink-0" />
+              <div className="text-sm leading-relaxed">
+                <p className="font-semibold">{t('WebSteps.securityTitle')}</p>
+                <p className="mt-0.5 text-green-100/65">
+                  {t('WebSteps.securityDescription')}
+                </p>
+              </div>
+            </div>
+            <Step number={1} title={t('WebSteps.openRecordBookTitle')}>
+              <p>{t('WebSteps.openRecordBookDesc')}</p>
+              <a
+                href={OFFICIAL_RECORDBOOK_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-300/60 focus-visible:outline-hidden"
+              >
+                {t('WebSteps.openOfficialSite')}
+                <FaArrowUpRightFromSquare aria-hidden="true" />
+              </a>
+            </Step>
+            <Step number={2} title={t('WebSteps.createBookmarkTitle')}>
+              <p>{t('WebSteps.createBookmarkDesc')}</p>
+              <Button
+                type="button"
+                variant="secondary"
+                className="mt-3 w-full"
+                onClick={() => void handleCopy(WEB_IMPORT_BOOKMARKLET, 'web')}
+              >
+                {copied === 'web' ? (
+                  <FaCheck className="text-green-300" />
+                ) : (
+                  <FaClipboard />
+                )}
+                {t(
+                  copied === 'web'
+                    ? 'WebSteps.bookmarkletCopied'
+                    : 'WebSteps.copyBookmarklet'
+                )}
+              </Button>
+              <details className="mt-2 text-xs text-white/45">
+                <summary className="cursor-pointer py-1 font-medium text-white/55 hover:text-white/75">
+                  {t('WebSteps.reviewBookmarklet')}
+                </summary>
+                <code className="mt-1 block max-h-24 overflow-y-auto rounded-lg bg-neutral-950/70 p-3 leading-relaxed break-all">
+                  {WEB_IMPORT_BOOKMARKLET}
+                </code>
+              </details>
+            </Step>
+            <Step number={3} title={t('WebSteps.runBookmarkTitle')}>
+              {t('WebSteps.runBookmarkDesc')}
+            </Step>
+          </div>
         </Tabs>
 
         <form
@@ -353,7 +408,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 type="url"
                 value={url}
                 onChange={(event) => validateUrl(event.target.value)}
-                placeholder="https://ef-webview.gryphline.com/page/gacha_char?..."
+                placeholder={`${TRACKER_IMPORT_PAGE_URL}?...`}
                 className={`w-full rounded-xl border bg-neutral-950/60 py-2.5 pr-3 pl-10 text-sm text-white outline-hidden transition-colors placeholder:text-white/25 ${error ? 'border-red-400/60 focus:border-red-400' : 'border-white/10 focus:border-yellow-400/60'}`}
                 inputMode="url"
                 autoCapitalize="none"
@@ -371,6 +426,22 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                 </p>
               )}
             </div>
+            <label className="mt-1 flex cursor-pointer items-start gap-3 text-sm text-white/80">
+              <input
+                type="checkbox"
+                checked={saveImportUrl}
+                onChange={(event) => setSaveImportUrl(event.target.checked)}
+                className="mt-0.5 h-4 w-4 shrink-0 accent-yellow-400"
+              />
+              <span>
+                <span className="block font-medium text-white">
+                  {t('saveImportUrl')}
+                </span>
+                <span className="mt-0.5 block leading-relaxed text-white/50">
+                  {t('saveImportUrlDescription')}
+                </span>
+              </span>
+            </label>
             <div className="mt-2 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <Button
                 type="button"

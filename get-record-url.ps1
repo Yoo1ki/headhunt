@@ -1,75 +1,158 @@
+# Headhunt.cc - Arknights: Endfield import URL helper
+#
+# What this script does:
+# 1. Reads the local Endfield webview cache in read-only mode.
+# 2. Finds the most recent official GRYPHLINE URL containing a gacha token.
+# 3. Rebuilds it as a consistent Headhunt.cc-compatible import URL.
+# 4. Copies that URL to the clipboard.
+#
+# This script does NOT upload data, contact a third-party server, modify game
+# files, request administrator access, or save the token anywhere.
+
 $CachePath = Join-Path $env:LOCALAPPDATA "PlatformProcess\Cache\data_1"
-$UrlRegex = [regex]::new(
-    'https://[A-Za-z0-9.\-]+\.gryphline\.com/[A-Za-z0-9._~\-/?&=%+]*?token=[A-Za-z0-9._~\-/?&=%+]*?server=[A-Za-z0-9._~\-/?&=%+]+',
+$CanonicalImportPage = "https://ef-webview.gryphline.com/page/gacha_char"
+
+# Query parameters are validated separately, keeping this rule easy to audit.
+$GryphlineUrlPattern = [regex]::new(
+    'https://[A-Za-z0-9.-]+\.gryphline\.com/[A-Za-z0-9._~:/?#\[\]@!$&''()*+,;=%-]+',
     [Text.RegularExpressions.RegexOptions]::Compiled
 )
 
-function Read-CacheSafely {
-    param([string]$Path)
+function Read-FileWithoutLocking {
+    param([Parameter(Mandatory = $true)][string]$Path)
 
-    if (!(Test-Path $Path)) {
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
         throw "Cache file not found: $Path"
     }
 
-    $maxRetry = 10
-    $delay = 300
+    $MaximumAttempts = 10
+    $RetryDelayMilliseconds = 300
 
-    for ($i = 0; $i -lt $maxRetry; $i++) {
+    for ($Attempt = 1; $Attempt -le $MaximumAttempts; $Attempt++) {
+        $FileStream = $null
+        $MemoryStream = $null
+
         try {
-            $fs = [System.IO.File]::Open(
+            $FileStream = [System.IO.File]::Open(
                 $Path,
                 [System.IO.FileMode]::Open,
                 [System.IO.FileAccess]::Read,
                 [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
             )
+            $MemoryStream = New-Object System.IO.MemoryStream
+            $FileStream.CopyTo($MemoryStream)
 
-            $ms = New-Object System.IO.MemoryStream
-            $fs.CopyTo($ms)
-            $fs.Dispose()
-
-            return $ms.ToArray()
+            return $MemoryStream.ToArray()
         }
         catch {
-            Start-Sleep -Milliseconds $delay
+            if ($Attempt -eq $MaximumAttempts) {
+                throw "The cache file is still unavailable after $MaximumAttempts attempts."
+            }
+            Start-Sleep -Milliseconds $RetryDelayMilliseconds
+        }
+        finally {
+            if ($MemoryStream) { $MemoryStream.Dispose() }
+            if ($FileStream) { $FileStream.Dispose() }
+        }
+    }
+}
+
+function ConvertFrom-QueryString {
+    param([Parameter(Mandatory = $true)][string]$Query)
+
+    $Parameters = @{}
+
+    foreach ($Pair in $Query.TrimStart('?').Split('&')) {
+        if (-not $Pair) { continue }
+
+        $Parts = $Pair.Split('=', 2)
+        $Name = [Uri]::UnescapeDataString($Parts[0])
+        $Value = if ($Parts.Count -eq 2) {
+            [Uri]::UnescapeDataString($Parts[1])
+        }
+        else {
+            ""
+        }
+
+        $Parameters[$Name] = $Value
+    }
+
+    return $Parameters
+}
+
+function Find-LatestImportCredential {
+    param([Parameter(Mandatory = $true)][byte[]]$Bytes)
+
+    # ISO-8859-1 preserves every byte one-to-one, allowing embedded ASCII URLs
+    # to be searched without interpreting the rest of the binary cache.
+    $CacheText = [Text.Encoding]::GetEncoding("ISO-8859-1").GetString($Bytes)
+    $UrlMatches = $GryphlineUrlPattern.Matches($CacheText)
+
+    # The last valid match is normally the most recently opened history page.
+    for ($Index = $UrlMatches.Count - 1; $Index -ge 0; $Index--) {
+        try {
+            $Candidate = [Uri]$UrlMatches[$Index].Value
+            $Parameters = ConvertFrom-QueryString -Query $Candidate.Query
+
+            $Token = if ($Parameters.ContainsKey('token')) {
+                $Parameters['token']
+            }
+            else {
+                $Parameters['u8_token']
+            }
+
+            $ServerId = if ($Parameters.ContainsKey('server_id')) {
+                $Parameters['server_id']
+            }
+            else {
+                $Parameters['server']
+            }
+
+            if ($Token -and $ServerId) {
+                return @{
+                    Token    = $Token
+                    ServerId = $ServerId
+                }
+            }
+        }
+        catch {
+            # Ignore malformed cache fragments and continue to older matches.
         }
     }
 
-    throw "File still locked after retries"
+    return $null
 }
 
-function Get-LastUrlFromBytes {
-    param([byte[]]$Bytes)
+function New-CanonicalImportUrl {
+    param(
+        [Parameter(Mandatory = $true)][string]$Token,
+        [Parameter(Mandatory = $true)][string]$ServerId
+    )
 
-    $text = [Text.Encoding]::GetEncoding("ISO-8859-1").GetString($Bytes)
+    $EncodedToken = [Uri]::EscapeDataString($Token)
+    $EncodedServerId = [Uri]::EscapeDataString($ServerId)
 
-    $urlMatches = $UrlRegex.Matches($text)
-
-    if ($urlMatches.Count -eq 0) {
-        return $null
-    }
-
-    return $urlMatches[$urlMatches.Count - 1].Value
-}
-
-function Show-Result {
-    param([string]$Url)
-
-    Write-Host "Success! URL copied to clipboard:" -ForegroundColor Green
-    Write-Host $Url
+    return "${CanonicalImportPage}?token=${EncodedToken}&server_id=${EncodedServerId}"
 }
 
 try {
-    Write-Host "Reading cache file..." -ForegroundColor Yellow
+    Write-Host "Reading the Endfield cache in read-only mode..." -ForegroundColor Yellow
 
-    $bytes = Read-CacheSafely $CachePath
-    $url = Get-LastUrlFromBytes $bytes
+    $CacheBytes = Read-FileWithoutLocking -Path $CachePath
+    $Credential = Find-LatestImportCredential -Bytes $CacheBytes
 
-    if (-not $url) {
-        throw "No matching URL found. Make sure tracker page is opened in-game."
+    if (-not $Credential) {
+        throw "No import URL was found. Open Headhunting Details in the game, then try again."
     }
 
-    Set-Clipboard $url
-    Show-Result $url
+    $ImportUrl = New-CanonicalImportUrl `
+        -Token $Credential.Token `
+        -ServerId $Credential.ServerId
+
+    Set-Clipboard -Value $ImportUrl
+
+    Write-Host "Success! The canonical import URL was copied to your clipboard:" -ForegroundColor Green
+    Write-Host $ImportUrl
 }
 catch {
     Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red

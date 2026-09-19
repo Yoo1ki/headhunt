@@ -1,4 +1,4 @@
-import { CONFIG } from '@/config';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { headhuntTypes } from '@/data/tracker/headhunt-types';
 import type {
   DataImportRecord,
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
     token: url.token,
     server_id: url.server,
   });
-  const recordUrl = new URL(type.endpoint, CONFIG.endfieldBaseUrl);
+  const recordUrl = new URL(type.endpoint, TRACKER_CONFIG.api.baseUrl);
   recordUrl.search = params.toString();
 
   const res = await fetchJsonWithRetry<ResGameRecord>(recordUrl, {

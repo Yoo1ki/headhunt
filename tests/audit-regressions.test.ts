@@ -11,11 +11,36 @@ import {
   deleteAllGoogleDriveBackups,
   listGoogleDriveBackups,
 } from '../src/lib/google-drive-backup';
-import { parseTrackerBackup } from '../src/lib/tracker-backup';
+import {
+  createTrackerBackup,
+  parseTrackerBackup,
+} from '../src/lib/tracker-backup';
+import { extractImportCredential } from '../src/lib/validators/import-url';
 import { useStorageStore } from '../src/store/useStorageStore';
 
 async function main() {
   const origin = 'https://headhunt.cc';
+  const importOrigin = 'https://ef-webview.gryphline.com/page/gacha_char';
+
+  for (const [query, expected] of [
+    ['token=current&server_id=2', { token: 'current', server: '2' }],
+    ['u8_token=legacy&server=3', { token: 'legacy', server: '3' }],
+    ['token=mixed&server=2', { token: 'mixed', server: '2' }],
+    [
+      'u8_token=mixed-legacy&server_id=3',
+      { token: 'mixed-legacy', server: '3' },
+    ],
+  ] as const) {
+    assert.deepEqual(
+      extractImportCredential(`${importOrigin}?${query}`),
+      expected
+    );
+  }
+  assert.equal(
+    extractImportCredential('https://example.com/?token=x&server_id=2'),
+    null
+  );
+
   for (const value of [
     '/\\example.com',
     '//example.com',
@@ -64,6 +89,20 @@ async function main() {
         '9007199254740992': { id: '9007199254740992', stores: {} },
       },
     });
+    const profileWithUrl = {
+      id: 'with-url',
+      stores: {
+        headhunt: { url: 'secret', types: {}, banners: {}, records: {} },
+      },
+    };
+    const privateBackup = createTrackerBackup(
+      { 'with-url': profileWithUrl },
+      'with-url',
+      { includeImportUrls: false }
+    );
+    assert.equal(privateBackup.profiles['with-url'].stores?.headhunt?.url, '');
+    assert.equal(profileWithUrl.stores.headhunt.url, 'secret');
+
     useStorageStore
       .getState()
       .restoreProfiles(backup.profiles, backup.currentProfileId);

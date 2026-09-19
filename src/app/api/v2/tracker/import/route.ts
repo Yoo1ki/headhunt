@@ -1,4 +1,4 @@
-import { CONFIG } from '@/config';
+import { TRACKER_CONFIG } from '@/config/tracker';
 import { headhuntTypes } from '@/data/tracker/headhunt-types';
 import type {
   DataImportRecord,
@@ -32,19 +32,33 @@ export async function POST(req: Request) {
   const type = headhuntTypes.find(
     (headhuntType) => headhuntType.id === headhuntTypeId
   )!;
-  const params = new URLSearchParams({
-    lang: 'en-us',
-    ...(lastId ? { seq_id: lastId.toString() } : {}),
-    ...(type.poolType ? { pool_type: type.poolType } : {}),
-    token: url.token,
-    server_id: url.server,
-  });
-  const recordUrl = new URL(type.endpoint, CONFIG.endfieldBaseUrl);
-  recordUrl.search = params.toString();
+  const serverIds =
+    url.server === TRACKER_CONFIG.import.autoServerId
+      ? TRACKER_CONFIG.import.serverIds
+      : [url.server];
+  let serverId = serverIds[0];
+  let res: ResGameRecord | null = null;
 
-  const res = await fetchJsonWithRetry<ResGameRecord>(recordUrl, {
-    context: `tracker.${processType}.v2`,
-  });
+  for (const candidateServerId of serverIds) {
+    const params = new URLSearchParams({
+      lang: 'en-us',
+      ...(lastId ? { seq_id: lastId.toString() } : {}),
+      ...(type.poolType ? { pool_type: type.poolType } : {}),
+      token: url.token,
+      server_id: candidateServerId,
+    });
+    const recordUrl = new URL(type.endpoint, TRACKER_CONFIG.api.baseUrl);
+    recordUrl.search = params.toString();
+    res = await fetchJsonWithRetry<ResGameRecord>(recordUrl, {
+      context: `tracker.${processType}.v2`,
+    });
+
+    if (res?.code === 0) {
+      serverId = candidateServerId;
+      break;
+    }
+  }
+
   if (res?.code === 40100) return jsonError('Invalid Token', 401);
   if (res?.code !== 0) return jsonError('Unknown Error', 500);
 
@@ -81,6 +95,7 @@ export async function POST(req: Request) {
     }),
     hasMore: res.data.hasMore,
     nextId: Number(res.data.list.at(-1)?.seqId) || undefined,
+    ...(url.server === TRACKER_CONFIG.import.autoServerId ? { serverId } : {}),
   };
 
   return jsonSuccess(data);

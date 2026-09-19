@@ -85,13 +85,30 @@ export type TrackerBackup = z.infer<typeof backupSchema>;
 
 export const createTrackerBackup = (
   profiles: Record<string, Profile>,
-  currentProfileId: string
+  currentProfileId: string,
+  options: { includeImportUrls?: boolean } = {}
 ): TrackerBackup => ({
   app: 'headhunt.cc',
   version: 2,
   exportedAt: new Date().toISOString(),
   currentProfileId,
-  profiles,
+  profiles:
+    (options.includeImportUrls ?? true)
+      ? profiles
+      : Object.fromEntries(
+          Object.entries(profiles).map(([id, profile]) => [
+            id,
+            profile.stores?.headhunt
+              ? {
+                  ...profile,
+                  stores: {
+                    ...profile.stores,
+                    headhunt: { ...profile.stores.headhunt, url: '' },
+                  },
+                }
+              : profile,
+          ])
+        ),
 });
 
 export const calculateTrackerBackupHash = async (backup: TrackerBackup) => {
