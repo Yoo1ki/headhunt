@@ -50,7 +50,7 @@ export const Tabs = ({
         role="tablist"
         aria-label="Platform"
         onKeyDown={handleKeyDown}
-        className="mb-4 grid auto-cols-fr grid-flow-col gap-1 rounded-xl bg-neutral-950/50 p-1"
+        className="mb-4 flex [scrollbar-width:none] gap-1.5 overflow-x-auto overscroll-x-contain rounded-xl bg-neutral-950/50 p-1.5 [&::-webkit-scrollbar]:hidden"
       >
         {tabs.map((tab, index) => (
           <button
@@ -65,7 +65,7 @@ export const Tabs = ({
             aria-controls={`${baseId}-panel-${index}`}
             tabIndex={active === index ? 0 : -1}
             onClick={() => setActive(index)}
-            className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-semibold outline-hidden transition-all focus-visible:ring-2 focus-visible:ring-yellow-400/70 ${
+            className={`min-w-max flex-1 cursor-pointer rounded-lg px-3 py-2 text-xs font-semibold outline-hidden transition-all focus-visible:ring-2 focus-visible:ring-yellow-400/70 sm:text-sm ${
               active === index
                 ? 'bg-yellow-500 text-neutral-950 shadow-xs shadow-yellow-950/30'
                 : 'text-white/55 hover:bg-white/7 hover:text-white'
