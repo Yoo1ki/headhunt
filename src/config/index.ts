@@ -7,9 +7,7 @@ export const CONFIG = {
       ? 'https://headhunt.cc'
       : 'http://localhost:3000',
   discordUrl: 'https://discord.gg/jBNxtSstEa',
-  googleClientId:
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ??
-    '907562393809-e275d60o81dkhs9adom0hdb9l4tsiopc.apps.googleusercontent.com',
+  googleClientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
   locales: [
     {
       id: 'cn',

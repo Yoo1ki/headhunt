@@ -10,10 +10,12 @@ export const GOOGLE_OAUTH_SCOPE = [
 ].join(' ');
 
 export const getGoogleOAuthConfig = () => {
+  const clientId =
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? CONFIG.googleClientId;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  if (!CONFIG.googleClientId || !clientSecret) return null;
+  if (!clientId || !clientSecret) return null;
 
-  return { clientId: CONFIG.googleClientId, clientSecret };
+  return { clientId, clientSecret };
 };
 
 export const getGoogleRedirectUri = (origin: string) =>

@@ -1,11 +1,15 @@
 # Headhunt.cc
 
+[![CI](https://github.com/baguspangestu/headhunt/actions/workflows/ci.yml/badge.svg)](https://github.com/baguspangestu/headhunt/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Headhunt tracker and game-data catalog built with Next.js and deployed to
-Cloudflare through OpenNext.
+Cloudflare through OpenNext. The production site is available at
+[headhunt.cc](https://headhunt.cc).
 
 ## Requirements
 
-- Node.js 20 or newer
+- Node.js 22 or newer
 - npm
 - A `.dev.vars` file based on `.dev.vars.example` for Cloudflare bindings
 
@@ -101,6 +105,15 @@ NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-google-oauth-client-secret
 ```
 
+`NEXT_PUBLIC_GOOGLE_CLIENT_ID` must be available while Next.js is building the
+application. For Cloudflare Workers Builds, configure it as a build variable in
+the Cloudflare dashboard. Each fork should use its own Google OAuth client and
+authorized JavaScript origins.
+
+Configure `NEXT_PUBLIC_GOOGLE_ANALYTICS_ID` as a Cloudflare build variable as
+well. Leave it unset to disable Google Analytics, especially when deploying a
+fork with no dedicated Analytics property.
+
 Add these authorized redirect URIs to the Google OAuth web client:
 
 ```text
@@ -152,3 +165,19 @@ use `GITHUB_SHA` or `CF_PAGES_COMMIT_SHA` when available, then fall back to the
 local Git `HEAD`. Builds from a source archive without Git metadata use the
 package version instead. The value is embedded during the build and does not
 make a runtime API request.
+
+## Contributing and security
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a change. Report
+suspected vulnerabilities privately as described in [SECURITY.md](SECURITY.md),
+not through a public issue.
+
+## License and third-party material
+
+Original project source code is available under the [MIT License](LICENSE).
+Game names, artwork, icons, data, and other third-party material remain the
+property of their respective owners and are not granted under that license.
+See [NOTICE.md](NOTICE.md) for details.
+
+Headhunt is an unofficial fan-made project and is not affiliated with or
+endorsed by HYPERGRYPH or GRYPHLINE.

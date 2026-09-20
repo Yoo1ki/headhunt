@@ -1,6 +1,6 @@
-const repositoryUrl = 'https://github.com/Yoo1ki/headhunt';
+const repositoryUrl = 'https://github.com/baguspangestu/headhunt';
 const rawRepositoryUrl =
-  'https://raw.githubusercontent.com/Yoo1ki/headhunt/refs/heads/main';
+  'https://raw.githubusercontent.com/baguspangestu/headhunt/refs/heads/main';
 
 export const TRACKER_CONFIG = {
   api: {

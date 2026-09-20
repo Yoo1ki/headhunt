@@ -74,6 +74,7 @@ async function main() {
   }
 
   const originalFetch = globalThis.fetch;
+  const originalClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
   const originalSecret = process.env.GOOGLE_CLIENT_SECRET;
   const memory = new Map<string, string>();
   Object.defineProperty(globalThis, 'localStorage', {
@@ -204,6 +205,8 @@ async function main() {
     await deleteAllGoogleDriveBackups(session);
     assert.equal(new Set(deleted).size, 101);
 
+    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID =
+      'test-client-id.apps.googleusercontent.com';
     process.env.GOOGLE_CLIENT_SECRET = 'test-only';
     for (const [status, error] of [
       [429, 'rate_limit_exceeded'],
@@ -238,6 +241,9 @@ async function main() {
     console.log('All audit regression checks passed.');
   } finally {
     globalThis.fetch = originalFetch;
+    if (originalClientId === undefined)
+      Reflect.deleteProperty(process.env, 'NEXT_PUBLIC_GOOGLE_CLIENT_ID');
+    else process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID = originalClientId;
     if (originalSecret === undefined)
       Reflect.deleteProperty(process.env, 'GOOGLE_CLIENT_SECRET');
     else process.env.GOOGLE_CLIENT_SECRET = originalSecret;

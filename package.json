@@ -1,7 +1,20 @@
 {
   "name": "headhunt",
   "version": "0.1.0",
+  "description": "A privacy-focused Arknights: Endfield headhunt tracker and game-data catalog.",
   "private": true,
+  "license": "MIT",
+  "homepage": "https://headhunt.cc",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baguspangestu/headhunt.git"
+  },
+  "bugs": {
+    "url": "https://github.com/baguspangestu/headhunt/issues"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -49,8 +62,8 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "puppeteer-core": "^24.40.0",
-    "sharp": "^0.34.5",
+    "puppeteer-core": "^25.11.0",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5.7.4",

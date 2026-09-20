@@ -2,6 +2,6 @@
 
 # Load .env.development* files when running `wrangler dev`
 NEXTJS_ENV=development
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=907562393809-e275d60o81dkhs9adom0hdb9l4tsiopc.apps.googleusercontent.com
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-client-id.apps.googleusercontent.com
 NEXT_PUBLIC_GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
 GOOGLE_CLIENT_SECRET=replace-with-google-oauth-client-secret
