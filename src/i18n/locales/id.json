@@ -419,6 +419,34 @@
         "runCommandTitle": "Paste dan Jalankan Command",
         "runCommandDesc": "Copy perintah berikut ke <app>Windows PowerShell</app>, lalu tekan <key>Enter</key>. Setelah URL muncul, maka akan dicopy secara otomatis, paste pada kolom import di bawah.",
         "reviewScript": "Periksa seluruh isi script di GitHub"
+      },
+      "MobileSteps": {
+        "securityTitle": "Metode lanjutan: baca peringatannya dahulu",
+        "securityDescription": "Metode ini memakai VPN lokal dan sertifikat CA untuk membaca request HTTPS di perangkatmu. Aktifkan hanya saat mengambil URL, jangan bagikan URL yang ditemukan, lalu hapus sertifikat setelah selesai.",
+        "captureTitle": "Rekam request riwayat gacha",
+        "copyTitle": "Temukan dan salin URL",
+        "cleanupTitle": "Matikan capture dan hapus sertifikat"
+      },
+      "AndroidSteps": {
+        "installTitle": "Instal Reqable dari Google Play",
+        "installDescription": "Gunakan aplikasi Reqable resmi dari Google Play. Jangan gunakan APK modifikasi atau aplikasi dari tautan yang tidak dikenal.",
+        "openStore": "Buka Reqable di Google Play",
+        "setupTitle": "Siapkan mode capture lokal",
+        "setupDescription": "Buka Reqable, pilih Standalone atau Local Mode, lalu ikuti petunjuk untuk mengizinkan VPN lokal dan memasang sertifikat CA. Jika tersedia, batasi aplikasi yang direkam hanya ke Arknights: Endfield.",
+        "captureDescription": "Buka Endfield sampai menu Headhunting, tetapi jangan buka Detail terlebih dahulu. Mulai capture di Reqable, kembali ke game, lalu buka Detail atau Record untuk memuat riwayat gacha. Setelah halaman tampil, hentikan capture.",
+        "copyDescription": "Di daftar request Reqable, cari host ef-webview.gryphline.com. Buka request GET dengan path /api/record/char, lalu gunakan Copy URL atau Share untuk menyalin URL lengkap. Kembali ke sini dan paste URL tersebut pada kolom Import URL.",
+        "cleanupDescription": "Pastikan capture dan VPN Reqable sudah berhenti. Buka pengaturan keamanan Android, cari User credentials atau sertifikat pengguna, lalu hapus sertifikat Reqable yang tadi dipasang jika tidak lagi diperlukan.",
+        "fallback": "Tidak menemukan request atau game mengalami error jaringan? Beberapa versi Android tidak mempercayai sertifikat pengguna. Jangan melakukan root atau memasang APK modifikasi; gunakan metode Web atau Windows sebagai alternatif."
+      },
+      "IOSSteps": {
+        "installTitle": "Instal Stream dari App Store",
+        "installDescription": "Instal Stream – Network Debug Tool dari App Store. Aplikasi ini digunakan untuk merekam request secara lokal di iPhone atau iPad.",
+        "openStore": "Buka Stream di App Store",
+        "setupTitle": "Izinkan VPN dan sertifikat Stream",
+        "setupDescription": "Di Stream, pilih Sniff Now lalu izinkan konfigurasi VPN. Pilih Install CA. Setelah profil diunduh, buka Pengaturan > Umum > VPN & Manajemen Perangkat, instal Stream Generated CA, kemudian buka Pengaturan > Umum > Mengenai > Pengaturan Kepercayaan Sertifikat dan aktifkan kepercayaan untuk sertifikat tersebut.",
+        "captureDescription": "Buka Endfield sampai menu Headhunting, tetapi jangan buka Detail terlebih dahulu. Kembali ke Stream dan tekan Sniff Now, lalu buka kembali Endfield dan masuk ke Detail atau Record. Setelah riwayat tampil, kembali ke Stream dan tekan Stop Sniffing.",
+        "copyDescription": "Buka Sniff History dan pilih rekaman terbaru. Gunakan Group by Host, pilih ef-webview.gryphline.com, lalu buka request GET /api/record/char. Pada bagian Request, tekan lama request tersebut dan pilih Copy URL. Kembali ke sini dan paste URL lengkapnya.",
+        "cleanupDescription": "Matikan Sniffing dan VPN Stream. Setelah URL berhasil disalin, buka Pengaturan > Umum > VPN & Manajemen Perangkat, pilih profil Stream Generated CA, lalu hapus profil tersebut jika tidak lagi diperlukan."
       }
     }
   },

@@ -13,6 +13,10 @@ export const TRACKER_CONFIG = {
     characterPoolType: 'E_CharacterGachaPoolType_Special',
     serverIds: ['2', '3'],
     officialRecordBookUrl: 'https://act.skport.com/endfield/recordBook',
+    androidCaptureAppUrl:
+      'https://play.google.com/store/apps/details?id=com.reqable.android',
+    iosCaptureAppUrl:
+      'https://apps.apple.com/app/stream-network-debug-tool/id1312141691',
     powershellScriptUrl: `${repositoryUrl}/blob/main/get-record-url.ps1`,
     powershellScriptRawUrl: `${rawRepositoryUrl}/get-record-url.ps1`,
   },

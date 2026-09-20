@@ -178,6 +178,25 @@ export const calculateTrackerBackupHash = async (
   ).join('');
 };
 
+export const isTrackerBackupEqualToProfiles = async (
+  backup: TrackerBackup,
+  profiles: Record<string, Profile>,
+  currentProfileId: string
+) => {
+  // Parse the in-memory data through the same schema as an imported backup so
+  // defaults and object shapes cannot produce a false difference.
+  const localBackup = parseTrackerBackup(
+    createTrackerBackup(profiles, currentProfileId)
+  );
+  const includeImportUrls = backup.includesImportUrls !== false;
+  const [backupHash, localHash] = await Promise.all([
+    calculateTrackerBackupHash(backup, { includeImportUrls }),
+    calculateTrackerBackupHash(localBackup, { includeImportUrls }),
+  ]);
+
+  return backupHash === localHash;
+};
+
 export const parseTrackerBackup = (value: unknown): TrackerBackup => {
   const backup = backupSchema.parse(value);
   const normalizedProfiles = Object.fromEntries(

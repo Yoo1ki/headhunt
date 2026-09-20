@@ -79,8 +79,8 @@ export const Navbar = ({ onClick }: NavbarProps) => {
   };
 
   return (
-    <div className="flex h-full flex-col justify-between">
-      <div className="my-4 max-h-full overflow-y-auto px-4">
+    <div className="flex h-full min-h-0 flex-col gap-2">
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
         <div className="flex flex-col justify-start gap-2">
           {menu.map((item) => {
             const isActive = segment === item.href;
@@ -144,7 +144,7 @@ export const Navbar = ({ onClick }: NavbarProps) => {
           })}
         </div>
       </div>
-      <div className="p-2">
+      <div className="shrink-0 p-2 pt-0">
         <Link
           href={CONFIG.discordUrl}
           target="_blank"

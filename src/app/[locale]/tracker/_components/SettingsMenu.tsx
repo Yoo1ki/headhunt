@@ -8,6 +8,7 @@ import {
   calculateTrackerBackupHash,
   createTrackerBackup,
   getTrackerBackupProfilesForRestore,
+  isTrackerBackupEqualToProfiles,
   parseTrackerBackup,
   type TrackerBackup,
 } from '@/lib/tracker-backup';
@@ -311,6 +312,18 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
       const backup = parseTrackerBackup(
         await downloadGoogleDriveBackup(driveSession, fileId)
       );
+      if (
+        await isTrackerBackupEqualToProfiles(backup, profiles, currentProfileId)
+      ) {
+        setPendingBackup(null);
+        setPendingBackupDetails(null);
+        lastSyncedDataRef.current = currentDataSignature;
+        setLastBackupSignature(currentDataSignature);
+        setDriveStatus('driveBackedUp');
+        notify(t('identical'));
+        return;
+      }
+
       const driveBackup = driveBackups.find((item) => item.id === fileId);
       setPendingBackup(backup);
       setPendingBackupDetails({
@@ -518,22 +531,9 @@ export const SettingsMenu = ({ isOpen, onClose }: SettingsMenuProps) => {
         throw new Error('Backup is too large');
 
       const backup = parseTrackerBackup(JSON.parse(await file.text()));
-      // Normalize both sides through the same schema before hashing. Parsed
-      // files can have different key order/default fields than in-memory data.
-      const localBackup = parseTrackerBackup(
-        createTrackerBackup(profiles, currentProfileId)
-      );
-      const compareImportUrls = backup.includesImportUrls !== false;
-      const [backupHash, localHash] = await Promise.all([
-        calculateTrackerBackupHash(backup, {
-          includeImportUrls: compareImportUrls,
-        }),
-        calculateTrackerBackupHash(localBackup, {
-          includeImportUrls: compareImportUrls,
-        }),
-      ]);
-
-      if (backupHash === localHash) {
+      if (
+        await isTrackerBackupEqualToProfiles(backup, profiles, currentProfileId)
+      ) {
         setPendingBackup(null);
         setPendingBackupDetails(null);
         notify(t('identical'));

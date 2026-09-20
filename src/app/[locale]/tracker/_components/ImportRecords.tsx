@@ -93,7 +93,19 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
   useEffect(() => {
     if (isOpen) {
       setTargetProfileId(currentProfileId);
-      setDefaultImportTab(/Windows/i.test(navigator.userAgent) ? 0 : 1);
+      const userAgent = navigator.userAgent;
+      const isIPadOS =
+        /Macintosh/i.test(userAgent) && navigator.maxTouchPoints > 1;
+
+      setDefaultImportTab(
+        /Windows/i.test(userAgent)
+          ? 0
+          : /Android/i.test(userAgent)
+            ? 1
+            : /iPhone|iPad|iPod/i.test(userAgent) || isIPadOS
+              ? 2
+              : 3
+      );
       return;
     }
 
@@ -156,7 +168,7 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
         )}
 
         <Tabs
-          tabs={['Windows', 'Web']}
+          tabs={['Windows', 'Android', 'iOS', 'Web']}
           defaultActiveIndex={defaultImportTab}
           resetKey={isOpen}
         >
@@ -231,6 +243,86 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
             </Step>
           </div>
           <div className="flex flex-col gap-3">
+            <div className="flex items-start gap-3 rounded-xl bg-yellow-400/10 p-3 text-yellow-200">
+              <FaShieldHalved className="mt-0.5 shrink-0" />
+              <div className="text-sm leading-relaxed">
+                <p className="font-semibold">
+                  {t('MobileSteps.securityTitle')}
+                </p>
+                <p className="mt-0.5 text-yellow-100/65">
+                  {t('MobileSteps.securityDescription')}
+                </p>
+              </div>
+            </div>
+            <Step number={1} title={t('AndroidSteps.installTitle')}>
+              <p>{t('AndroidSteps.installDescription')}</p>
+              <a
+                href={TRACKER_CONFIG.import.androidCaptureAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-300/60 focus-visible:outline-hidden"
+              >
+                {t('AndroidSteps.openStore')}
+                <FaArrowUpRightFromSquare aria-hidden="true" />
+              </a>
+            </Step>
+            <Step number={2} title={t('AndroidSteps.setupTitle')}>
+              {t('AndroidSteps.setupDescription')}
+            </Step>
+            <Step number={3} title={t('MobileSteps.captureTitle')}>
+              {t('AndroidSteps.captureDescription')}
+            </Step>
+            <Step number={4} title={t('MobileSteps.copyTitle')}>
+              {t('AndroidSteps.copyDescription')}
+            </Step>
+            <Step number={5} title={t('MobileSteps.cleanupTitle')}>
+              {t('AndroidSteps.cleanupDescription')}
+            </Step>
+            <div className="flex items-start gap-2.5 rounded-xl bg-white/5 p-3 text-white/50">
+              <FaCircleInfo className="mt-0.5 shrink-0 text-white/35" />
+              <p className="text-xs leading-relaxed">
+                {t('AndroidSteps.fallback')}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start gap-3 rounded-xl bg-yellow-400/10 p-3 text-yellow-200">
+              <FaShieldHalved className="mt-0.5 shrink-0" />
+              <div className="text-sm leading-relaxed">
+                <p className="font-semibold">
+                  {t('MobileSteps.securityTitle')}
+                </p>
+                <p className="mt-0.5 text-yellow-100/65">
+                  {t('MobileSteps.securityDescription')}
+                </p>
+              </div>
+            </div>
+            <Step number={1} title={t('IOSSteps.installTitle')}>
+              <p>{t('IOSSteps.installDescription')}</p>
+              <a
+                href={TRACKER_CONFIG.import.iosCaptureAppUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1.5 rounded-lg px-1 py-1 text-xs font-medium text-yellow-300 transition-colors hover:text-yellow-200 focus-visible:ring-2 focus-visible:ring-yellow-300/60 focus-visible:outline-hidden"
+              >
+                {t('IOSSteps.openStore')}
+                <FaArrowUpRightFromSquare aria-hidden="true" />
+              </a>
+            </Step>
+            <Step number={2} title={t('IOSSteps.setupTitle')}>
+              {t('IOSSteps.setupDescription')}
+            </Step>
+            <Step number={3} title={t('MobileSteps.captureTitle')}>
+              {t('IOSSteps.captureDescription')}
+            </Step>
+            <Step number={4} title={t('MobileSteps.copyTitle')}>
+              {t('IOSSteps.copyDescription')}
+            </Step>
+            <Step number={5} title={t('MobileSteps.cleanupTitle')}>
+              {t('IOSSteps.cleanupDescription')}
+            </Step>
+          </div>
+          <div className="flex flex-col gap-3">
             <div className="flex items-start gap-3 rounded-xl bg-green-500/10 p-3 text-green-200">
               <FaShieldHalved className="mt-0.5 shrink-0" />
               <div className="text-sm leading-relaxed">
@@ -271,13 +363,15 @@ export const ImportRecords = ({ isOpen, onClose }: ImportRecordsProps) => {
                     : 'WebSteps.copyBookmarklet'
                 )}
               </Button>
-              <details className="mt-2 text-xs text-white/45">
+              <details className="mt-2 max-w-full min-w-0 overflow-hidden text-xs text-white/45">
                 <summary className="cursor-pointer py-1 font-medium text-white/55 hover:text-white/75">
                   {t('WebSteps.reviewBookmarklet')}
                 </summary>
-                <code className="mt-1 block max-h-24 overflow-y-auto rounded-lg bg-neutral-950/70 p-3 leading-relaxed break-all">
-                  {WEB_IMPORT_BOOKMARKLET}
-                </code>
+                <div className="mt-1 max-w-full overflow-hidden rounded-lg bg-neutral-950/70">
+                  <code className="block max-h-24 w-full max-w-full min-w-0 overflow-auto overscroll-contain p-3 leading-relaxed break-all whitespace-pre-wrap">
+                    {WEB_IMPORT_BOOKMARKLET}
+                  </code>
+                </div>
               </details>
             </Step>
             <Step number={3} title={t('WebSteps.runBookmarkTitle')}>

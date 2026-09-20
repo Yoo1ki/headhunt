@@ -419,6 +419,34 @@
         "runCommandTitle": "Paste and Run the Command",
         "runCommandDesc": "Copy the command below into <app>Windows PowerShell</app>, then press <key>Enter</key>. Once the URL appears, it will be copied to your clipboard automatically. Paste it into the import field below.",
         "reviewScript": "Review the full script on GitHub"
+      },
+      "MobileSteps": {
+        "securityTitle": "Advanced method: read this first",
+        "securityDescription": "This method uses a local VPN and CA certificate to inspect HTTPS requests on your device. Enable it only while obtaining the URL, never share the URL you find, and remove the certificate afterward.",
+        "captureTitle": "Capture the gacha-history request",
+        "copyTitle": "Find and copy the URL",
+        "cleanupTitle": "Stop capture and remove the certificate"
+      },
+      "AndroidSteps": {
+        "installTitle": "Install Reqable from Google Play",
+        "installDescription": "Use the official Reqable app from Google Play. Do not use modified APKs or apps from unknown links.",
+        "openStore": "Open Reqable on Google Play",
+        "setupTitle": "Set up local capture",
+        "setupDescription": "Open Reqable, choose Standalone or Local Mode, then follow its prompts to allow the local VPN and install its CA certificate. If available, limit capture to Arknights: Endfield only.",
+        "captureDescription": "Open Endfield and go to Headhunting, but do not open Details yet. Start capture in Reqable, return to the game, then open Details or Records to load your gacha history. Stop capture after the page appears.",
+        "copyDescription": "In Reqable's request list, find the ef-webview.gryphline.com host. Open the GET request whose path is /api/record/char, then use Copy URL or Share to copy the complete URL. Return here and paste it into the Import URL field.",
+        "cleanupDescription": "Make sure Reqable capture and its VPN are stopped. Open Android security settings, locate User credentials or user-installed certificates, and remove the Reqable certificate if you no longer need it.",
+        "fallback": "No request appears or the game reports a network error? Some Android versions do not trust user certificates. Do not root your device or install a modified APK; use the Web or Windows method instead."
+      },
+      "IOSSteps": {
+        "installTitle": "Install Stream from the App Store",
+        "installDescription": "Install Stream – Network Debug Tool from the App Store. It records requests locally on your iPhone or iPad.",
+        "openStore": "Open Stream in the App Store",
+        "setupTitle": "Allow Stream's VPN and certificate",
+        "setupDescription": "In Stream, tap Sniff Now and allow the VPN configuration. Choose Install CA. After downloading the profile, open Settings > General > VPN & Device Management, install Stream Generated CA, then go to Settings > General > About > Certificate Trust Settings and enable trust for it.",
+        "captureDescription": "Open Endfield and go to Headhunting, but do not open Details yet. Return to Stream and tap Sniff Now, then go back to Endfield and open Details or Records. Once the history appears, return to Stream and tap Stop Sniffing.",
+        "copyDescription": "Open Sniff History and select the newest capture. Choose Group by Host, open ef-webview.gryphline.com, then select the GET /api/record/char request. In Request, press and hold that request and choose Copy URL. Return here and paste the complete URL.",
+        "cleanupDescription": "Turn off Stream sniffing and its VPN. After copying the URL, open Settings > General > VPN & Device Management, select Stream Generated CA, and remove the profile if you no longer need it."
       }
     }
   },

@@ -15,6 +15,7 @@ import {
   createTrackerBackup,
   calculateTrackerBackupHash,
   getTrackerBackupProfilesForRestore,
+  isTrackerBackupEqualToProfiles,
   parseTrackerBackup,
 } from '../src/lib/tracker-backup';
 import { extractImportCredential } from '../src/lib/validators/import-url';
@@ -133,6 +134,22 @@ async function main() {
       })
     );
     assert.equal(profileWithUrl.stores.headhunt.url, 'secret');
+    assert.equal(
+      await isTrackerBackupEqualToProfiles(
+        parseTrackerBackup(JSON.parse(JSON.stringify(backupWithUrl))),
+        { 'with-url': profileWithUrl },
+        'with-url'
+      ),
+      true
+    );
+    assert.equal(
+      await isTrackerBackupEqualToProfiles(
+        parseTrackerBackup(JSON.parse(JSON.stringify(privateBackup))),
+        { 'with-url': profileWithUrl },
+        'with-url'
+      ),
+      true
+    );
 
     useStorageStore
       .getState()
